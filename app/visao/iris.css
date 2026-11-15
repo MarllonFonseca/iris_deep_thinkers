@@ -1,0 +1,21 @@
+/* O fundo acompanha a cor da íris escolhida (Perfil > Íris).
+   Escuro: preto com o brilho da cor da íris. Claro: branco com a cor da íris.
+   A classe iris-<nome> é posta pelo runtime.js no ecrã e no fundo. */
+.tema-escuro.iris-original{--glow1:rgba(232,178,58,0.40);--glow2:rgba(111,169,201,0.30)}
+.tema-claro.iris-original{--glow1:rgba(232,178,58,0.40);--glow2:rgba(111,169,201,0.30)}
+.tema-escuro.iris-castanho{--glow1:rgba(140,78,30,0.40);--glow2:rgba(176,122,74,0.30)}
+.tema-claro.iris-castanho{--glow1:rgba(140,78,30,0.40);--glow2:rgba(176,122,74,0.30)}
+.tema-escuro.iris-avela{--glow1:rgba(168,116,42,0.40);--glow2:rgba(94,122,58,0.30)}
+.tema-claro.iris-avela{--glow1:rgba(168,116,42,0.40);--glow2:rgba(94,122,58,0.30)}
+.tema-escuro.iris-verde{--glow1:rgba(163,162,58,0.40);--glow2:rgba(63,138,80,0.30)}
+.tema-claro.iris-verde{--glow1:rgba(163,162,58,0.40);--glow2:rgba(63,138,80,0.30)}
+.tema-escuro.iris-azul{--glow1:rgba(141,184,234,0.40);--glow2:rgba(47,111,214,0.30)}
+.tema-claro.iris-azul{--glow1:rgba(141,184,234,0.40);--glow2:rgba(47,111,214,0.30)}
+.tema-escuro.iris-cinzento{--glow1:rgba(169,175,184,0.40);--glow2:rgba(122,133,148,0.30)}
+.tema-claro.iris-cinzento{--glow1:rgba(169,175,184,0.40);--glow2:rgba(122,133,148,0.30)}
+.tema-escuro.iris-ambar{--glow1:rgba(224,160,48,0.40);--glow2:rgba(198,120,24,0.30)}
+.tema-claro.iris-ambar{--glow1:rgba(224,160,48,0.40);--glow2:rgba(198,120,24,0.30)}
+
+/* As imagens da íris têm o halo cortado a direito perto das bordas; no modo claro via-se como uma barra.
+   Esta máscara esbate a imagem em círculo antes do corte (vale para todas as íris, nos dois temas). */
+img[src*="iris_"]{-webkit-mask-image:radial-gradient(closest-side,#000 60%,rgba(0,0,0,0) 80%);mask-image:radial-gradient(closest-side,#000 60%,rgba(0,0,0,0) 80%)}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testes do motor · Deep Thinkers</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Arial, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+    h1 { font-size: 1.4rem; }
+    .resumo { font-size: 1.1rem; font-weight: 600; margin: 1rem 0; }
+    .ok { color: #1b5e20; } .falha { color: #b71c1c; }
+    li { margin: .5rem 0; line-height: 1.4; }
+    .detalhe { color: #555; font-size: .9rem; }
+    .aviso { background: #fff8e1; border: 1px solid #f0c36d; padding: .6rem .8rem; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Testes do motor de regras (SANS)</h1>
+  <p>Abre com duplo clique, sem internet. Testes 1–9: obrigatórios (<code>docs/EDILSON.md</code>, secção 6). Testes 10–16: robustez, cenário do júri e limites. Testes 17–19: modelo de aprendizagem online.</p>
+  <div id="aviso"></div>
+  <div class="resumo" id="resumo">A correr…</div>
+  <ul id="lista"></ul>
+
+  <!-- Ordem importa: dados -> regras -> motor -> testes -->
+  <script src="../app/dados.js"></script>
+  <script src="regras.js"></script>
+  <script src="motor.js"></script>
+  <script src="modelo.js"></script>
+  <script src="testes.js"></script>
+  <script>
+    (function () {
+      if (!window.FAIXAS || !window.ASTRONAUTAS) {
+        document.getElementById("resumo").innerHTML =
+          '<span class="falha">Não encontrei ../app/dados.js. Corre: python3 simulador/simulador.py</span>';
+        return;
+      }
+      if (window.REGRAS && window.REGRAS.provisorio) {
+        document.getElementById("aviso").innerHTML =
+          '<p class="aviso">Regras provisórias: ainda não validadas pela equipa de saúde.</p>';
+      }
+      var res = correrTestes(Motor, FAIXAS, REGRAS, ASTRONAUTAS);
+      var ok = res.filter(function (r) { return r.ok; }).length;
+      document.getElementById("resumo").innerHTML =
+        '<span class="' + (ok === res.length ? "ok" : "falha") + '">' + ok + " de " + res.length + " testes passaram</span>";
+      document.getElementById("lista").innerHTML = res.map(function (r) {
+        return "<li>" + (r.ok ? "✅" : "❌") + " " + r.nome + '<br><span class="detalhe">' + r.detalhe + "</span></li>";
+      }).join("");
+      res.forEach(function (r) { console.log((r.ok ? "OK  " : "FALHA ") + r.nome + " | " + r.detalhe); });
+    })();
+  </script>
+</body>
+</html>

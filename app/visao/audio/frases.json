@@ -1,0 +1,287 @@
+[
+ {
+  "ficheiro": "intro_acuity.mp3",
+  "texto": "Near acuity test. Keep the screen at 40 centimetres, a little further than your usual reading distance. The camera warns you if you are too close or too far. We start with the left eye: cover your right eye with your palm, without pressing. A line of letters appears. For each letter, left to right, tap the same letter on the keypad, or say it out loud with the microphone on. The score shows how many letters you got right. When the line is complete, tap Next or say “next”. Do not bring the screen closer to see better. If you cannot read, tap “Can’t read”. Then repeat with the other eye. When you are ready, tap start, or say “next”.",
+  "grupo": "1. Instructions before each test"
+ },
+ {
+  "ficheiro": "intro_amsler.mp3",
+  "texto": "Amsler grid. Cover your left eye with your palm, without pressing. We start with the right eye. Hold the screen 33 centimetres from your face, about the length of a bent forearm. Look only at the black dot in the centre. Without looking away, notice any bent or wavy lines, blurred, dark or missing areas, or squares of different size. Tap the squares where you saw something different. If you saw nothing, tap “All looks straight”, or say “all straight”. Then cover your right eye and repeat. When you are ready, tap start, or say “next”.",
+  "grupo": "1. Instructions before each test"
+ },
+ {
+  "ficheiro": "line1_left.mp3",
+  "texto": "Left eye first: cover your right eye. Line one. Which letter do you see?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line1_right.mp3",
+  "texto": "Now the right eye: cover your left eye. Line one. Which letter do you see?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line1_spare.mp3",
+  "texto": "With the spare glasses. Line one. Which letter do you see?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line2.mp3",
+  "texto": "Line two. Which letters do you see, from left to right?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line3.mp3",
+  "texto": "Line three. Which letters do you see, from left to right?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line4.mp3",
+  "texto": "Line four. Which letters do you see, from left to right?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "line5.mp3",
+  "texto": "Line five. Which letters do you see, from left to right?",
+  "grupo": "2. Acuity: each line"
+ },
+ {
+  "ficheiro": "score_0_of_1.mp3",
+  "texto": "Zero correct out of one. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_1_of_1.mp3",
+  "texto": "One correct out of one. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_0_of_2.mp3",
+  "texto": "Zero correct out of two. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_1_of_2.mp3",
+  "texto": "One correct out of two. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_2_of_2.mp3",
+  "texto": "Two correct out of two. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_0_of_3.mp3",
+  "texto": "Zero correct out of three. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_1_of_3.mp3",
+  "texto": "One correct out of three. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_2_of_3.mp3",
+  "texto": "Two correct out of three. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_3_of_3.mp3",
+  "texto": "Three correct out of three. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_0_of_4.mp3",
+  "texto": "Zero correct out of four. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_1_of_4.mp3",
+  "texto": "One correct out of four. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_2_of_4.mp3",
+  "texto": "Two correct out of four. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_3_of_4.mp3",
+  "texto": "Three correct out of four. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_4_of_4.mp3",
+  "texto": "Four correct out of four. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_0_of_5.mp3",
+  "texto": "Zero correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_1_of_5.mp3",
+  "texto": "One correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_2_of_5.mp3",
+  "texto": "Two correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_3_of_5.mp3",
+  "texto": "Three correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_4_of_5.mp3",
+  "texto": "Four correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "score_5_of_5.mp3",
+  "texto": "Five correct out of five. Say “next” to continue.",
+  "grupo": "3. Acuity: score when a line is complete"
+ },
+ {
+  "ficheiro": "end_left_0.mp3",
+  "texto": "Left eye: you read no lines.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_left_1.mp3",
+  "texto": "Left eye: you read up to line one.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_left_2.mp3",
+  "texto": "Left eye: you read up to line two.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_left_3.mp3",
+  "texto": "Left eye: you read up to line three.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_left_4.mp3",
+  "texto": "Left eye: you read up to line four.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_left_5.mp3",
+  "texto": "Left eye: you read up to line five.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_0.mp3",
+  "texto": "Right eye: you read no lines.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_1.mp3",
+  "texto": "Right eye: you read up to line one.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_2.mp3",
+  "texto": "Right eye: you read up to line two.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_3.mp3",
+  "texto": "Right eye: you read up to line three.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_4.mp3",
+  "texto": "Right eye: you read up to line four.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "end_right_5.mp3",
+  "texto": "Right eye: you read up to line five.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "then_spare.mp3",
+  "texto": "Reading is worse than your baseline. Put on the spare glasses and read again.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "then_right_eye.mp3",
+  "texto": "Say “next” to go to the right eye.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "then_finish.mp3",
+  "texto": "Say “next” to finish.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "acuity_done.mp3",
+  "texto": "Acuity done. Say “next” to go to the Amsler grid.",
+  "grupo": "4. Acuity: end of each eye"
+ },
+ {
+  "ficheiro": "amsler_start.mp3",
+  "texto": "Cover your left eye. Look only at the black dot in the centre. Tap the squares where you see bent lines, spots or gaps. If everything looks straight, say “all straight”.",
+  "grupo": "5. Amsler grid"
+ },
+ {
+  "ficheiro": "amsler_cover_left.mp3",
+  "texto": "Now cover your left eye and look at the dot in the centre.",
+  "grupo": "5. Amsler grid"
+ },
+ {
+  "ficheiro": "amsler_cover_right.mp3",
+  "texto": "Now cover your right eye and look at the dot in the centre.",
+  "grupo": "5. Amsler grid"
+ },
+ {
+  "ficheiro": "amsler_done.mp3",
+  "texto": "Grid done. Say “next” to see the result.",
+  "grupo": "5. Amsler grid"
+ },
+ {
+  "ficheiro": "dist_back.mp3",
+  "texto": "Move back a little from the screen.",
+  "grupo": "6. Distance (camera)"
+ },
+ {
+  "ficheiro": "dist_closer.mp3",
+  "texto": "Move a little closer to the screen.",
+  "grupo": "6. Distance (camera)"
+ },
+ {
+  "ficheiro": "dist_ok.mp3",
+  "texto": "Distance OK.",
+  "grupo": "6. Distance (camera)"
+ },
+ {
+  "ficheiro": "voice_on.mp3",
+  "texto": "Voice on.",
+  "grupo": "7. Other"
+ },
+ {
+  "ficheiro": "result_green.mp3",
+  "texto": "Result: green. All within your baseline. Keep the normal schedule.",
+  "grupo": "8. Result (optional, new)"
+ },
+ {
+  "ficheiro": "result_yellow.mp3",
+  "texto": "Result: yellow. Conditions may have affected the test. Repeat when you can.",
+  "grupo": "8. Result (optional, new)"
+ },
+ {
+  "ficheiro": "result_orange.mp3",
+  "texto": "Result: orange. There is a change since your baseline. The medical team will review it.",
+  "grupo": "8. Result (optional, new)"
+ },
+ {
+  "ficheiro": "result_red.mp3",
+  "texto": "Result: red. Clinical priority. Tell the flight surgeon now.",
+  "grupo": "8. Result (optional, new)"
+ }
+]

@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo_icone.png">
+<title>OCT · IRIS</title>
+<link href="fonte.css?v=20261115h" rel="stylesheet">
+<link href="iris.css?v=20261115h" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7FB7CF}a:hover{color:#A9D3E4}
+.tema-escuro{--bg:#0D0C0A;--glow1:rgba(207,227,243,0.14);--glow2:rgba(95,157,184,0.15);--card:rgba(255,255,255,0.06);--card2:rgba(255,255,255,0.025);--card-shadow:none;--line:rgba(255,255,255,0.12);--line2:rgba(255,255,255,0.08);--tx:#F2F4F7;--tx2:#C5CBD3;--tx3:#8E959E;--tx-soft:#E1E5EA;--chip:rgba(255,255,255,0.06);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#CFE3F3;--acc-glow:rgba(207,227,243,0.35);--acc-soft:rgba(207,227,243,0.13);--acc-line:rgba(207,227,243,0.5);--cta:#F2F4F7;--cta-tx:#0D0C0A;--cta-glow:rgba(242,244,247,0.14);--nav:rgba(22,24,28,0.82);--nav-shadow:0 16px 40px rgba(0,0,0,0.45);--ok:#7FD1A6;--ok-tx:#7FD1A6;--ok-soft:rgba(127,209,166,0.14);--ylw-tx:#EBD35B;--ylw-soft:rgba(235,211,91,0.13);--warn:#F0A940;--warn-tx:#F0A940;--warn-soft:rgba(240,169,64,0.15);--bad:#F0766B;--bad-tx:#F0766B;--bad-soft:rgba(240,118,107,0.15);--teal:#7FB7CF;--teal-text:#A9D3E4;--teal-soft:rgba(127,183,207,0.10);--teal-line:rgba(127,183,207,0.30);--track-off:rgba(255,255,255,0.14);--input:rgba(255,255,255,0.04);--ylw-line:rgba(235,211,91,0.42);--overlay:rgba(5,5,6,0.66);--sheet:#15171B;--ok-line:rgba(127,209,166,0.40);--bad-soft:rgba(240,118,107,0.15)}
+.tema-claro{--bg:#FAFBFC;--glow1:rgba(207,227,243,0.85);--glow2:rgba(95,157,184,0.12);--card:rgba(255,255,255,0.96);--card2:rgba(244,248,252,0.94);--card-shadow:0 10px 30px rgba(13,12,10,0.06);--line:rgba(13,12,10,0.13);--line2:rgba(13,12,10,0.07);--tx:#0D0C0A;--tx2:#45484D;--tx3:#5F636A;--tx-soft:#1F2124;--chip:rgba(13,12,10,0.04);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#2F5E80;--acc-glow:rgba(120,170,210,0.35);--acc-soft:rgba(207,227,243,0.6);--acc-line:#9DC2DE;--cta:#0D0C0A;--cta-tx:#FFFFFF;--cta-glow:rgba(13,12,10,0.18);--nav:rgba(255,255,255,0.9);--nav-shadow:0 14px 34px rgba(13,12,10,0.12);--ok:#3FAE6A;--ok-tx:#1E7B34;--ok-soft:rgba(63,174,106,0.13);--ylw-tx:#7A6500;--ylw-soft:rgba(226,194,50,0.18);--warn:#F0A940;--warn-tx:#A05A00;--warn-soft:rgba(240,169,64,0.18);--bad:#E0645A;--bad-tx:#C4141B;--bad-soft:rgba(224,100,90,0.13);--teal:#3E7F9C;--teal-text:#2F6A85;--teal-soft:rgba(127,183,207,0.16);--teal-line:rgba(62,127,156,0.30);--track-off:rgba(13,12,10,0.14);--input:#FFFFFF;--ylw-line:rgba(122,101,0,0.32);--overlay:rgba(13,12,10,0.32);--sheet:#FFFFFF;--ok-line:rgba(30,123,52,0.30);--bad-soft:rgba(224,100,90,0.13)}
+</style>
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;background:#050506}
+#palco{width:1194px;height:834px;flex:none;transform-origin:center center;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.45)}
+</style>
+<!-- Backend (offline): dados simulados, regras, motor, modelo, armazenamento e ligação aos ecrãs -->
+<script src="../dados.js?v=20261115h"></script>
+<script src="../../motor/regras.js?v=20261115h"></script>
+<script src="../../motor/motor.js?v=20261115h"></script>
+<script src="../../motor/modelo.js?v=20261115h"></script>
+<script src="../armazenamento.js?v=20261115h"></script>
+<script src="ligacao.js?v=20261115h"></script>
+<script src="i18n.js?v=20261115h"></script>
+<script src="runtime.js?v=20261115h"></script>
+</head>
+<body>
+<div id="palco"><div id="raiz"></div></div>
+<template id="dc-modelo">
+<div class="{{ temaClasse }}" style="position: relative; width: 1194px; height: 834px; overflow: hidden; font-family: 'Manrope', system-ui, sans-serif; color: var(--tx); -webkit-font-smoothing: antialiased; background: radial-gradient(45% 50% at 32% 35%, var(--glow1), rgba(0,0,0,0) 70%), radial-gradient(40% 50% at 100% 90%, var(--glow2), rgba(0,0,0,0) 70%), var(--bg)">
+
+<div style="position: absolute; left: 40px; right: 40px; top: 28px; display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 10px">
+<span class="dt-logo" role="img" aria-label="IRIS" title="Integrated Remote Intelligence for Spaceflight" style="width: 65px; height: 36px; color: var(--tx)"></span>
+<span style="margin-left: 6px; font-size: 12px; font-weight: 700; color: var(--tx3); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px">{{ selo }}</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{ toggleTema }}" aria-pressed="{{ claro }}" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--chip); color: var(--tx); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">
+<sc-if value="{{ escuro }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{ claro }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+{{ temaLabel }}</button>
+<a href="Perfil.html" style="display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 14px 0 4px; border-radius: 20px; background: var(--chip); border: 1px solid var(--line2); font-size: 13px; font-weight: 600; color: var(--tx); text-decoration: none">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 16px; background: linear-gradient(135deg, #E6F1FA, #9DC2DE); color: #0D0C0A; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ eu.ini }}</span>{{ eu.nome }}<span style="font-weight: 500; color: var(--tx3)">· Day {{ eu.dia }}</span></a>
+</div>
+</div>
+
+<header style="position: absolute; left: 40px; right: 40px; top: 84px; display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; color: var(--tx2)">Measure on the on-board OCT device and record the result here</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 400; letter-spacing: -0.6px; color: var(--tx)">OCT</h1>
+</div>
+<nav aria-label="Check type" style="display: flex; gap: 4px; padding: 4px; border-radius: 24px; background: var(--chip); border: 1px solid var(--line2)">
+<a href="TesteRapido.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">Quick tests</a>
+<span aria-current="page" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--acc-tx); background: var(--acc)">OCT</span>
+<a href="Tendencia.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">History</a>
+</nav>
+</header>
+
+<div style="position: absolute; left: 40px; top: 152px; width: 1114px; height: 44px; display: flex; align-items: center; justify-content: space-between">
+<div role="tablist" aria-label="OCT mode" style="display: flex; gap: 4px; padding: 4px; border-radius: 22px; background: var(--chip); border: 1px solid var(--line2)">
+<sc-for list="{{ modos }}" as="m" hint-placeholder-count="2">
+<button type="button" role="tab" aria-selected="{{ m.on }}" onClick="{{ m.pick }}" style="height: 34px; padding: 0 16px; border: 0; border-radius: 17px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; color: {{ m.fg }}; background: {{ m.bg }}">{{ m.t }}</button>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--teal-text); background: var(--teal-soft); border: 1px solid var(--teal-line); border-radius: 999px; padding: 6px 12px"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: var(--teal)"></span>Optional, but recommended</span>
+<span style="font-size: 13px; color: var(--tx2)">{{ eu.proximo }}</span>
+</div>
+</div>
+
+<sc-if value="{{ registar }}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="reg-titulo" style="position: absolute; left: 40px; top: 208px; width: 700px; height: 520px; box-sizing: border-box; padding: 22px 24px; border-radius: 28px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 3px">
+<h2 id="reg-titulo" style="margin: 0; font-size: 22px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">Record the device result</h2>
+<span style="font-size: 14px; color: var(--tx2)">Today · day {{ eu.dia }}. Type the values exactly as shown on the OCT screen.</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{ campos }}" as="c" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 20px; background: var(--chip); border: 1px solid var(--line2)">
+<label for="{{ c.id }}" style="font-size: 13px; font-weight: 700; color: var(--tx)">{{ c.label }}</label>
+<span style="font-size: 12px; color: var(--tx3)">Retinal thickness around the optic nerve</span>
+<div style="display: flex; align-items: center; gap: 8px">
+<input id="{{ c.id }}" type="number" inputmode="numeric" placeholder="E.g.: {{ c.exemplo }}" value="{{ c.valor }}" onChange="{{ c.onChange }}" style="flex-grow: 1; min-width: 0; height: 52px; box-sizing: border-box; border: 1px solid {{ c.borda }}; border-radius: 14px; padding: 0 16px; font-family: inherit; font-size: 22px; color: var(--tx); background: var(--input)">
+<span style="font-size: 15px; font-weight: 600; color: var(--tx2)">µm</span>
+</div>
+<span style="min-height: 18px; font-size: 12px; color: {{ c.msgCor }}">{{ c.msg }}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="sinal" style="font-size: 13px; font-weight: 700; color: var(--tx)">Signal quality (1 to 10)</label>
+<input id="sinal" type="number" inputmode="numeric" placeholder="As shown on the device" value="{{ sinal.valor }}" onChange="{{ sinal.onChange }}" style="height: 46px; box-sizing: border-box; border: 1px solid {{ sinal.borda }}; border-radius: 14px; padding: 0 16px; font-family: inherit; font-size: 17px; color: var(--tx); background: var(--input)">
+<span style="min-height: 18px; font-size: 12px; color: {{ sinal.msgCor }}">{{ sinal.msg }}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 700; color: var(--tx)">Exam image (optional)</span>
+<button type="button" onClick="{{ toggleAnexo }}" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 46px; border: 1px solid var(--teal-line); border-radius: 14px; background: var(--teal-soft); color: var(--teal-text); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M20 12.5 12.6 20a5 5 0 0 1-7.1-7.1l8-8a3.5 3.5 0 0 1 5 5l-8 8a2 2 0 0 1-2.8-2.8L15 7.8"></path></svg>{{ anexoLabel }}</button>
+<span style="min-height: 18px; font-size: 12px; color: var(--tx3)">Helps the medical team confirm the value.</span>
+</div>
+</div>
+<div style="flex-grow: 1"></div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-size: 13px; color: var(--tx3)">{{ rodapeReg }}</span>
+<button type="button" onClick="{{ guardar }}" disabled="{{ guardarOff }}" style="height: 50px; padding: 0 28px; border: 0; border-radius: 25px; background: var(--acc); color: var(--acc-tx); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; opacity: {{ guardarOp }}; box-shadow: 0 6px 24px var(--acc-glow)">Save and compare</button>
+</div>
+</section>
+
+<aside style="position: absolute; left: 756px; top: 208px; width: 398px; display: flex; flex-direction: column; gap: 14px">
+<section aria-labelledby="como-titulo" style="padding: 18px 22px 10px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<h2 id="como-titulo" style="margin: 0 0 6px; font-size: 15px; font-weight: 600; color: var(--tx)">How it works</h2>
+<sc-for list="{{ passos }}" as="p" hint-placeholder-count="4">
+<div style="display: flex; gap: 12px; align-items: center; min-height: 48px; border-bottom: {{ p.regra }}"><span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 12px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ p.n }}</span><span style="font-size: 14px; line-height: 1.4; color: var(--tx-soft)">{{ p.t }}</span></div>
+</sc-for>
+</section>
+<section aria-labelledby="ult-titulo" style="padding: 18px 22px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: baseline; justify-content: space-between"><h2 id="ult-titulo" style="margin: 0; font-size: 15px; font-weight: 600; color: var(--tx)">Last record</h2><span style="font-size: 13px; color: var(--tx3)">{{ ultimo.nome }}</span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: var(--tx3)">Left eye</span><span style="font-size: 20px; font-weight: 400; color: var(--tx)">{{ ultimo.oe }} µm</span></span>
+<span style="display: flex; flex-direction: column; gap: 2px; padding-left: 14px; border-left: 1px solid var(--line2)"><span style="font-size: 12px; color: var(--tx3)">Right eye</span><span style="font-size: 20px; font-weight: 400; color: var(--tx)">{{ ultimo.od }} µm</span></span>
+<span style="display: flex; flex-direction: column; gap: 2px; padding-left: 14px; border-left: 1px solid var(--line2)"><span style="font-size: 12px; color: var(--tx3)">Signal</span><span style="font-size: 20px; font-weight: 400; color: var(--tx)">{{ ultimo.sinal }}</span></span>
+</div>
+<button type="button" onClick="{{ irComparar }}" style="margin-top: 6px; height: 44px; border: 1px solid var(--line); border-radius: 22px; background: transparent; color: var(--tx); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">See full history</button>
+</section>
+</aside>
+</sc-if>
+
+<sc-if value="{{ comparar }}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="hist-titulo" style="position: absolute; left: 40px; top: 208px; width: 700px; height: 520px; box-sizing: border-box; padding: 18px 22px; border-radius: 28px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<h2 id="hist-titulo" style="margin: 0; font-size: 16px; font-weight: 600; color: var(--tx)">Retinal thickness at each exam</h2>
+<span style="display: flex; gap: 14px; font-size: 12px; color: var(--tx2)">
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 16px; height: 3px; border-radius: 2px; background: var(--acc-text)"></span>Left eye</span>
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 16px; height: 3px; border-radius: 2px; background: var(--teal)"></span>Right eye</span>
+</span>
+</div>
+<svg role="img" aria-label="{{ grafico.label }}" width="656" height="190" viewBox="0 0 656 190" style="display: block">
+<sc-for list="{{ grafico.grelha }}" as="g" hint-placeholder-count="4">
+<line x1="48" y1="{{ g.y }}" x2="640" y2="{{ g.y }}" style="stroke: var(--line2); stroke-width: 1"></line>
+<text x="40" y="{{ g.ty }}" style="font-size: 11px; fill: var(--tx3); text-anchor: end">{{ g.t }}</text>
+</sc-for>
+<polyline points="{{ grafico.linhaOD }}" style="fill: none; stroke: var(--teal); stroke-width: 2; stroke-linejoin: round"></polyline>
+<polyline points="{{ grafico.linhaOE }}" style="fill: none; stroke: var(--acc-text); stroke-width: 2.5; stroke-linejoin: round"></polyline>
+<sc-for list="{{ grafico.pontos }}" as="p" hint-placeholder-count="10">
+<circle cx="{{ p.x }}" cy="{{ p.y }}" r="{{ p.r }}" style="fill: {{ p.fill }}; stroke: {{ p.cor }}; stroke-width: 2"></circle>
+</sc-for>
+<sc-for list="{{ grafico.rotulos }}" as="r" hint-placeholder-count="6">
+<text x="{{ r.x }}" y="184" style="font-size: 11px; font-weight: {{ r.peso }}; fill: {{ r.cor }}; text-anchor: middle">{{ r.t }}</text>
+</sc-for>
+</svg>
+<div role="table" aria-label="OCT exam history" style="display: flex; flex-direction: column">
+<div role="row" style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 0.8fr; gap: 8px; padding: 0 10px; min-height: 26px; align-items: center; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">
+<span role="columnheader">EXAM</span><span role="columnheader">LEFT EYE</span><span role="columnheader">VS BASELINE</span><span role="columnheader">RIGHT EYE</span><span role="columnheader">SIGNAL</span>
+</div>
+<sc-for list="{{ tabela }}" as="t" hint-placeholder-count="6">
+<div role="row" style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 0.8fr; gap: 8px; padding: 0 10px; min-height: 30px; align-items: center; border-radius: 10px; background: {{ t.fundo }}; font-size: 13px; color: var(--tx)">
+<span role="cell" style="font-weight: {{ t.peso }}">{{ t.nome }}</span><span role="cell">{{ t.oe }}</span><span role="cell" style="color: var(--tx2)">{{ t.dBase }}</span><span role="cell">{{ t.od }}</span><span role="cell" style="color: var(--tx2)">{{ t.sinal }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<aside style="position: absolute; left: 756px; top: 208px; width: 398px; height: 520px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{ olhosComp }}" as="o" hint-placeholder-count="2">
+<section style="padding: 16px 20px; border-radius: 24px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid {{ o.borda }}; box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; justify-content: space-between"><h2 style="margin: 0; font-size: 15px; font-weight: 600; color: var(--tx)">{{ o.nome }}</h2><span style="font-size: 12px; color: var(--tx3)">{{ o.quando }}</span></div>
+<span style="font-size: 34px; font-weight: 300; letter-spacing: -1px; color: var(--tx)">{{ o.valor }}<span style="font-size: 16px; font-weight: 500; color: var(--tx2)"> µm</span></span>
+<div style="display: flex; justify-content: space-between; min-height: 28px; align-items: center; border-top: 1px solid var(--line2)"><span style="font-size: 13px; color: var(--tx3)">Vs pre-flight baseline</span><span style="font-size: 14px; font-weight: 700; color: var(--tx)">{{ o.dBase }}</span></div>
+<div style="display: flex; justify-content: space-between; min-height: 28px; align-items: center; border-top: 1px solid var(--line2)"><span style="font-size: 13px; color: var(--tx3)">{{ o.antLabel }}</span><span style="font-size: 14px; font-weight: 700; color: var(--tx)">{{ o.dAnt }}</span></div>
+</section>
+</sc-for>
+<div style="flex-grow: 1"></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 18px; background: {{ estado.fundo }}; border: 1px solid {{ estado.linha }}">
+<span aria-hidden="true" style="width: 9px; height: 9px; flex: none; border-radius: 5px; background: {{ estado.dot }}"></span>
+<span style="font-size: 13px; line-height: 1.4; color: var(--tx)">{{ estado.txt }}</span>
+</div>
+<span style="font-size: 12px; line-height: 1.4; color: var(--tx3)">The app only compares values with your history. Interpretation is up to the medical team.{{ notaSim }}</span>
+</aside>
+</sc-if>
+
+<div aria-hidden="true" style="position: absolute; left: -1500px; right: -1500px; top: 712px; bottom: -1500px; pointer-events: none; background: linear-gradient(180deg, transparent 0, var(--bg) 90px)"></div>
+<nav aria-label="App sections" style="position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 36px; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--line2); box-shadow: var(--nav-shadow)">
+<a href="Hoje.html" aria-label="Today" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg></a>
+<a href="TesteRapido.html" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 52px; box-sizing: border-box; padding: 0 22px; border-radius: 26px; background: var(--acc); border: 1px solid var(--acc-line); color: var(--acc-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--acc-glow)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Checks</a>
+<a href="SANS.html" aria-label="SANS monitoring" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+<a href="Alerta.html" aria-label="Alerts" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg></a>
+</nav>
+
+<sc-if value="{{ gate }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: -1500px; top: -1500px; right: -1500px; bottom: -1500px; background: var(--overlay); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+<section role="dialog" aria-modal="true" aria-labelledby="gate-titulo" style="position: absolute; left: 297px; top: 160px; width: 600px; box-sizing: border-box; padding: 26px 28px; border-radius: 30px; background: var(--sheet); border: 1px solid var(--ylw-line); box-shadow: 0 30px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: var(--ylw-soft); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" style="fill: none; stroke: var(--ylw-tx); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h3l2-5 4 10 2-5h7"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 12px; font-weight: 700; color: var(--ylw-tx)">Required before any test</span>
+<h2 id="gate-titulo" style="margin: 0; font-size: 26px; font-weight: 400; letter-spacing: -0.4px; color: var(--tx)">Spacecraft motion detected</h2>
+<span style="font-size: 14px; color: var(--tx2)">Today · 10:42–10:43 UTC · 52 s</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--tx-soft)">{{ gateTexto }}</p>
+<span id="gate-pergunta" style="font-size: 17px; font-weight: 600; color: var(--tx)">Did you feel the station move or vibrate during that time?</span>
+<div role="group" aria-labelledby="gate-pergunta" style="display: flex; gap: 10px">
+<sc-for list="{{ gateOps }}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{ o.pick }}" style="flex: 1; height: 52px; border-radius: 26px; border: 1px solid var(--line); background: transparent; color: var(--tx); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{ o.t }}</button>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding-top: 4px">
+<a href="Perfil.html" onClick="{{ abrirEvento }}" style="font-size: 14px; font-weight: 700; color: var(--acc-text)">See details and chart in profile</a>
+<a href="Hoje.html" style="font-size: 14px; font-weight: 600; color: var(--tx2); text-decoration: none">Back to start</a>
+</div>
+</section>
+</sc-if>
+
+</div>
+</template>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tema: 'escuro', perfil: 'B', resp: null, modo: 'registar', oe: '', od: '', sinal: '', anexo: false, novo: null };
+  }
+  componentDidMount() {
+    const upd = {};
+    try {
+      const t = window.localStorage.getItem('visao-tema');
+      const p = window.localStorage.getItem('visao-perfil');
+      if (t === 'claro' || t === 'escuro') upd.tema = t;
+      if (p === 'A' || p === 'B' || p === 'C') upd.perfil = p;
+      const r = window.localStorage.getItem('visao-evento-' + (upd.perfil || this.state.perfil));
+      if (r === 'sim' || r === 'nao' || r === 'naosei') upd.resp = r;
+      if (window.localStorage.getItem('visao-oct-modo') === 'comparar') {
+        upd.modo = 'comparar';
+        window.localStorage.removeItem('visao-oct-modo');
+      }
+    } catch (e) {}
+    this.setState(upd);
+    this.ouvir = (ev) => {
+      if (!ev) return;
+      if (ev.key === 'visao-tema' && (ev.newValue === 'claro' || ev.newValue === 'escuro')) this.setState({ tema: ev.newValue });
+      if (ev.key === 'visao-evento-' + this.state.perfil) this.setState({ resp: ev.newValue });
+    };
+    try { window.addEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  componentWillUnmount() {
+    try { window.removeEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  renderVals() {
+    const s = this.state;
+    const eus = {
+      A: { nome: 'Marta Silveira', ini: 'MS', dia: 60, proximo: 'Next recommended: day 90' },
+      B: { nome: 'Daniel Cossa', ini: 'DC', dia: 90, proximo: 'Next recommended: day 100' },
+      C: { nome: 'Sofia Lindqvist', ini: 'SL', dia: 84, proximo: 'Repeat today recommended' }
+    };
+    const euBase = eus[s.perfil] || eus.B;
+    // Perfil real: só os OCT do próprio astronauta (privacidade); nada dos perfis de demonstração.
+    const euR = window.Visao && window.Visao.real() ? window.Visao.eu() : null;
+    const eu = euR ? { nome: euR.nome, ini: euR.ini, dia: euR.dia, proximo: 'When the medical team asks' } : euBase;
+    const fmt = (x, d) => x.toFixed(d).replace('.', ',');
+    const sn = (x) => (x > 0 ? '+' : (x < 0 ? '−' : '±'));
+
+    // Histórico simulado: [dia, % OE, % OD, sinal, interpretação]
+    const H = {
+      A: { bOE: 358, bOD: 365, ex: [[10, 1.8, 1.0, 8, 'Reviewed'], [30, 4.2, 2.5, 8, 'Reviewed'], [60, 6.9, 5.2, 9, 'Reviewed']] },
+      B: { bOE: 362, bOD: 360, ex: [[10, 4.0, 3.0, 8, 'Reviewed'], [30, 9.5, 6.5, 8, 'Reviewed'], [60, 14.0, 9.0, 8, 'Reviewed'], [90, 17.0, 12.1, 7, 'To review']] },
+      C: { bOE: 401, bOD: 398, ex: [[10, 6.0, 4.0, 8, 'Reviewed'], [30, 18.0, 10.0, 8, 'Reviewed'], [60, 35.0, 18.0, 8, 'Reviewed'], [84, 52.9, 24.6, 8, 'Priority review']] }
+    };
+    const h = H[s.perfil] || H.B;
+    let hist;
+    if (euR) {
+      const R = window.Visao.octDe();
+      hist = R.map((e, i) => ({ nome: e.dia === 0 ? 'Pre-flight baseline' : (i === 0 ? 'Baseline · day ' + e.dia : 'Day ' + e.dia), curto: e.dia === 0 ? 'Pre-flight' : 'D' + e.dia,
+        oe: e.oe, od: e.od, sinal: e.sinal === null || e.sinal === undefined ? '—' : e.sinal, interp: i === 0 ? 'Baseline' : 'Sent for review',
+        novo: !!s.novo && i === R.length - 1 }));
+    } else {
+      hist = [{ nome: 'Pre-flight baseline', curto: 'Pre-flight', oe: h.bOE, od: h.bOD, sinal: 9, interp: 'Reviewed', novo: false }]
+        .concat(h.ex.map((e) => ({ nome: 'Day ' + e[0], curto: 'D' + e[0], oe: Math.round(h.bOE * (1 + e[1] / 100)), od: Math.round(h.bOD * (1 + e[2] / 100)), pOE: e[1], pOD: e[2], sinal: e[3], interp: e[4], novo: false })));
+      if (s.novo) hist.push({ nome: 'New · day ' + eu.dia, curto: 'New', oe: s.novo.oe, od: s.novo.od, sinal: s.novo.sinal, interp: 'Sent for review', novo: true });
+    }
+    const semOct = hist.length === 0;
+    if (semOct) hist.push({ nome: 'No OCT yet', curto: '—', oe: 0, od: 0, sinal: '—', interp: 'No exams', novo: false, vazio: true });
+    const sinalTxt = (x) => (typeof x === 'number' ? x + '/10' : 'not given');
+    const ult = hist[hist.length - 1];
+    const ant = hist[hist.length - 2] || ult;
+
+    // ---------- Registar ----------
+    const valido = (v) => v !== '' && !isNaN(Number(v)) && Number(v) >= 200 && Number(v) <= 800;
+    const campo = (id, label, chave, exemplo) => {
+      const v = s[chave];
+      let msg = 'Device value, in micrometres'; let msgCor = 'var(--tx3)'; let borda = 'var(--line)';
+      if (v !== '' && !valido(v)) { msg = 'Unlikely value. Check it on the device.'; msgCor = 'var(--bad-tx)'; borda = 'var(--bad-tx)'; }
+      else if (v !== '') { msg = 'Value accepted'; msgCor = 'var(--ok-tx)'; borda = 'var(--ok-line)'; }
+      return { id: id, label: label, valor: v, exemplo: exemplo, msg: msg, msgCor: msgCor, borda: borda,
+        onChange: (e) => { const u = {}; u[chave] = e.target.value; this.setState(u); } };
+    };
+    const campos = [campo('oct-oe', 'Left eye', 'oe', semOct ? '360' : String(ult.oe)), campo('oct-od', 'Right eye', 'od', semOct ? '360' : String(ult.od))];
+    const sv = s.sinal; const sN = Number(sv);
+    let sMsg = 'Optional'; let sCor = 'var(--tx3)'; let sBorda = 'var(--line)';
+    const sinalOk = sv === '' || (Number.isInteger(sN) && sN >= 1 && sN <= 10);
+    if (sv !== '' && !sinalOk) { sMsg = 'Enter a number from 1 to 10.'; sCor = 'var(--bad-tx)'; sBorda = 'var(--bad-tx)'; }
+    else if (sv !== '' && sN < 6) { sMsg = 'Weak signal: repeat the measurement if you can.'; sCor = 'var(--ylw-tx)'; sBorda = 'var(--line)'; }
+    else if (sv !== '') { sMsg = 'Value accepted'; sCor = 'var(--ok-tx)'; sBorda = 'var(--ok-line)'; }
+    const podeGuardar = valido(s.oe) && valido(s.od) && sinalOk;
+    let rodapeReg = 'Enter both eyes to compare with your history.';
+    if (podeGuardar) rodapeReg = 'Done. The app compares it with your history.';
+    const passos = [
+      'Do the exam on the on-board OCT device, as in training.',
+      'Read each eye\'s thickness on the device screen.',
+      'Type the values here and, if you can, attach the image.',
+      'The app compares it with your history and sends it to the medical team.'
+    ].map((t, i, a) => ({ n: i + 1, t: t, regra: i < a.length - 1 ? '1px solid var(--line2)' : '0' }));
+
+    // ---------- Comparar ----------
+    const vals = semOct ? [340, 380] : hist.reduce((acc, e) => acc.concat([e.oe, e.od]), []);
+    const vMin = Math.floor((Math.min.apply(null, vals) - 10) / 20) * 20;
+    const passo = Math.ceil((Math.max.apply(null, vals) + 10 - vMin) / 3 / 20) * 20;
+    const vMax = vMin + 3 * passo;
+    const n = hist.length;
+    const PX = (i) => 70 + i * (550 / Math.max(1, n - 1));
+    const PY = (v) => 160 - (v - vMin) / (vMax - vMin) * 145;
+    const grelha = [0, 1, 2, 3].map((k) => { const v = Math.round(vMin + k * passo); return { y: PY(v).toFixed(1), ty: (PY(v) + 4).toFixed(1), t: v }; });
+    const pontos = [];
+    hist.forEach((e, i) => {
+      pontos.push({ x: PX(i).toFixed(1), y: PY(e.od).toFixed(1), r: e.novo ? 6 : 4, cor: 'var(--teal)', fill: e.novo ? 'var(--teal)' : 'var(--bg)' });
+      pontos.push({ x: PX(i).toFixed(1), y: PY(e.oe).toFixed(1), r: e.novo ? 7 : 4.5, cor: 'var(--acc-text)', fill: e.novo ? 'var(--acc-text)' : 'var(--bg)' });
+    });
+    const grafico = {
+      grelha: grelha, pontos: pontos,
+      linhaOE: hist.map((e, i) => PX(i).toFixed(1) + ',' + PY(e.oe).toFixed(1)).join(' '),
+      linhaOD: hist.map((e, i) => PX(i).toFixed(1) + ',' + PY(e.od).toFixed(1)).join(' '),
+      rotulos: hist.map((e, i) => ({ x: PX(i).toFixed(1), t: e.curto, peso: e.novo || i === n - 1 ? 700 : 500, cor: e.novo ? 'var(--acc-text)' : 'var(--tx3)' })),
+      label: 'Retinal thickness per exam, from ' + hist[0].nome + ' to ' + ult.nome + '. Left eye ' + ult.oe + ' µm, right eye ' + ult.od + ' µm.'
+    };
+    // % do registo do aparelho quando existe; para valores novos, calculado a partir dos µm
+    const dTxt = (a, b, p) => { const d = a - b; const pc = typeof p === 'number' ? p : d / b * 100; return sn(d) + Math.abs(d) + ' µm · ' + sn(pc) + fmt(Math.abs(pc), 1) + '%'; };
+    const tabela = hist.map((e) => ({
+      nome: e.nome, oe: e.oe + ' µm', od: e.od + ' µm', sinal: sinalTxt(e.sinal),
+      dBase: e.nome === 'Pre-flight baseline' ? '—' : dTxt(e.oe, hist[0].oe, e.pOE).split(' · ')[1],
+      peso: e.novo ? 700 : 500,
+      fundo: e.novo ? 'var(--acc-soft)' : 'transparent'
+    }));
+    const olhosComp = [['Left eye', 'oe'], ['Right eye', 'od']].map((o) => ({
+      nome: o[0], quando: ult.nome, valor: ult[o[1]],
+      dBase: dTxt(ult[o[1]], hist[0][o[1]], o[1] === 'oe' ? ult.pOE : ult.pOD),
+      antLabel: 'Vs previous exam (' + ant.nome.toLowerCase().replace('pre-flight baseline', 'base') + ')',
+      dAnt: dTxt(ult[o[1]], ant[o[1]]),
+      borda: ult.novo ? 'var(--acc-line)' : 'var(--line2)'
+    }));
+    const estado = semOct
+      ? { txt: 'No OCT recorded yet. Your first exam becomes your OCT baseline.', fundo: 'var(--chip)', linha: 'var(--line2)', dot: 'var(--tx3)' }
+      : ult.novo
+      ? { txt: 'New record saved and sent for medical review.', fundo: 'var(--acc-soft)', linha: 'var(--acc-line)', dot: 'var(--acc-text)' }
+      : { txt: 'Last exam (' + ult.nome.toLowerCase() + ') · ' + ult.interp + '.', fundo: 'var(--chip)', linha: 'var(--line2)', dot: ult.interp === 'Reviewed' ? 'var(--ok)' : (ult.interp === 'To review' ? 'var(--warn)' : 'var(--bad)') };
+
+    const modos = [['registar', 'Record result'], ['comparar', 'Compare with history']].map((m) => ({
+      t: m[1], on: s.modo === m[0],
+      bg: s.modo === m[0] ? 'var(--acc)' : 'transparent', fg: s.modo === m[0] ? 'var(--acc-tx)' : 'var(--tx2)',
+      pick: () => this.setState({ modo: m[0] })
+    }));
+    const claro = s.tema === 'claro';
+    return {
+      temaClasse: claro ? 'tema-claro' : 'tema-escuro',
+      selo: window.Visao ? window.Visao.selo() : 'Simulated data',
+      claro: claro, escuro: !claro,
+      temaLabel: claro ? 'Dark mode' : 'Light mode',
+      toggleTema: () => {
+        const nt = this.state.tema === 'escuro' ? 'claro' : 'escuro';
+        this.setState({ tema: nt });
+        try { window.localStorage.setItem('visao-tema', nt); } catch (e) {}
+      },
+      eu: eu, notaSim: euR ? '' : ' Simulated values.',
+      gate: !euR && s.modo === 'registar' && !s.resp,
+      gateTexto: s.perfil === 'B'
+        ? 'The station recorded unusual motion that overlapped your 10:42 acuity test. Your answer helps tell whether the result was affected.'
+        : 'The station recorded unusual motion. Your answer helps the app interpret today\'s exams.',
+      gateOps: [['sim', 'Yes'], ['nao', 'No'], ['naosei', 'Not sure']].map((o) => ({
+        t: o[1],
+        pick: () => {
+          const perfil = this.state.perfil;
+          this.setState({ resp: o[0] });
+          try { window.localStorage.setItem('visao-evento-' + perfil, o[0]); } catch (e) {}
+        }
+      })),
+      abrirEvento: () => { try { window.localStorage.setItem('visao-abrir', 'eventos'); } catch (e) {} },
+      modos: modos,
+      registar: s.modo === 'registar', comparar: s.modo === 'comparar',
+      irComparar: () => this.setState({ modo: 'comparar' }),
+      campos: campos,
+      sinal: { valor: sv, msg: sMsg, msgCor: sCor, borda: sBorda, onChange: (e) => this.setState({ sinal: e.target.value }) },
+      anexoLabel: s.anexo ? 'Image attached' : 'Attach image',
+      toggleAnexo: () => this.setState((st) => ({ anexo: !st.anexo })),
+      rodapeReg: rodapeReg,
+      guardarOff: !podeGuardar,
+      guardarOp: podeGuardar ? 1 : 0.45,
+      guardar: () => {
+        const st = this.state;
+        if (!(valido(st.oe) && valido(st.od))) return;
+        const sg = st.sinal === '' ? '—' : Number(st.sinal);
+        if (euR) { window.Visao.guardarOCT(Math.round(Number(st.oe)), Math.round(Number(st.od)), st.sinal === '' ? null : Number(st.sinal)); }
+        this.setState({ novo: { oe: Math.round(Number(st.oe)), od: Math.round(Number(st.od)), sinal: sg }, modo: 'comparar', oe: '', od: '', sinal: '', anexo: false });
+      },
+      passos: passos,
+      ultimo: { nome: ult.nome, oe: semOct ? '—' : ult.oe, od: semOct ? '—' : ult.od, sinal: semOct ? '—' : sinalTxt(ult.sinal) },
+      grafico: semOct ? Object.assign({}, grafico, { pontos: [], linhaOE: '', linhaOD: '', rotulos: [], label: 'No OCT recorded yet.' }) : grafico,
+      tabela: semOct ? [] : tabela,
+      olhosComp: semOct ? olhosComp.map((o) => Object.assign({}, o, { quando: 'No OCT yet', valor: '—', dBase: '—', dAnt: '—', antLabel: 'Record your first exam' })) : olhosComp,
+      estado: estado
+    };
+  }
+}
+window.Component = Component;
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teste rápido de visão · Deep Thinkers</title>
+  <style>
+    :root { --verde:#2e7d32; --amarelo:#c77700; --vermelho:#c62828; --cinza:#757575; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, Arial, sans-serif; margin: 0; color: #1d1d1d; background: #fafafa; }
+    main { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 12rem; }
+    h1 { font-size: 1.35rem; margin: .5rem 0 1rem; }
+    h2 { font-size: 1.15rem; margin: .2rem 0 .8rem; }
+    .passo { display: none; background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; padding: 1rem 1.2rem; }
+    .passo.activo { display: block; }
+    label { display: block; margin: .6rem 0 .2rem; font-weight: 600; }
+    select, input[type=text], input[type=number] { font-size: 1rem; padding: .5rem; width: 100%; max-width: 320px; border: 1px solid #bbb; border-radius: 8px; }
+    button { font-size: 1rem; padding: .65rem 1.1rem; border-radius: 10px; border: 1px solid #888; background: #fff; cursor: pointer; margin: .4rem .4rem 0 0; }
+    button.principal { background: #1d3c6e; color: #fff; border-color: #1d3c6e; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .nota { color: #5a5a5a; font-size: .92rem; }
+    .aviso { background: #fff8e1; border: 1px solid #f0c36d; border-radius: 8px; padding: .5rem .7rem; margin: .6rem 0; }
+
+    /* Câmara: canto fixo, visível durante todo o teste */
+    #camara { position: fixed; right: .6rem; bottom: .6rem; width: 130px; background: #fff; border: 2px solid #ccc; border-radius: 12px; padding: .35rem; font-size: .82rem; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    #camara video { width: 100%; border-radius: 8px; background: #111; transform: scaleX(-1); display: block; }
+    #camara.ok { border-color: var(--verde); } #camara.perto, #camara.longe { border-color: var(--amarelo); }
+    #cam-cm { font-weight: 700; font-size: 1rem; }
+
+    /* Grelha de Amsler: ~10 cm, 20x20 quadrados, ponto central; 9 zonas tocáveis por cima */
+    .amsler { position: relative; width: min(10cm, 88vw); aspect-ratio: 1; margin: .8rem auto; background: #fff; border: 2px solid #000; }
+    .amsler svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .zonas { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
+    .zonas button { margin: 0; border: 1px dashed rgba(0,0,0,.15); border-radius: 0; background: transparent; }
+    .zonas button.marcada { background: rgba(198,40,40,.28); border: 2px solid var(--vermelho); }
+
+    /* Acuidade */
+    #letra { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; text-align: center; margin: 1.2rem 0; line-height: 1; letter-spacing: .05em; }
+    .opcoes button { font-size: 1.4rem; min-width: 3.2rem; font-weight: 700; }
+
+    /* Perguntas */
+    .pergunta { margin: .8rem 0; }
+    .escala { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .escala label { font-weight: 400; margin: 0; border: 1px solid #bbb; border-radius: 8px; padding: .35rem .6rem; cursor: pointer; }
+    .escala input { margin-right: .3rem; }
+
+    .previsao { background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 10px; padding: .6rem .8rem; margin: .6rem 0; }
+    .pre-p { margin: .9rem 0; } .pre-p label { font-weight: 400; margin: .25rem 0; display: block; } .pre-p .q { font-weight: 600; }
+    .estado-pre { border-radius: 10px; padding: .6rem .8rem; margin: .6rem 0; border: 2px solid; }
+    .estado-pre.verde { border-color: var(--verde); background: #e8f5e9; } .estado-pre.amarelo { border-color: var(--amarelo); background: #fff8e1; } .estado-pre.vermelho { border-color: var(--vermelho); background: #fdecea; }
+    .alerta-clinico { border: 2px solid var(--vermelho); background: #fdecea; border-radius: 10px; padding: .6rem .8rem; margin: .6rem 0; font-weight: 600; }
+    /* Resultado */
+    .semaforo { border-radius: 12px; padding: 1rem 1.2rem; color: #fff; font-size: 1.15rem; font-weight: 700; margin: .5rem 0 1rem; }
+    .semaforo.verde { background: var(--verde); } .semaforo.amarelo { background: var(--amarelo); }
+    .semaforo.vermelho { background: var(--vermelho); } .semaforo.a_calibrar { background: var(--cinza); }
+    .semaforo small { display: block; font-weight: 400; font-size: .98rem; margin-top: .35rem; }
+    ul.motivos li { margin: .3rem 0; }
+    @media (min-width: 900px) { #camara { width: 180px; } main { padding-bottom: 2rem; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Teste rápido de visão</h1>
+
+  <!-- 0. Quem é e que dia é -->
+  <section class="passo activo" id="p-inicio">
+    <h2>1. Identificação</h2>
+    <button class="principal" id="b-rosto-entrar">Entrar com a cara</button>
+    <span class="nota" id="rosto-info"></span>
+    <p class="aviso" id="rosto-msg" hidden></p>
+    <label for="perfil">Astronauta</label>
+    <select id="perfil"></select>
+    <div id="novo-perfil">
+      <label for="nome">Nome ou código do novo astronauta</label>
+      <input type="text" id="nome" autocomplete="off" placeholder="ex.: MARLLON">
+    </div>
+    <label for="dia">Dia de missão</label>
+    <input type="number" id="dia" min="0" max="999" value="0">
+    <p class="nota" id="historico-info"></p>
+    <button class="principal" id="b-iniciar">Teste rápido (5 min)</button>
+    <button id="b-ver">Ver último resultado</button>
+    <button id="b-rosto-registar">Registar a minha cara neste perfil</button>
+    <button id="b-rosto-apagar">Apagar a cara registada</button>
+    <button id="b-apagar">Apagar os testes deste astronauta</button>
+    <p class="nota">Reconhecimento facial: só com o consentimento da própria pessoa. Guarda-se apenas um código numérico da cara, neste aparelho; nenhuma fotografia é guardada nem enviada. Podes sempre escolher o perfil na lista.</p>
+  </section>
+
+  <!-- Questionário pré-exame (VISION GUARD) -->
+  <section class="passo" id="p-pre">
+    <h2>2. Antes do teste</h2>
+    <p class="nota">Responde com base em como te sentes neste momento.</p>
+    <div id="pre-perguntas"></div>
+    <div id="pre-estado"></div>
+    <button class="principal" id="b-pre-avaliar">Verificar prontidão</button>
+    <button class="principal" id="b-pre-continuar" hidden>Continuar para o teste</button>
+    <button id="b-pre-cancelar">Cancelar</button>
+  </section>
+
+  <!-- 1. Distância -->
+  <section class="passo" id="p-distancia">
+    <h2>2. Posição</h2>
+    <p>Põe os olhos a <strong>30–45 cm</strong> do ecrã, com boa luz. O teste começa quando a distância estiver certa.</p>
+    <p id="dist-msg" class="aviso">A ligar a câmara…</p>
+    <button class="principal" id="b-dist-ok" disabled>Distância certa: continuar</button>
+    <button id="b-sem-camara">Continuar sem câmara</button>
+    <p class="nota">Dica: se ainda não calibraste este aparelho, põe-te a 40 cm (régua ou folha A4 + 10 cm) e carrega em «Calibrar a 40 cm».</p>
+    <button id="b-calibrar">Calibrar a 40 cm</button>
+  </section>
+
+  <!-- 2. Amsler -->
+  <section class="passo" id="p-amsler">
+    <h2 id="amsler-titulo">3. Grelha de Amsler</h2>
+    <p id="amsler-instr"></p>
+    <div class="amsler">
+      <svg viewBox="0 0 200 200" aria-hidden="true" id="amsler-svg"></svg>
+      <div class="zonas" id="zonas"></div>
+    </div>
+    <p class="nota">Olha <strong>sempre para o ponto central</strong>. Toca nas zonas onde as linhas parecem tortas, onduladas, apagadas ou com manchas. Toca outra vez para desmarcar.</p>
+    <button class="principal" id="b-amsler-seguinte">Seguinte</button>
+  </section>
+
+  <!-- 3. Acuidade -->
+  <section class="passo" id="p-acuidade">
+    <h2>4. Leitura de perto</h2>
+    <p>Com os <span id="acu-olhos">dois olhos abertos</span>, que letra vês? <span class="nota">(linha <span id="acu-linha">1</span> de 10)</span></p>
+    <div id="letra">C</div>
+    <div class="opcoes" id="opcoes"></div>
+    <p class="nota" id="acu-dist"></p>
+  </section>
+
+  <!-- 3b. Óculos de reserva -->
+  <section class="passo" id="p-oculos">
+    <h2>4b. Óculos de reserva</h2>
+    <p>A tua leitura de perto está pior do que no primeiro teste. Põe os <strong>óculos de reserva</strong> e repete a leitura.</p>
+    <button class="principal" id="b-oculos-repetir">Já tenho os óculos: repetir</button>
+    <button id="b-oculos-nao">Não tenho óculos de reserva</button>
+  </section>
+
+  <!-- 4. Perguntas -->
+  <section class="passo" id="p-perguntas">
+    <h2>5. Quatro perguntas</h2>
+    <p class="nota">0 = nada · 1 = pouco · 2 = moderado · 3 = muito</p>
+    <div id="perguntas"></div>
+    <button class="principal" id="b-perguntas-ok">Ver resultado</button>
+  </section>
+
+  <!-- 5. Resultado -->
+  <section class="passo" id="p-resultado">
+    <h2>Resultado</h2>
+    <div id="resultado"></div>
+    <button class="principal" id="b-novo">Novo teste</button>
+  </section>
+</main>
+
+<div id="camara" hidden>
+  <video id="video" autoplay playsinline muted></video>
+  <div id="cam-cm">--</div>
+  <div id="cam-estado">a ligar…</div>
+</div>
+
+<!-- Ordem importa. Tudo local: funciona sem internet. -->
+<script src="../dados.js"></script>
+<script src="../../motor/regras.js"></script>
+<script src="../../motor/motor.js"></script>
+<script src="../../motor/modelo.js"></script>
+<script src="../armazenamento.js"></script>
+<script src="vendor/mediapipe/face_detection.js"></script>
+<script src="distancia.js"></script>
+<script src="vendor/faceapi/face-api.js"></script>
+<script src="rosto.js"></script>
+<script src="teste_visao.js"></script>
+</body>
+</html>

@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo_icone.png">
+<title>Checks · IRIS</title>
+<link href="fonte.css?v=20261115h" rel="stylesheet">
+<link href="iris.css?v=20261115h" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7FB7CF}a:hover{color:#A9D3E4}
+button:disabled{cursor:default}
+.tema-escuro{--bg:#0D0C0A;--glow1:rgba(207,227,243,0.13);--glow2:rgba(95,157,184,0.14);--card:rgba(255,255,255,0.06);--card2:rgba(255,255,255,0.025);--card-shadow:none;--line:rgba(255,255,255,0.12);--line2:rgba(255,255,255,0.08);--tx:#F2F4F7;--tx2:#C5CBD3;--tx3:#8E959E;--tx-soft:#E1E5EA;--chip:rgba(255,255,255,0.06);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#CFE3F3;--acc-dot:#CFE3F3;--acc-glow:rgba(207,227,243,0.35);--acc-soft:rgba(207,227,243,0.14);--acc-line:rgba(207,227,243,0.5);--cta:#F2F4F7;--cta-tx:#0D0C0A;--cta-glow:rgba(242,244,247,0.14);--nav:rgba(22,24,28,0.82);--nav-shadow:0 16px 40px rgba(0,0,0,0.45);--ok:#7FD1A6;--ok-tx:#7FD1A6;--ok-soft:rgba(127,209,166,0.14);--ok-glow:rgba(127,209,166,0.22);--ok-line:rgba(127,209,166,0.40);--ylw:#EBD35B;--ylw-tx:#EBD35B;--ylw-soft:rgba(235,211,91,0.13);--ylw-line:rgba(235,211,91,0.42);--ylw-glow:rgba(235,211,91,0.22);--warn:#F0A940;--warn-tx:#F0A940;--warn-soft:rgba(240,169,64,0.15);--warn-glow:rgba(240,169,64,0.24);--warn-line:rgba(240,169,64,0.45);--bad:#F0766B;--bad-tx:#F0766B;--bad-soft:rgba(240,118,107,0.15);--bad-glow:rgba(240,118,107,0.26);--bad-line:rgba(240,118,107,0.45);--grid-line:rgba(242,244,247,0.38);--grid-cell:#100F0D;--grid-mark:rgba(207,227,243,0.55);--overlay:rgba(5,5,6,0.66);--sheet:#15171B;--sheet-line:rgba(255,255,255,0.10);--grid-old:rgba(255,255,255,0.22)}
+.tema-claro{--bg:#FAFBFC;--glow1:rgba(207,227,243,0.85);--glow2:rgba(95,157,184,0.12);--card:rgba(255,255,255,0.96);--card2:rgba(244,248,252,0.94);--card-shadow:0 10px 30px rgba(13,12,10,0.06);--line:rgba(13,12,10,0.13);--line2:rgba(13,12,10,0.07);--tx:#0D0C0A;--tx2:#45484D;--tx3:#5F636A;--tx-soft:#1F2124;--chip:rgba(13,12,10,0.04);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#2F5E80;--acc-dot:#5B8DB3;--acc-glow:rgba(120,170,210,0.35);--acc-soft:rgba(207,227,243,0.65);--acc-line:#9DC2DE;--cta:#0D0C0A;--cta-tx:#FFFFFF;--cta-glow:rgba(13,12,10,0.18);--nav:rgba(255,255,255,0.9);--nav-shadow:0 14px 34px rgba(13,12,10,0.12);--ok:#3FAE6A;--ok-tx:#1E7B34;--ok-soft:rgba(63,174,106,0.13);--ok-glow:rgba(127,209,166,0.35);--ok-line:rgba(30,123,52,0.30);--ylw:#E2C232;--ylw-tx:#7A6500;--ylw-soft:rgba(226,194,50,0.18);--ylw-line:rgba(122,101,0,0.32);--ylw-glow:rgba(226,194,50,0.30);--warn:#F0A940;--warn-tx:#A05A00;--warn-soft:rgba(240,169,64,0.18);--warn-glow:rgba(240,169,64,0.30);--warn-line:rgba(160,90,0,0.32);--bad:#E0645A;--bad-tx:#C4141B;--bad-soft:rgba(224,100,90,0.13);--bad-glow:rgba(240,118,107,0.25);--bad-line:rgba(196,20,27,0.30);--grid-line:rgba(13,12,10,0.55);--grid-cell:#FFFFFF;--grid-mark:rgba(120,170,210,0.55);--overlay:rgba(13,12,10,0.32);--sheet:#FFFFFF;--sheet-line:rgba(13,12,10,0.08);--grid-old:rgba(13,12,10,0.14)}
+@keyframes dt-pisca { 0%,100% { border-color: rgba(242,211,107,1); box-shadow: 0 0 0 0 rgba(242,211,107,0); } 50% { border-color: rgba(242,211,107,0.25); box-shadow: 0 0 0 5px rgba(242,211,107,0.5); } }
+</style>
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;background:#050506}
+#palco{width:1194px;height:834px;flex:none;transform-origin:center center;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.45)}
+</style>
+<!-- Backend (offline): dados simulados, regras, motor, modelo, armazenamento e ligação aos ecrãs -->
+<script src="../dados.js?v=20261115h"></script>
+<script src="../../motor/regras.js?v=20261115h"></script>
+<script src="../../motor/motor.js?v=20261115h"></script>
+<script src="../../motor/modelo.js?v=20261115h"></script>
+<script src="../armazenamento.js?v=20261115h"></script>
+<script src="../camara/vendor/mediapipe/face_detection.js?v=20261115h"></script>
+<script src="../camara/distancia.js?v=20261115h"></script>
+<script src="ligacao.js?v=20261115h"></script>
+<script src="voz.js?v=20261115h"></script>
+<script src="i18n.js?v=20261115h"></script>
+<script src="runtime.js?v=20261115h"></script>
+</head>
+<body>
+<div id="palco"><div id="raiz"></div></div>
+<template id="dc-modelo">
+<div class="{{ temaClasse }}" style="position: relative; width: 1194px; height: 834px; overflow: hidden; font-family: 'Manrope', system-ui, sans-serif; color: var(--tx); -webkit-font-smoothing: antialiased; background: radial-gradient(45% 55% at 22% 60%, var(--glow1), rgba(0,0,0,0) 70%), radial-gradient(40% 45% at 95% 0%, var(--glow2), rgba(0,0,0,0) 70%), var(--bg)">
+
+<div style="position: absolute; left: 40px; right: 40px; top: 28px; display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 10px">
+<span class="dt-logo" role="img" aria-label="IRIS" title="Integrated Remote Intelligence for Spaceflight" style="width: 65px; height: 36px; color: var(--tx)"></span>
+<span style="margin-left: 6px; font-size: 12px; font-weight: 700; color: var(--tx3); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px">{{ selo }}</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{ toggleTema }}" aria-pressed="{{ claro }}" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--chip); color: var(--tx); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">
+<sc-if value="{{ escuro }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{ claro }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+{{ temaLabel }}</button>
+<a href="Perfil.html" style="display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 14px 0 4px; border-radius: 20px; background: var(--chip); border: 1px solid var(--line2); font-size: 13px; font-weight: 600; color: var(--tx); text-decoration: none">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 16px; background: linear-gradient(135deg, #E6F1FA, #9DC2DE); color: #0D0C0A; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ eu.ini }}</span>{{ eu.nome }}<span style="font-weight: 500; color: var(--tx3)">· Day {{ eu.dia }}</span></a>
+</div>
+</div>
+
+<header style="position: absolute; left: 40px; right: 40px; top: 84px; display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; color: var(--tx2)">{{ subtitulo }}</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 400; letter-spacing: -0.6px; color: var(--tx)">{{ passoTitulo }}</h1>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<nav aria-label="Check type" style="display: flex; gap: 4px; padding: 4px; border-radius: 24px; background: var(--chip); border: 1px solid var(--line2)">
+<span aria-current="page" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--acc-tx); background: var(--acc)">Quick tests</span>
+<a href="OCT.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">OCT</a>
+<a href="Tendencia.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">History</a>
+</nav>
+<button type="button" onClick="{{ abrirAjuda }}" aria-haspopup="dialog" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 8px; border-radius: 22px; border: 1px solid var(--acc-line); background: var(--acc-soft); color: var(--tx); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+<span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 15px; background: var(--acc); color: var(--acc-tx); font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center">?</span>Help</button>
+</div>
+</header>
+
+<nav aria-label="Check progress" style="position: absolute; left: 40px; top: 152px; width: 1114px; height: 62px">
+<span aria-hidden="true" style="position: absolute; left: 139px; top: 15px; width: 836px; height: 2px; border-radius: 1px; background: var(--line)"></span>
+<span aria-hidden="true" style="position: absolute; left: 139px; top: 15px; width: {{ progressoPx }}px; height: 2px; border-radius: 1px; background: var(--acc); box-shadow: 0 0 10px var(--acc-glow)"></span>
+<div style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<sc-for list="{{ nos }}" as="n" hint-placeholder-count="4">
+<button type="button" onClick="{{ n.ir }}" disabled="{{ n.bloqueado }}" aria-current="{{ n.atualAria }}" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; font-family: inherit; cursor: {{ n.cursor }}">
+<span style="width: 32px; height: 32px; box-sizing: border-box; border-radius: 16px; border: 2px solid {{ n.borda }}; background: {{ n.fundo }}; color: {{ n.cor }}; box-shadow: {{ n.glow }}; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{ n.feito }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round"><path d="M6 12.5l4 4 8-9"></path></svg></sc-if>
+<sc-if value="{{ n.numero }}" hint-placeholder-val="{{ true }}">{{ n.num }}</sc-if>
+</span>
+<span style="font-size: 13px; font-weight: {{ n.peso }}; color: {{ n.corLabel }}; text-align: center">{{ n.label }}</span>
+</button>
+</sc-for>
+</div>
+</nav>
+
+<sc-if value="{{ p1 }}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="ola-titulo" style="position: absolute; left: 40px; top: 228px; width: 300px; height: 432px; box-sizing: border-box; padding: 20px 20px; border-radius: 26px; background: radial-gradient(100% 60% at 0% 0%, {{ pr.glow }}, rgba(0,0,0,0) 60%), linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid {{ pr.linha }}; box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 8px; overflow-y: auto">
+<h2 id="ola-titulo" style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.4px; color: var(--tx)">{{ ola }}</h2>
+<sc-if value="{{ pr.pronto }}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">READINESS FOR THE TEST</span>
+<span role="status" style="display: flex; align-items: center; gap: 9px; font-size: 22px; font-weight: 400; color: {{ pr.cor }}"><span aria-hidden="true" style="width: 11px; height: 11px; flex: none; border-radius: 6px; background: {{ pr.dot }}; box-shadow: 0 0 14px {{ pr.dot }}"></span>{{ pr.titulo }}</span>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: var(--tx-soft)">{{ pr.texto }}</p>
+<sc-for list="{{ pr.ressalvas }}" as="r" hint-placeholder-count="2">
+<div style="display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; line-height: 1.4; color: var(--tx)"><span aria-hidden="true" style="width: 6px; height: 6px; flex: none; border-radius: 3px; background: {{ pr.dot }}; transform: translateY(-2px)"></span>{{ r }}</div>
+</sc-for>
+<sc-if value="{{ pr.alerta }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; gap: 8px; padding: 10px 12px; border-radius: 14px; background: var(--bad-soft); border: 1px solid var(--bad-line); font-size: 13.5px; line-height: 1.4; font-weight: 600; color: var(--bad-tx)">{{ pr.textoAlerta }}</div>
+</sc-if>
+<sc-if value="{{ pr.vermelho }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ responderDeNovo }}" style="height: 40px; margin-top: 4px; border: 1px solid var(--line); border-radius: 20px; background: var(--chip); color: var(--tx); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Answer again</button>
+</sc-if>
+</sc-if>
+<sc-if value="{{ pr.dicas }}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0 0 2px; font-size: 14px; line-height: 1.45; color: var(--tx2)">{{ pr.dicasTxt }}</p>
+<sc-for list="{{ preparar }}" as="k" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 12px; min-height: 56px; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 34px; height: 34px; flex: none; border-radius: 17px; background: var(--acc-soft); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" style="fill: none; stroke: var(--acc-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="{{ k.icone }}"></path></svg></span>
+<span style="font-size: 13.5px; line-height: 1.4; color: var(--tx-soft)">{{ k.t }}</span>
+</div>
+</sc-for>
+</sc-if>
+</section>
+
+<section aria-labelledby="perg-titulo" style="position: absolute; left: 356px; top: 228px; width: 798px; height: 432px; box-sizing: border-box; padding: 16px 22px 14px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: center; gap: 10px; min-height: 42px">
+<div style="display: flex; flex-direction: column; gap: 1px; flex-grow: 1; min-width: 0">
+<h2 id="perg-titulo" style="margin: 0; font-size: 17px; font-weight: 600; color: var(--tx)">Pre-exam questionnaire</h2>
+<span style="font-size: 13px; color: var(--tx3)">{{ qPagTxt }} · answer for how you feel right now</span>
+</div>
+<div aria-hidden="true" style="display: flex; gap: 6px">
+<sc-for list="{{ qPontos }}" as="d" hint-placeholder-count="3">
+<span style="width: {{ d.w }}px; height: 8px; border-radius: 4px; background: {{ d.cor }}"></span>
+</sc-for>
+</div>
+<button type="button" onClick="{{ tudoNormal }}" style="height: 34px; padding: 0 14px; border: 1px solid var(--ok-line); border-radius: 17px; background: var(--ok-soft); color: var(--ok-tx); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">All normal</button>
+</div>
+<sc-for list="{{ qPag }}" as="q" hint-placeholder-count="3">
+<div role="group" aria-label="{{ q.t }}" style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0 6px; border-top: 1px solid var(--line2)">
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 12px; font-weight: 700; color: var(--acc-text)">{{ q.n }}</span><span style="font-size: 14.5px; font-weight: 600; line-height: 1.3; color: var(--tx)">{{ q.t }}</span><span style="font-size: 12px; color: var(--tx3)">{{ q.sub }}</span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{ q.ops }}" as="op" hint-placeholder-count="3">
+<button type="button" onClick="{{ op.pick }}" aria-pressed="{{ op.on }}" style="min-height: 36px; padding: 5px 10px; border-radius: 12px; border: 1px solid {{ op.borda }}; background: {{ op.fundo }}; color: {{ op.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 600; line-height: 1.25; text-align: left; cursor: pointer">{{ op.t }}</button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="flex-grow: 1"></div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+<sc-if value="{{ qTemAnterior }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ qAnterior }}" style="height: 36px; padding: 0 16px; border: 1px solid var(--line); border-radius: 18px; background: transparent; color: var(--tx); font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer">‹ Previous questions</button>
+</sc-if>
+<span style="flex-grow: 1"></span>
+<sc-if value="{{ qTemSeguinte }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ qSeguinte }}" aria-disabled="{{ qSeguinteOff }}" style="height: 36px; padding: 0 18px; border: 0; border-radius: 18px; background: {{ qSeguinteFundo }}; color: {{ qSeguinteCor }}; font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer">Next questions ›</button>
+</sc-if>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ p2Intro }}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="ac-intro" style="position: absolute; left: 40px; top: 228px; width: 1114px; height: 432px; box-sizing: border-box; padding: 24px 28px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; gap: 32px">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.6px; color: var(--acc-text)">BEFORE THE TEST · INSTRUCTIONS</span>
+<h2 id="ac-intro" style="margin: 0; font-size: 28px; font-weight: 400; letter-spacing: -0.4px; color: var(--tx)">Near acuity test</h2>
+<p style="margin: 0 0 6px; font-size: 15px; color: var(--tx2)">Let's see how small a letter you can read. About 1 minute per eye.</p>
+<sc-for list="{{ acPassos }}" as="p" hint-placeholder-count="5">
+<div style="display: flex; gap: 12px; align-items: flex-start"><span aria-hidden="true" style="width: 26px; height: 26px; flex: none; border-radius: 13px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{ p.n }}</span><span style="font-size: 15.5px; line-height: 1.45; color: var(--tx); padding-top: 2px">{{ p.t }}</span></div>
+</sc-for>
+</div>
+<div style="width: 340px; flex: none; display: flex; flex-direction: column; gap: 12px">
+<div style="padding: 14px 16px; border-radius: 16px; background: var(--acc-soft); font-size: 14px; line-height: 1.45; color: var(--tx)">If your reading is worse than last time, the app asks you to read again with the <b>spare glasses</b>. Try first without effort, as you do every day.</div>
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.6px; color: var(--tx3); margin-top: 4px">VOICE</span>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{ vz.alternarVoz }}" aria-pressed="{{ vz.voz.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.voz.borda }}; background: {{ vz.voz.fundo }}; color: {{ vz.voz.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M11 5 6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path></svg>{{ vz.voz.t }}</button><button type="button" onClick="{{ vz.alternarMic }}" aria-pressed="{{ vz.mic.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.mic.borda }}; background: {{ vz.mic.fundo }}; color: {{ vz.mic.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>{{ vz.mic.t }}</button></div>
+<sc-if value="{{ vz.temMsg }}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12.5px; line-height: 1.4; color: var(--tx3)">{{ vz.msg }}</span></sc-if>
+<div style="flex-grow: 1"></div>
+<button type="button" onClick="{{ comecarAc }}" style="height: 56px; border: 0; border-radius: 26px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 8px 30px var(--cta-glow); font-size: 17px">Start the test</button>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ p2Teste }}" hint-placeholder-val="{{ false }}">
+<section aria-label="Near acuity test" style="position: absolute; left: 40px; top: 228px; width: 1114px; height: 432px; box-sizing: border-box; padding: 16px 20px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 1 1 560px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<div style="display: flex; align-items: center; gap: 12px; min-height: 34px">
+<span style="display: flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid var(--acc-line); background: var(--acc-soft); font-size: 13px; font-weight: 700; color: var(--tx)">{{ acOlhoTxt }}</span>
+<span style="font-size: 14px; font-weight: 600; color: var(--tx2)">{{ acSub }}</span>
+<span style="flex-grow: 1"></span>
+</div>
+<sc-if value="{{ acLer }}" hint-placeholder-val="{{ true }}">
+<div aria-label="Letter line" data-letras="{{ linhaTxt }}" data-teclas="{{ tecladoTxt }}" style="flex-grow: 1; min-width: 250px; min-height: 130px; display: flex; align-items: center; justify-content: center; gap: 20px; border-radius: 20px; background: #FFFFFF; border: 1px solid var(--line2)">
+<sc-for list="{{ letrasAc }}" as="l" hint-placeholder-count="5">
+<span style="display: flex; flex-direction: column; align-items: center; gap: 8px"><span aria-hidden="true" style="font-family: Georgia, 'Times New Roman', serif; font-size: {{ l.size }}px; line-height: 1; color: #0D0C0A">{{ l.t }}</span><span style="width: {{ l.w }}px; height: 5px; border-radius: 3px; background: {{ l.marca }}"></span></span>
+</sc-for>
+</div>
+<div role="status" aria-label="Score indicator" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-height: 44px; box-sizing: border-box; padding: 6px 14px; border-radius: 16px; background: var(--chip); border: 1px solid var(--line2)">
+<span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; color: var(--tx3)">SCORE</span>
+<span style="font-size: 20px; font-weight: 600; color: var(--tx)">{{ acerto.linha }}</span>
+<div style="display: flex; gap: 5px">
+<sc-for list="{{ acerto.pontos }}" as="d" hint-placeholder-count="5"><span style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 2px solid {{ d.borda }}; background: {{ d.bg }}; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{ d.t }}</span></sc-for>
+</div>
+<span style="flex-grow: 1"></span>
+<span style="font-size: 13px; font-weight: 600; color: var(--tx2)">{{ acerto.olho }}</span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<sc-for list="{{ teclas }}" as="k" hint-placeholder-count="9"><button type="button" onClick="{{ k.pick }}" aria-label="Letter {{ k.t }}" disabled="{{ k.off }}" style="width: 56px; height: 52px; padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--chip); color: var(--tx); font-family: Georgia, 'Times New Roman', serif; font-size: 26px; cursor: pointer; opacity: {{ k.op }}">{{ k.t }}</button></sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" onClick="{{ apagar }}" style="height: 48px; padding: 0 16px; border: 1px solid var(--line); border-radius: 24px; background: transparent; color: var(--tx); font-family: inherit; font-weight: 600; cursor: pointer; font-size: 14px">Delete</button>
+<button type="button" onClick="{{ naoConsigo }}" style="height: 48px; padding: 0 16px; border: 1px solid var(--line); border-radius: 24px; background: transparent; color: var(--tx); font-family: inherit; font-weight: 600; cursor: pointer; font-size: 14px">Can't read</button>
+<span style="flex-grow: 1"></span>
+<button type="button" onClick="{{ seguinteLinha }}" disabled="{{ acSegOff }}" style="height: 48px; padding: 0 30px; border: 0; border-radius: 26px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 8px 30px var(--cta-glow); font-size: 15px; opacity: {{ acSegOp }}">Next</button>
+</div>
+</sc-if>
+<sc-if value="{{ acFim }}" hint-placeholder-val="{{ false }}">
+<div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 6px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">{{ acFimTitulo }}</h2>
+<span style="font-size: 15px; color: var(--tx2)">{{ acFimSub }}</span>
+<sc-if value="{{ acPior }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 16px; background: var(--warn-soft); border: 1px solid var(--warn-line)">
+<span style="font-size: 15px; font-weight: 700; color: var(--tx)">Reading is worse than last time.</span>
+<span style="font-size: 15px; line-height: 1.45; color: var(--tx)">“Now put on the spare glasses and read again.”</span>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{ acPior }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 10px">
+<button type="button" onClick="{{ semReserva }}" style="flex: 1; height: 48px; border: 1px solid var(--line); border-radius: 24px; background: transparent; color: var(--tx); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">I don't have spare glasses</button>
+<button type="button" onClick="{{ comReserva }}" style="flex: 1.3; height: 48px; border: 0; border-radius: 24px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Read again with spare glasses</button>
+</div>
+</sc-if>
+<sc-if value="{{ acNaoPior }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ acAvancar }}" style="height: 48px; border: 0; border-radius: 24px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{ acAvancarLabel }}</button>
+</sc-if>
+</sc-if>
+<sc-if value="{{ acFeito }}" hint-placeholder-val="{{ false }}">
+<div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 0 6px">
+<h2 style="margin: 0 0 4px; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">Acuity done</h2>
+<sc-for list="{{ acResumo }}" as="r" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: var(--chip)">
+<div style="display: flex; justify-content: space-between"><span style="font-size: 14px; color: var(--tx2)">{{ r.olho }}</span><span style="font-size: 15px; font-weight: 700; color: var(--tx)">{{ r.valor }}</span></div>
+<span style="font-size: 12px; color: var(--tx3)">{{ r.sub }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" onClick="{{ acRepetir }}" style="align-self: flex-start; height: 40px; padding: 0 18px; border: 1px solid var(--line); border-radius: 20px; background: transparent; color: var(--tx); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Repeat acuity</button>
+</sc-if>
+</div>
+<div aria-label="Camera and distance" style="flex: 0 1 420px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<div style="position: relative; flex-grow: 1; min-height: 230px; border-radius: 20px; overflow: hidden; background: #0D0C0A; border: 2px solid {{ cam.borda }}; {{ cam.anim }}">
+<div data-fixo="camara" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0"></div>
+<sc-if value="{{ cam.semVideo }}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 44px 28px 70px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 14px; line-height: 1.5; color: #B9C0C8">{{ cam.aviso }}</span></sc-if>
+<span style="position: absolute; left: 12px; top: 12px; z-index: 2; display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border-radius: 14px; background: rgba(13,12,10,0.66); font-size: 11.5px; font-weight: 700; color: #E6EBF0; white-space: nowrap"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ cam.ponto }}"></span>{{ cam.selo }}</span>
+<div role="status" aria-label="Distance to screen" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; box-sizing: border-box; padding: 30px 16px 12px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.85)); display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 10px">
+<span style="font-size: 34px; font-weight: 300; letter-spacing: -1px; color: #FFFFFF">{{ cam.cm }}</span>
+<span style="font-size: 15px; font-weight: 700; color: {{ cam.cor }}">{{ cam.titulo }}</span>
+<span style="font-size: 13.5px; font-weight: 600; color: #D5DAE0">{{ cam.dica }}</span>
+</div>
+</div>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{ vz.alternarVoz }}" aria-pressed="{{ vz.voz.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.voz.borda }}; background: {{ vz.voz.fundo }}; color: {{ vz.voz.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M11 5 6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path></svg>{{ vz.voz.t }}</button><button type="button" onClick="{{ vz.alternarMic }}" aria-pressed="{{ vz.mic.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.mic.borda }}; background: {{ vz.mic.fundo }}; color: {{ vz.mic.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>{{ vz.mic.t }}</button></div>
+<sc-if value="{{ vz.temMsg }}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12.5px; line-height: 1.4; color: var(--tx3)">{{ vz.msg }}</span></sc-if>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ p3Intro }}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="am-intro" style="position: absolute; left: 40px; top: 228px; width: 1114px; height: 432px; box-sizing: border-box; padding: 24px 28px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; gap: 32px">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.6px; color: var(--acc-text)">BEFORE THE TEST · INSTRUCTIONS</span>
+<h2 id="am-intro" style="margin: 0; font-size: 28px; font-weight: 400; letter-spacing: -0.4px; color: var(--tx)">Amsler grid</h2>
+<p style="margin: 0 0 6px; font-size: 15px; color: var(--tx2)">Let's see whether straight lines look straight to you. About 1 minute per eye.</p>
+<sc-for list="{{ amPassos }}" as="p" hint-placeholder-count="5">
+<div style="display: flex; gap: 12px; align-items: flex-start"><span aria-hidden="true" style="width: 26px; height: 26px; flex: none; border-radius: 13px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{ p.n }}</span><span style="font-size: 15.5px; line-height: 1.45; color: var(--tx); padding-top: 2px">{{ p.t }}</span></div>
+</sc-for>
+</div>
+<div style="width: 340px; flex: none; display: flex; flex-direction: column; gap: 12px">
+<div style="padding: 14px 16px; border-radius: 16px; background: var(--acc-soft); font-size: 14px; line-height: 1.45; color: var(--tx)">There is no right or wrong answer: only what you see matters. The app compares with your baseline and highlights only what is <b>new</b>.</div>
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.6px; color: var(--tx3); margin-top: 4px">VOICE</span>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{ vz.alternarVoz }}" aria-pressed="{{ vz.voz.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.voz.borda }}; background: {{ vz.voz.fundo }}; color: {{ vz.voz.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M11 5 6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path></svg>{{ vz.voz.t }}</button><button type="button" onClick="{{ vz.alternarMic }}" aria-pressed="{{ vz.mic.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.mic.borda }}; background: {{ vz.mic.fundo }}; color: {{ vz.mic.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>{{ vz.mic.t }}</button></div>
+<sc-if value="{{ vz.temMsg }}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12.5px; line-height: 1.4; color: var(--tx3)">{{ vz.msg }}</span></sc-if>
+<div style="flex-grow: 1"></div>
+<button type="button" onClick="{{ comecarAm }}" style="height: 56px; border: 0; border-radius: 26px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 8px 30px var(--cta-glow); font-size: 17px">Start the grid</button>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ p3Teste }}" hint-placeholder-val="{{ false }}">
+<section aria-label="Amsler grid" style="position: absolute; left: 40px; top: 228px; width: 1114px; height: 432px; box-sizing: border-box; padding: 18px 22px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-wrap: wrap; gap: 20px">
+<div style="width: 338px; flex: none; display: flex; align-items: center; justify-content: center">
+<div style="position: relative; display: grid; grid-template-columns: repeat(12, 26px); gap: 1px; padding: 1px; background: #1A1A1A">
+<sc-for list="{{ cells }}" as="c" hint-placeholder-count="144">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" aria-label="{{ c.label }}" style="width: 26px; height: 26px; border: 0; padding: 0; margin: 0; cursor: pointer; background: {{ c.bg }}"></button>
+</sc-for>
+<span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 5px; background: #0D0C0A; pointer-events: none"></span>
+</div>
+</div>
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<span style="font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--tx)">{{ amTitulo }}</span>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{ amOlhos }}" as="o" hint-placeholder-count="2">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.on }}" style="display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 19px; border: 1px solid {{ o.borda }}; background: {{ o.fundo }}; font-family: inherit; font-size: 13px; cursor: pointer"><span style="font-weight: 700; color: var(--tx)">{{ o.olho }}</span><span style="font-weight: 600; color: {{ o.cor }}">{{ o.txt }}</span></button>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--tx)">Look only at the black dot. Tap the squares where you see <b>bent lines</b>, <b>spots</b> or <b>gaps</b>.</p>
+<div style="flex-grow: 1"></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<button type="button" onClick="{{ tudoDireito }}" style="height: 50px; border: 1px solid var(--ok-line); border-radius: 27px; background: var(--ok-soft); color: var(--ok-tx); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">All looks straight</button>
+<button type="button" onClick="{{ concluirOlho }}" disabled="{{ concluirOff }}" style="height: 50px; border: 0; border-radius: 26px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 8px 30px var(--cta-glow); font-size: 15px; opacity: {{ concluirOp }}">Finish this eye</button>
+</div>
+</div>
+<div aria-label="Camera and distance" style="flex: 0 1 420px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<div style="position: relative; flex-grow: 1; min-height: 230px; border-radius: 20px; overflow: hidden; background: #0D0C0A; border: 2px solid {{ cam.borda }}; {{ cam.anim }}">
+<div data-fixo="camara" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0"></div>
+<sc-if value="{{ cam.semVideo }}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 44px 28px 70px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 14px; line-height: 1.5; color: #B9C0C8">{{ cam.aviso }}</span></sc-if>
+<span style="position: absolute; left: 12px; top: 12px; z-index: 2; display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border-radius: 14px; background: rgba(13,12,10,0.66); font-size: 11.5px; font-weight: 700; color: #E6EBF0; white-space: nowrap"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ cam.ponto }}"></span>{{ cam.selo }}</span>
+<div role="status" aria-label="Distance to screen" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; box-sizing: border-box; padding: 30px 16px 12px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.85)); display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 10px">
+<span style="font-size: 34px; font-weight: 300; letter-spacing: -1px; color: #FFFFFF">{{ cam.cm }}</span>
+<span style="font-size: 15px; font-weight: 700; color: {{ cam.cor }}">{{ cam.titulo }}</span>
+<span style="font-size: 13.5px; font-weight: 600; color: #D5DAE0">{{ cam.dica }}</span>
+</div>
+</div>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{ vz.alternarVoz }}" aria-pressed="{{ vz.voz.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.voz.borda }}; background: {{ vz.voz.fundo }}; color: {{ vz.voz.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M11 5 6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path></svg>{{ vz.voz.t }}</button><button type="button" onClick="{{ vz.alternarMic }}" aria-pressed="{{ vz.mic.on }}" style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{ vz.mic.borda }}; background: {{ vz.mic.fundo }}; color: {{ vz.mic.cor }}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>{{ vz.mic.t }}</button></div>
+<sc-if value="{{ vz.temMsg }}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12.5px; line-height: 1.4; color: var(--tx3)">{{ vz.msg }}</span></sc-if>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ p4 }}" hint-placeholder-val="{{ false }}">
+<section aria-live="polite" aria-labelledby="res-titulo" style="position: absolute; left: 40px; top: 228px; width: 1114px; height: 92px; box-sizing: border-box; padding: 0 26px; border-radius: 26px; background: radial-gradient(60% 160% at 0% 0%, {{ hero.glow }}, rgba(0,0,0,0) 65%), var(--card); border: 1px solid {{ hero.linha }}; box-shadow: var(--card-shadow); display: flex; align-items: center; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 1px; width: 290px; flex: none">
+<span style="font-size: 12px; font-weight: 700; color: var(--tx2)">Today's result · day {{ eu.dia }}</span>
+<h2 id="res-titulo" style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 300; letter-spacing: -0.8px; color: {{ hero.c }}"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 6px; background: {{ hero.dot }}; box-shadow: 0 0 16px {{ hero.dot }}"></span>{{ hero.cor }}</h2>
+<span style="font-size: 13px; font-weight: 700; color: {{ hero.c }}">{{ hero.nivel }}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 3px; padding-left: 26px; border-left: 1px solid var(--line2)">
+<span style="font-size: 18px; font-weight: 600; color: var(--tx)">{{ hero.titulo }}</span>
+<span style="font-size: 14px; line-height: 1.45; color: var(--tx2)">{{ hero.texto }}</span>
+</div>
+</section>
+<div style="position: absolute; left: 40px; top: 332px; width: 1114px; height: 328px; display: grid; grid-template-columns: 1.25fr 1fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 12px">
+<section aria-labelledby="q1" style="min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 14px 18px; border-radius: 24px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<h3 id="q1" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: var(--tx)">What happened?</h3>
+<sc-for list="{{ aconteceu }}" as="r" hint-placeholder-count="2">
+<div style="display: flex; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 6px; height: 6px; flex: none; margin-top: 5px; border-radius: 4px; background: {{ r.dot }}"></span>
+<div style="display: flex; flex-direction: column; gap: 1px; flex-grow: 1">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 13px; font-weight: 700; color: var(--tx)">{{ r.teste }}</span><span style="font-size: 13px; font-weight: 600; color: var(--tx); text-align: right">{{ r.valor }}</span></div>
+<span style="font-size: 12px; line-height: 1.35; color: var(--tx3)">{{ r.sub }}</span>
+</div>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--line2)">
+<span style="font-size: 13px; font-weight: 700; color: var(--tx)">{{ amslerFace }}</span>
+<div style="display: flex; gap: 18px">
+<sc-for list="{{ mapas }}" as="mp" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; font-weight: 600; color: {{ mp.cor }}">{{ mp.titulo }}</span>
+<div style="display: grid; grid-template-columns: repeat(12, 6px); gap: 1px; padding: 1px; background: var(--grid-line); width: max-content">
+<sc-for list="{{ mp.cells }}" as="mc" hint-placeholder-count="144"><span style="width: 6px; height: 6px; background: {{ mc.bg }}"></span></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 12px; font-size: 11px; color: var(--tx2)">
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 6px; height: 6px; background: var(--warn)"></span>New</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 6px; height: 6px; background: var(--tx3)"></span>Same as before</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 6px; height: 6px; background: var(--grid-old)"></span>Only in the previous one</span>
+</div>
+</div>
+</section>
+<section aria-labelledby="q2" style="min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 14px 18px; border-radius: 24px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<h3 id="q2" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: var(--tx)">Under what conditions?</h3>
+<sc-for list="{{ condRes }}" as="c" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 10px; min-height: 42px; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 6px; height: 6px; flex: none; border-radius: 4px; background: {{ c.dot }}"></span>
+<span style="width: 84px; flex: none; font-size: 12px; font-weight: 700; color: var(--tx3)">{{ c.k }}</span>
+<span style="font-size: 13px; line-height: 1.35; color: var(--tx)">{{ c.v }}</span>
+</div>
+</sc-for>
+<div style="flex-grow: 1"></div>
+<span style="font-size: 12px; line-height: 1.4; color: var(--tx3)">{{ octNota }}</span>
+</section>
+<section aria-labelledby="q3" style="min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 14px 18px; border-radius: 24px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px">
+<h3 id="q3" style="margin: 0; font-size: 16px; font-weight: 600; color: var(--tx)">What to do next?</h3>
+<span style="font-size: 12px; font-weight: 700; color: {{ revisao.cor }}; background: {{ revisao.soft }}; border-radius: 999px; padding: 4px 10px; white-space: nowrap">{{ revisao.t }}</span>
+</div>
+<sc-for list="{{ accoes }}" as="a" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: center; min-height: 48px; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 12px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ a.n }}</span>
+<span style="font-size: 14px; line-height: 1.4; color: var(--tx-soft)">{{ a.t }}</span>
+</div>
+</sc-for>
+<div style="flex-grow: 1"></div>
+<span style="font-size: 12px; line-height: 1.4; color: var(--tx3); margin-bottom: 10px">Not a diagnosis. Provisional limits and actions, to be validated by the medical team.</span>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{ refazer }}" style="height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: 20px; background: transparent; color: var(--tx); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Redo the tests</button>
+<sc-if value="{{ comAlerta }}" hint-placeholder-val="{{ false }}"><a href="Alerta.html" style="display: flex; align-items: center; height: 40px; box-sizing: border-box; padding: 0 16px; border: 1px solid {{ hero.linha }}; border-radius: 20px; color: {{ hero.c }}; font-size: 13px; font-weight: 700; text-decoration: none">Open alerts</a></sc-if>
+</div>
+</section>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 40px; top: 676px; width: 1114px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<button type="button" onClick="{{ anterior }}" disabled="{{ noInicio }}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border: 1px solid var(--line); border-radius: 25px; background: transparent; color: var(--tx); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; opacity: {{ opAnterior }}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M15 5l-7 7 7 7"></path></svg>Back</button>
+<sc-if value="{{ comCondicoes }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 6px">
+<sc-for list="{{ condicoes }}" as="c" hint-placeholder-count="2">
+<span style="display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px; border-radius: 16px; background: var(--chip); border: 1px solid var(--line2); font-size: 12px; font-weight: 600; color: var(--tx2); white-space: nowrap"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ c.dot }}"></span>{{ c.t }}</span>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ semCondicoes }}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 13px; color: var(--tx3)">{{ rodape }}</span>
+</sc-if>
+<sc-if value="{{ temSeguinte }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ seguinte }}" disabled="{{ seguinteOff }}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 26px; border: 0; border-radius: 25px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; opacity: {{ opSeguinte }}; box-shadow: 0 8px 30px var(--cta-glow)">{{ seguinteLabel }}<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M9 5l7 7-7 7"></path></svg></button>
+</sc-if>
+<sc-if value="{{ p4 }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{ abrirRelatorio }}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border: 1px solid var(--line); border-radius: 25px; background: var(--chip); color: var(--tx); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M10 13h6M10 17h6"></path></svg>Final report</button>
+<a href="Tendencia.html" style="display: flex; align-items: center; gap: 8px; height: 50px; box-sizing: border-box; padding: 0 26px; border-radius: 25px; background: var(--acc); border: 1px solid var(--acc-line); color: var(--acc-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--acc-glow)">Save and see history</a>
+</div>
+</sc-if>
+</div>
+
+<div aria-hidden="true" style="position: absolute; left: -1500px; right: -1500px; top: 712px; bottom: -1500px; pointer-events: none; background: linear-gradient(180deg, transparent 0, var(--bg) 90px)"></div>
+<nav aria-label="App sections" style="position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 36px; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--line2); box-shadow: var(--nav-shadow)">
+<a href="Hoje.html" aria-label="Today" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg></a>
+<a href="TesteRapido.html" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 52px; box-sizing: border-box; padding: 0 22px; border-radius: 26px; background: var(--acc); border: 1px solid var(--acc-line); color: var(--acc-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--acc-glow)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Checks</a>
+<a href="SANS.html" aria-label="SANS monitoring" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+<a href="Alerta.html" aria-label="Alerts" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg></a>
+</nav>
+
+<sc-if value="{{ gate }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: -1500px; top: -1500px; right: -1500px; bottom: -1500px; background: var(--overlay); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+<section role="dialog" aria-modal="true" aria-labelledby="gate-titulo" style="position: absolute; left: 297px; top: 160px; width: 600px; box-sizing: border-box; padding: 26px 28px; border-radius: 30px; background: var(--sheet); border: 1px solid var(--ylw-line); box-shadow: 0 30px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: var(--ylw-soft); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" style="fill: none; stroke: var(--ylw-tx); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h3l2-5 4 10 2-5h7"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 12px; font-weight: 700; color: var(--ylw-tx)">Required before any test</span>
+<h2 id="gate-titulo" style="margin: 0; font-size: 26px; font-weight: 400; letter-spacing: -0.4px; color: var(--tx)">{{ gateTitulo }}</h2>
+<span style="font-size: 14px; color: var(--tx2)">{{ gateQuando }}</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--tx-soft)">{{ gateTexto }}</p>
+<span id="gate-pergunta" style="font-size: 17px; font-weight: 600; color: var(--tx)">{{ gatePergunta }}</span>
+<div role="group" aria-labelledby="gate-pergunta" style="display: flex; gap: 10px">
+<sc-for list="{{ gateOps }}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{ o.pick }}" style="flex: 1; height: 52px; border-radius: 26px; border: 1px solid var(--line); background: transparent; color: var(--tx); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{ o.t }}</button>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding-top: 4px">
+<a href="Perfil.html" onClick="{{ abrirEvento }}" style="font-size: 14px; font-weight: 700; color: var(--acc-text)">See details and chart in profile</a>
+<a href="Hoje.html" style="font-size: 14px; font-weight: 600; color: var(--tx2); text-decoration: none">Back to start</a>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ ajuda }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: -1500px; top: -1500px; right: -1500px; bottom: -1500px; background: var(--overlay); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+<section role="dialog" aria-modal="true" aria-labelledby="ajuda-titulo" style="position: absolute; left: 257px; top: 70px; width: 680px; max-height: 694px; box-sizing: border-box; overflow-y: auto; padding: 26px 28px; border-radius: 30px; background: var(--sheet); border: 1px solid var(--sheet-line); box-shadow: 0 30px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 44px; height: 44px; flex: none; border-radius: 22px; background: var(--acc); color: var(--acc-tx); font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--acc-glow)">?</span>
+<div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+<h2 id="ajuda-titulo" style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">{{ aj.titulo }}</h2>
+<span style="font-size: 13px; color: var(--tx3)">{{ aj.meta }}</span>
+</div>
+<button type="button" onClick="{{ fecharAjuda }}" aria-label="Close help" style="width: 40px; height: 40px; flex: none; border: 1px solid var(--line); border-radius: 20px; background: transparent; color: var(--tx); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0 0 2px; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">STEP BY STEP</h3>
+<sc-for list="{{ aj.passos }}" as="ps" hint-placeholder-count="6">
+<div style="display: flex; align-items: flex-start; gap: 12px; min-height: 32px"><span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 12px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ ps.n }}</span><span style="font-size: 15px; line-height: 1.45; color: var(--tx-soft); padding-top: 2px">{{ ps.t }}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0 0 2px; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">RECOMMENDATIONS</h3>
+<sc-for list="{{ aj.recs }}" as="rc" hint-placeholder-count="3">
+<div style="display: flex; align-items: flex-start; gap: 12px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" style="flex: none; margin-top: 2px; fill: none; stroke: var(--ok-tx); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M6 12.5l4 4 8-9"></path></svg><span style="font-size: 15px; line-height: 1.45; color: var(--tx-soft)">{{ rc.t }}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 18px; background: var(--bad-soft); border: 1px solid var(--bad-line)">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="flex: none; margin-top: 1px; fill: none; stroke: var(--bad-tx); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 4 2.8 19.5h18.4z"></path><path d="M12 10v4.5M12 17h.01"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 14px; font-weight: 700; color: var(--bad-tx)">Caution</span><span style="font-size: 14px; line-height: 1.45; color: var(--tx)">{{ aj.cuidado }}</span></span>
+</div>
+<button type="button" onClick="{{ fecharAjuda }}" style="height: 52px; border: 0; border-radius: 26px; background: var(--cta); color: var(--cta-tx); font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Got it</button>
+</section>
+</sc-if>
+
+<sc-if value="{{ relatorio }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: -1500px; top: -1500px; right: -1500px; bottom: -1500px; background: var(--overlay); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+<section role="dialog" aria-modal="true" aria-labelledby="rel-titulo" style="position: absolute; left: 117px; top: 40px; width: 960px; max-height: 754px; box-sizing: border-box; overflow-y: auto; padding: 24px 28px; border-radius: 30px; background: var(--sheet); border: 1px solid var(--sheet-line); box-shadow: 0 30px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 44px; height: 44px; flex: none; border-radius: 22px; background: var(--acc); color: var(--acc-tx); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--acc-glow)"><span class="dt-marca" style="width: 20px; height: 28px"></span></span>
+<div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<h2 id="rel-titulo" style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">Final report</h2>
+<span style="font-size: 13px; color: var(--tx3)">{{ relMeta }}</span>
+</div>
+<button type="button" onClick="{{ fecharRelatorio }}" aria-label="Close report" style="width: 40px; height: 40px; flex: none; border: 1px solid var(--line); border-radius: 20px; background: transparent; color: var(--tx); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; border-radius: 22px; background: radial-gradient(60% 160% at 0% 0%, {{ hero.glow }}, rgba(0,0,0,0) 70%), var(--card); border: 1px solid {{ hero.linha }}">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">CONCLUSION</span>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 300; letter-spacing: -0.5px; color: {{ hero.c }}"><span aria-hidden="true" style="width: 12px; height: 12px; flex: none; border-radius: 6px; background: {{ hero.dot }}; box-shadow: 0 0 16px {{ hero.dot }}"></span>{{ hero.cor }} · {{ hero.nivel }}</span>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--tx)">{{ relFrase }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; border-radius: 22px; background: var(--card2); border: 1px solid var(--line2)">
+<h3 style="margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">TESTS · DECIDE THE COLOUR</h3>
+<sc-for list="{{ relTestes }}" as="r" hint-placeholder-count="4">
+<div style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line2)"><span aria-hidden="true" style="width: 7px; height: 7px; flex: none; margin-top: 7px; border-radius: 4px; background: {{ r.dot }}"></span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex-grow: 1"><span style="display: flex; justify-content: space-between; gap: 10px"><span style="font-size: 14px; font-weight: 700; color: var(--tx)">{{ r.k }}</span><span style="font-size: 14px; font-weight: 700; color: var(--tx); text-align: right">{{ r.v }}</span></span><span style="font-size: 12.5px; line-height: 1.4; color: var(--tx2)">{{ r.sub }}</span></span></div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; border-radius: 22px; background: var(--card2); border: 1px solid var(--line2)">
+<h3 style="margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">MISSION DATA · CONTEXT AND RELIABILITY</h3>
+<sc-for list="{{ relMissao }}" as="r" hint-placeholder-count="4">
+<div style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line2)"><span aria-hidden="true" style="width: 7px; height: 7px; flex: none; margin-top: 7px; border-radius: 4px; background: {{ r.dot }}"></span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex-grow: 1"><span style="display: flex; justify-content: space-between; gap: 10px"><span style="font-size: 14px; font-weight: 700; color: var(--tx)">{{ r.k }}</span><span style="font-size: 14px; font-weight: 700; color: var(--tx); text-align: right">{{ r.v }}</span></span><span style="font-size: 12.5px; line-height: 1.4; color: var(--tx2)">{{ r.sub }}</span></span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">WHY THIS CONCLUSION</h3>
+<sc-for list="{{ relPorque }}" as="p" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; column-gap: 12px; row-gap: 2px; align-items: baseline"><span style="width: 104px; flex: none; font-size: 13px; font-weight: 700; color: var(--acc-text)">{{ p.k }}</span><span style="flex: 1 1 260px; min-width: 0; font-size: 14.5px; line-height: 1.5; color: var(--tx-soft)">{{ p.t }}</span></div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">NEXT STEPS</h3>
+<sc-for list="{{ relAccoes }}" as="a" hint-placeholder-count="3">
+<div style="display: flex; align-items: flex-start; gap: 12px"><span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 12px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ a.n }}</span><span style="font-size: 14.5px; line-height: 1.5; color: var(--tx-soft)">{{ a.t }}</span></div>
+</sc-for>
+</div>
+
+<p style="margin: 0; padding-top: 12px; border-top: 1px solid var(--line2); font-size: 12.5px; line-height: 1.5; color: var(--tx3)">How IRIS decides: the colour comes from the quick tests compared with your baseline, and the most serious sign wins. Mission data check that the measurement is reliable (light, motion, distance) and give context (time in microgravity, OCT). Not a diagnosis. Limits are provisional until the medical team validates them.</p>
+</section>
+</sc-if>
+
+</div>
+</template>
+<script>
+// Teste de acuidade: 5 linhas de letras Sloan, cada vez mais pequenas.
+// Questionário pré-exame (VISION GUARD, 9 perguntas; regras em motor/regras.js → REGRAS.prontidao).
+// Os valores (v) são os mesmos do motor; aqui só ficam os textos curtos em inglês para os botões.
+const QUEST = [
+  { id: 'nave', t: 'Is the spacecraft stable right now?', ops: [[0, 'Yes, no vibration or manoeuvre'], [1, 'Slight vibration, but I can keep my head and eyes steady'], [2, 'Strong vibration or manoeuvre, hard to stay still']] },
+  { id: 'luz', t: 'Can you see the screen clearly with this lighting?', ops: [[0, 'Yes, steady light and no glare'], [1, 'Small changes or glare, but I can see'], [2, 'The light or glare makes the screen hard to see']] },
+  { id: 'estado', t: 'How do you feel right now?', ops: [[0, 'Well, no relevant discomfort'], [1, 'Slightly tired or uncomfortable'], [2, 'Nausea, dizziness or a moderate headache'], [3, 'Strong symptoms, hard to concentrate']] },
+  { id: 'alteracao_visual', multi: true, t: 'Any new change in your vision since the last check?', sub: 'tick all that apply', ops: [[0, 'No'], [1, 'Blurred vision or trouble focusing'], [2, 'Distorted lines or dark spots'], [3, 'Double vision or brief loss of vision'], [4, 'Sudden loss or major worsening of vision']] },
+  { id: 'sono', t: 'How did you sleep before this check?', ops: [[0, 'Well, I feel rested'], [1, 'Less than usual, a bit tired'], [2, 'Very poorly, not enough rest']] },
+  { id: 'superficie', t: 'Any discomfort on the surface of your eyes?', ops: [[0, 'No'], [1, 'Dryness'], [2, 'Burning, irritation or watering'], [3, 'Vision fluctuates and improves after blinking']] },
+  { id: 'exercicio', t: 'Intense exercise or a spacewalk (EVA) recently?', ops: [[0, 'No'], [1, 'Yes, exercise'], [2, 'Yes, a spacewalk (EVA)']] },
+  { id: 'medicacao', t: 'Did you start or change any medication recently?', ops: [[0, 'No'], [1, 'Yes'], [2, 'Not sure']] },
+  { id: 'correcao', t: 'Are you wearing your usual vision correction, if you have one?', ops: [[0, 'Yes, and it is comfortable'], [1, 'No'], [2, "I don't need correction"]] }
+];
+const ALT_CURTO = { 1: 'blurred vision', 2: 'distorted lines or dark spots', 3: 'double vision or brief loss of vision', 4: 'sudden loss or major worsening' };
+// Prontidão (motor do Edilson); os motivos vêm em português e passam por Visao.en.
+function prontidaoDe(qv) {
+  const r = window.Motor && window.REGRAS ? window.Motor.prontidao(qv, window.REGRAS) : { estado: 'verde', ressalvas: [], alerta_clinico: false };
+  const en = window.Visao && window.Visao.en ? window.Visao.en : (x) => x;
+  return { estado: r.estado, ressalvas: r.ressalvas.map((m) => en(m)), alerta: !!r.alerta_clinico };
+}
+
+// Linhas de letras: sorteadas de novo em cada teste, para cada olho e para a leitura com óculos de reserva
+// (assim ninguém decora as letras). Linha n tem n letras diferentes, todas do teclado deste teste.
+function sortearLinhas(teclas) {
+  const L = [];
+  for (let n = 1; n <= 5; n++) {
+    L.push(baralhar(teclas.slice()).slice(0, n));
+  }
+  return L;
+}
+const TAM_AC = [64, 52, 40, 30, 22];
+// Teclado: todas as letras que podem aparecer (o astronauta toca na letra que vê).
+// Letras possíveis: as 10 letras Sloan dos quadros clínicos (C D H K N O R S V Z) mais E F L P T.
+// Em cada teste sorteiam-se 9 para o teclado (por ordem alfabética); as linhas usam só essas 9.
+const LETRAS = ['C', 'D', 'E', 'F', 'H', 'K', 'L', 'N', 'O', 'P', 'R', 'S', 'T', 'V', 'Z'];
+function baralhar(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function sortearTeclado() { return baralhar(LETRAS.slice()).slice(0, 9).sort(); }
+// Instruções (aparecem antes do teste e são lidas em voz alta).
+const PASSOS_AC = [
+  'Keep the screen at 40 cm, a little further than your usual reading distance. The camera warns you if you are too close or too far.',
+  'We start with the left eye: cover your right eye with your palm, without pressing.',
+  'A line of letters appears. For each letter, left to right, tap the same letter on the keypad, or say it out loud with the microphone on.',
+  'The score indicator shows how many letters you got right. When the line is complete, tap Next or say “next”.',
+  'Do not bring the screen closer to see better. If you cannot read, tap Can\'t read.',
+  'Then repeat with the other eye.'
+];
+const PASSOS_AM = [
+  'Cover your left eye with your palm, without pressing. We start with the right eye.',
+  'Hold the screen 33 cm from your face, about the length of a bent forearm. The camera warns you if you are too close or too far.',
+  'Look only at the black dot in the centre. Do not move your eyes across the grid.',
+  'Without looking away, notice any bent or wavy lines, blurred, dark or missing areas, or squares of different size.',
+  'Tap the squares where you saw something different. If you saw nothing, tap All looks straight, or say “all straight”.',
+  'Then cover your right eye and repeat.'
+];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tema: 'escuro', perfil: 'B', resp: null, passo: 1, max: 1, ajuda: false, relatorio: false, real: null, back: null, dist: null,
+      intro: { 2: true, 3: true }, voz: window.Voz ? window.Voz.ligada() : false, mic: { estado: 'desligado', mensagem: '' },
+      qv: {}, qpag: 0,
+      ac: this.acInicial(),
+      am: this.amInicial()
+    };
+  }
+  linhas() {
+    const a = this.state.ac, k = a.eye + '_' + a.pass;
+    if (!this._linhas) this._linhas = {};
+    if (!this._linhas[k]) this._linhas[k] = sortearLinhas(this.teclas());
+    return this._linhas[k];
+  }
+  teclas() { if (!this._teclas) this._teclas = sortearTeclado(); return this._teclas; }
+  acInicial() {
+    this._linhas = {}; this._teclas = null;
+    return { eye: 'esq', pass: 'sem', linha: 0, toques: {}, fase: 'ler', resp: [],
+      res: { esq: { sem: null, com: null }, dir: { sem: null, com: null } }, semReserva: { esq: false, dir: false },
+      // acertos [certas, letras] por olho e por passagem (sem / com os óculos de reserva)
+      acertos: { esq: { sem: [0, 0], com: [0, 0] }, dir: { sem: [0, 0], com: [0, 0] } } };
+  }
+  amInicial() {
+    return { eye: 'dir', marks: { dir: {}, esq: {} }, feito: { dir: false, esq: false }, direito: { dir: false, esq: false } };
+  }
+  componentDidMount() {
+    const upd = {};
+    try {
+      const t = window.localStorage.getItem('visao-tema');
+      const p = window.localStorage.getItem('visao-perfil');
+      if (t === 'claro' || t === 'escuro') upd.tema = t;
+      if (p === 'A' || p === 'B' || p === 'C') upd.perfil = p;
+      const r = window.localStorage.getItem('visao-evento-' + (upd.perfil || this.state.perfil));
+      if (r === 'sim' || r === 'nao' || r === 'naosei') upd.resp = r;
+    } catch (e) {}
+    // Perfil real (equipa): a pergunta do movimento da nave é feita em cada teste, não fica guardada de um dia para o outro.
+    if (window.Visao && window.Visao.real()) { upd.real = window.Visao.real(); upd.resp = null; }
+    this.setState(upd);
+    this.ouvir = (ev) => {
+      if (!ev) return;
+      if (ev.key === 'visao-tema' && (ev.newValue === 'claro' || ev.newValue === 'escuro')) this.setState({ tema: ev.newValue });
+      if (ev.key === 'visao-evento-' + this.state.perfil) this.setState({ resp: ev.newValue });
+    };
+    try { window.addEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  componentWillUnmount() {
+    try { window.removeEventListener('storage', this.ouvir); } catch (e) {}
+    if (window.Visao) window.Visao.camara.parar();
+    if (window.Voz) { window.Voz.desligarMicrofone(); window.Voz.calar(); }
+  }
+  // ---------- Voz ----------
+  // clips: nomes dos MP3 gravados (audio/); sem ficheiro, usa a voz do sistema com o texto t
+  falar(t, semInterromper, clips) { if (window.Voz) { if (clips && window.Voz.falarClip) window.Voz.falarClip(clips, t, semInterromper); else window.Voz.falar(t, semInterromper); } }
+  aoOuvir(texto) {
+    if (!window.Voz) return;
+    window.Voz.interpretar(texto, this.teclas()).forEach((c) => this.comando(c));
+  }
+  // O mesmo que os botões, mas por voz: letras, «seguinte», «apagar», «não consigo», «tudo direito», «repetir».
+  comando(c) {
+    const s = this.state;
+    if (s.passo === 2) {
+      if (s.intro[2]) { if (c.tipo === 'seguinte') this.comecar(2); else if (c.tipo === 'repetir') this.lerIntro(2); return; }
+      const a = s.ac;
+      if (a.fase === 'ler') {
+        if (c.tipo === 'letra') this.responder(c.v);
+        else if (c.tipo === 'apagar') this.apagar();
+        else if (c.tipo === 'nao_consigo') this.naoConsigo();
+        else if (c.tipo === 'seguinte' || c.tipo === 'concluir') this.avancarLinha();
+        else if (c.tipo === 'repetir') this.falarAc();
+      } else if (a.fase === 'fim' && (c.tipo === 'seguinte' || c.tipo === 'concluir') && !this.piorAgora()) {
+        this.setAc((x) => this.avancarOlho(x)); this.falarAc();
+      } else if (a.fase === 'feito' && c.tipo === 'seguinte') this.irPara(3);
+    } else if (s.passo === 3) {
+      if (s.intro[3]) { if (c.tipo === 'seguinte') this.comecar(3); else if (c.tipo === 'repetir') this.lerIntro(3); return; }
+      if (c.tipo === 'tudo_direito') this.amTudoDireito();
+      else if (c.tipo === 'seguinte' || c.tipo === 'concluir') {
+        if (s.am.feito.dir && s.am.feito.esq) this.irPara(4); else this.amConcluir();
+      }
+    }
+  }
+  lerIntro(n) {
+    const p = n === 2 ? PASSOS_AC : PASSOS_AM;
+    this.falar((n === 2 ? 'Near acuity test. ' : 'Amsler grid. ') + p.join(' ') + ' When you are ready, tap start, or say “next”.', false, [n === 2 ? 'intro_acuity' : 'intro_amsler']);
+  }
+  comecar(n) {
+    this.setState((st) => ({ intro: Object.assign({}, st.intro, { [n]: false }) }));
+    if (n === 2) this.falarAc();
+    else this.falar('Cover your left eye. Look only at the black dot in the centre. Tap the squares where you see bent lines, spots or gaps. If everything looks straight, say “all straight”.', false, ['amsler_start']);
+  }
+  // Diz o que fazer a seguir no teste de acuidade.
+  falarAc() {
+    const a = this.state.ac;
+    const olho = a.eye === 'esq' ? 'left' : 'right', outro = a.eye === 'esq' ? 'right' : 'left';
+    if (a.fase === 'ler') {
+      const pre = a.linha === 0 ? (a.pass === 'com' ? 'With the spare glasses. ' : (olho === 'left' ? 'Left eye first: cover your right eye. ' : 'Now the right eye: cover your left eye. ')) : '';
+      this.falar(pre + 'Line ' + (a.linha + 1) + '. ' + (this.linhas()[a.linha].length === 1 ? 'Which letter do you see?' : 'Which letters do you see, from left to right?'), false,
+        [a.linha > 0 ? 'line' + (a.linha + 1) : (a.pass === 'com' ? 'line1_spare' : 'line1_' + olho)]);
+    } else if (a.fase === 'fim') {
+      const r = a.res[a.eye][a.pass];
+      this.falar((olho === 'left' ? 'Left' : 'Right') + ' eye: ' + (r === 0 ? 'you read no lines' : 'you read up to line ' + r) + '. ' +
+        (this.piorAgora() ? 'Reading is worse than your baseline. Put on the spare glasses and read again.' : (a.eye === 'esq' ? 'Say “next” to go to the right eye.' : 'Say “next” to finish.')), false,
+        ['end_' + olho + '_' + (r || 0), this.piorAgora() ? 'then_spare' : (a.eye === 'esq' ? 'then_right_eye' : 'then_finish')]);
+    } else if (a.fase === 'feito') {
+      this.falar('Acuity done. Say “next” to go to the Amsler grid.', false, ['acuity_done']);
+    }
+  }
+  piorAgora() {
+    const a = this.state.ac, ant = this._ant;
+    return !!(ant && a.fase === 'fim' && a.pass === 'sem' && a.res[a.eye].sem !== null && a.res[a.eye].sem < ant.ac[a.eye]);
+  }
+  testeAtivo() {
+    const s = this.state;
+    return (s.passo === 2 && !s.intro[2] && s.ac.fase === 'ler') || (s.passo === 3 && !s.intro[3]);
+  }
+  // ---------- Acuidade: respostas e acertos ----------
+  responder(L) {
+    let completa = false, certas = 0, n = 0;
+    this.setAc((a) => {
+      if (a.fase !== 'ler') return a;
+      const linha = this.linhas()[a.linha];
+      if (a.resp.length >= linha.length) return a;
+      const resp = a.resp.concat([L]);
+      completa = resp.length === linha.length;
+      n = linha.length; certas = resp.filter((x, i) => x === linha[i]).length;
+      return Object.assign(a, { resp: resp });
+    });
+    if (completa) this.falar(certas + ' correct out of ' + n + '. Say “next” to continue.', false, ['score_' + certas + '_of_' + n]);
+  }
+  apagar() { this.setAc((a) => (a.fase === 'ler' && a.resp.length ? Object.assign(a, { resp: a.resp.slice(0, -1) }) : a)); }
+  somarAcertos(a, certas, total) {
+    const ac = { esq: Object.assign({}, a.acertos.esq), dir: Object.assign({}, a.acertos.dir) };
+    const v = ac[a.eye][a.pass];
+    ac[a.eye][a.pass] = [v[0] + certas, v[1] + total];
+    return Object.assign(a, { acertos: ac });
+  }
+  lidaOuFim(a, lida) {
+    if (lida) {
+      if (a.linha === this.linhas().length - 1) return this.terminarOlho(a, this.linhas().length);
+      return Object.assign(a, { linha: a.linha + 1, toques: {}, resp: [] });
+    }
+    return this.terminarOlho(a, a.linha);
+  }
+  // Linha lida se acertou pelo menos 60% das letras (1 de 1, 2 de 2, 2 de 3, 3 de 4, 3 de 5).
+  avancarLinha() {
+    const a0 = this.state.ac, linha = this.linhas()[a0.linha];
+    if (a0.fase !== 'ler' || a0.resp.length < linha.length) return;
+    const certas = a0.resp.filter((x, i) => x === linha[i]).length;
+    this.setAc((a) => this.lidaOuFim(this.somarAcertos(a, certas, linha.length), certas >= Math.ceil(linha.length * 0.6)));
+    this.falarAc();
+  }
+  naoConsigo() {
+    const a0 = this.state.ac, linha = this.linhas()[a0.linha];
+    if (a0.fase !== 'ler') return;
+    const certas = a0.resp.filter((x, i) => x === linha[i]).length;
+    this.setAc((a) => this.lidaOuFim(this.somarAcertos(a, certas, linha.length), false));
+    this.falarAc();
+  }
+  // ---------- Grelha de Amsler ----------
+  proximoOlhoAm(a) { if (!a.feito.dir) return 'dir'; if (!a.feito.esq) return 'esq'; return a.eye; }
+  depoisOlhoAm() {
+    const am = this.state.am;
+    if (am.feito.dir && am.feito.esq) this.falar('Grid done. Say “next” to see the result.', false, ['amsler_done']);
+    else this.falar('Now cover your ' + (am.eye === 'dir' ? 'left' : 'right') + ' eye and look at the dot in the centre.', false, [am.eye === 'dir' ? 'amsler_cover_left' : 'amsler_cover_right']);
+  }
+  amTudoDireito() {
+    this.setAm((a) => { a.marks[a.eye] = {}; a.direito[a.eye] = true; a.feito[a.eye] = true; a.eye = this.proximoOlhoAm(a); return a; });
+    this.depoisOlhoAm();
+  }
+  amConcluir() {
+    if (Object.keys(this.state.am.marks[this.state.am.eye]).length === 0) return;
+    this.setAm((a) => { a.feito[a.eye] = true; a.direito[a.eye] = false; a.eye = this.proximoOlhoAm(a); return a; });
+    this.depoisOlhoAm();
+  }
+  irPara(n) {
+    this.setState((st) => ({ passo: n, max: Math.max(st.max, n), ajuda: false, relatorio: false }));
+    this.ligarCamara(n);
+    if ((n === 2 || n === 3) && this.state.intro[n]) this.lerIntro(n);
+    if (n === 4) {
+      this.guardarNoBackend(); if (window.Voz) window.Voz.desligarMicrofone();
+      setTimeout(() => {
+        const nv = this._nivel || 0, R = ['green', 'yellow', 'orange', 'red'];
+        const T = ['Result: green. All within your baseline. Keep the normal schedule.', 'Result: yellow. Conditions may have affected the test. Repeat when you can.',
+          'Result: orange. There is a change since your baseline. The medical team will review it.', 'Result: red. Clinical priority. Tell the flight surgeon now.'];
+        if (this.state.passo === 4) this.falar(T[nv], false, ['result_' + R[nv]]);
+      }, 350);
+    }
+  }
+  // Câmara: só mede a distância (40 cm na acuidade, 33 cm na grelha de Amsler). Nada é gravado.
+  ligarCamara(n) {
+    if (!window.Visao) return;
+    const cam = window.Visao.camara;
+    if (n === 2 || n === 3) {
+      const alvo = n === 2 ? [35, 45] : [28, 38];
+      this._estab = null;
+      cam.iniciar(alvo[0], alvo[1], (bruto) => {
+        // Estabilizar: a câmara mede ~30 vezes por segundo. Sem isto o ecrã redesenha-se a cada
+        // centímetro e a moldura muda de cor por um único fotograma sem cara (a câmara "pisca").
+        const r = this.estabilizarDist(bruto, alvo);
+        if (!r) return;
+        const cm = r.cm;
+        const d = this.state.dist;
+        // Voz: avisa quando a distância sai do intervalo, sem interromper outras instruções.
+        if (d && d.estado !== r.estado && this.testeAtivo()) {
+          const agora = Date.now();
+          if (agora - (this._falaDist || 0) > 4000) {
+            if (r.estado === 'perto') { this.falar('Move back a little from the screen.', true, ['dist_back']); this._falaDist = agora; }
+            else if (r.estado === 'longe') { this.falar('Move a little closer to the screen.', true, ['dist_closer']); this._falaDist = agora; }
+            else if (r.estado === 'ok' && (d.estado === 'perto' || d.estado === 'longe')) { this.falar('Distance OK.', true, ['dist_ok']); this._falaDist = agora; }
+          }
+        }
+        if (!d || d.estado !== r.estado || d.cm !== cm) this.setState({ dist: { estado: r.estado, cm: cm } });
+      });
+    } else {
+      cam.parar();
+    }
+  }
+  // Devolve {estado, cm} só quando vale a pena redesenhar; null para ignorar este fotograma.
+  // - margem de 2 cm à volta do intervalo (não salta entre "ok" e "perto" na fronteira);
+  // - um novo estado tem de durar 0,8 s (1,5 s para "sem cara") antes de aparecer;
+  // - o número em cm actualiza no máximo 2 vezes por segundo e só se mudar 1 cm ou mais.
+  estabilizarDist(bruto, alvo) {
+    const agora = Date.now();
+    const e = this._estab || (this._estab = { estado: null, cm: null, cand: null, desde: 0, tCm: 0 });
+    let est = bruto.estado;
+    const cmB = bruto.cm ? Math.round(bruto.cm) : null;
+    if (cmB != null && (est === 'ok' || est === 'perto' || est === 'longe')) {
+      const M = 2, min = alvo[0], max = alvo[1];
+      if (e.estado === 'ok') est = cmB < min - M ? 'perto' : (cmB > max + M ? 'longe' : 'ok');
+      else est = cmB < min ? 'perto' : (cmB > max ? 'longe' : 'ok');
+      if (e.estado === 'perto' && est === 'ok' && cmB < min + M) est = 'perto';
+      if (e.estado === 'longe' && est === 'ok' && cmB > max - M) est = 'longe';
+    }
+    if (e.estado === null || est === 'indisponivel') {
+      Object.assign(e, { estado: est, cm: cmB, cand: null, tCm: agora });
+      return { estado: est, cm: cmB };
+    }
+    if (est !== e.estado) {
+      if (e.cand !== est) { e.cand = est; e.desde = agora; }
+      const espera = est === 'sem_cara' ? 1500 : 800;
+      if (agora - e.desde < espera) return this.cmNovo(e, cmB, agora);
+      Object.assign(e, { estado: est, cm: cmB, cand: null, tCm: agora });
+      return { estado: est, cm: cmB };
+    }
+    e.cand = null;
+    return this.cmNovo(e, cmB, agora);
+  }
+  cmNovo(e, cmB, agora) {
+    if (cmB == null || e.estado === 'sem_cara') return null;
+    if (e.cm != null && Math.abs(cmB - e.cm) < 1) return null;
+    if (agora - e.tCm < 500) return null;
+    e.cm = cmB; e.tCm = agora;
+    return { estado: e.estado, cm: cmB };
+  }
+  // Perfil real: ao chegar ao resultado, o teste é guardado no aparelho e a cor vem do motor de regras.
+  guardarNoBackend() {
+    if (!window.Visao || !window.Visao.real()) return;
+    const st = this.state;
+    const back = window.Visao.guardarTeste({ qv: st.qv, res: st.ac.res, marks: st.am.marks, resp: st.resp, acertos: st.ac.acertos });
+    this.setState({ back: back });
+  }
+  setAc(fn) {
+    this.setState((st) => ({ ac: fn(Object.assign({}, st.ac)) }));
+  }
+  terminarOlho(ac, lidas) {
+    const res = { esq: Object.assign({}, ac.res.esq), dir: Object.assign({}, ac.res.dir) };
+    res[ac.eye][ac.pass] = lidas;
+    return Object.assign(ac, { res: res, fase: 'fim', toques: {}, resp: [] });
+  }
+  avancarOlho(ac) {
+    if (ac.eye === 'esq') return Object.assign(ac, { eye: 'dir', pass: 'sem', linha: 0, toques: {}, resp: [], fase: 'ler' });
+    return Object.assign(ac, { fase: 'feito', toques: {}, resp: [] });
+  }
+  setAm(fn) {
+    this.setState((st) => {
+      const am = st.am;
+      const novo = { eye: am.eye, marks: { dir: Object.assign({}, am.marks.dir), esq: Object.assign({}, am.marks.esq) },
+        feito: Object.assign({}, am.feito), direito: Object.assign({}, am.direito) };
+      return { am: fn(novo) };
+    });
+  }
+  renderVals() {
+    const s = this.state;
+    const eus = {
+      A: { nome: 'Marta Silveira', ini: 'MS', dia: 60, ola: 'Hi, Marta.', ant: 'day 53' },
+      B: { nome: 'Daniel Cossa', ini: 'DC', dia: 90, ola: 'Hi, Daniel.', ant: 'day 87' },
+      C: { nome: 'Sofia Lindqvist', ini: 'SL', dia: 84, ola: 'Hi, commander.', ant: 'day 77' }
+    };
+    const euReal = window.Visao ? window.Visao.eu() : null;
+    const eu = euReal || eus[s.perfil] || eus.B;
+    // Último teste (simulado): acuidade em linhas lidas e mapa da grelha de Amsler por olho
+    const ANT = {
+      A: { ac: { esq: 5, dir: 5 }, am: { dir: [], esq: [] } },
+      B: { ac: { esq: 5, dir: 5 }, am: { dir: [], esq: ['3-8', '4-9'] } },
+      C: { ac: { esq: 4, dir: 5 }, am: { dir: [], esq: ['9-2'] } }
+    };
+    const antReal = window.Visao ? window.Visao.anterior() : null;
+    const ant = antReal || ANT[s.perfil] || ANT.B;
+    this._ant = ant;
+    const primeiroTeste = !!(antReal && antReal.primeiro);
+    const refTxt = antReal ? (primeiroTeste ? 'First test: becomes your baseline' : 'At your baseline (day ' + antReal.dia + ')') : 'In the last test (' + eu.ant + ')';
+    const nomeOlho = { esq: 'Left eye', dir: 'Right eye' };
+    const sigla = { esq: 'LE', dir: 'RE' };
+    const outroOlho = { esq: 'right eye', dir: 'left eye' };
+
+    // ---------- Evento da nave (obrigatório) ----------
+    const pendente = false;   // a pergunta 1 do questionário substitui a janela do evento da nave
+    const respTxt = { sim: 'Yes, I felt it', nao: 'Didn\'t feel it', naosei: 'I\'m not sure' };
+    const gateOps = [['sim', 'Yes'], ['nao', 'No'], ['naosei', 'Not sure']].map((o) => ({
+      t: o[1],
+      pick: () => {
+        const perfil = this.state.perfil;
+        this.setState({ resp: o[0] });
+        if (this.state.real) return;
+        try { window.localStorage.setItem('visao-evento-' + perfil, o[0]); } catch (e) {}
+      }
+    }));
+    const gateTexto = euReal ? 'Did you feel the spacecraft move (vibration or manoeuvre) in the last few minutes? Your answer is saved with the test and helps interpret the result.' : s.perfil === 'B'
+      ? 'The station recorded unusual motion that overlapped your 10:42 acuity test. Your answer helps tell whether the result was affected.'
+      : 'The station recorded unusual motion. Your answer helps the app interpret today\'s tests.';
+
+    // ---------- 1. Antes de começar ----------
+    const preparar = [
+      { t: 'Secure your feet so your body does not float.', icone: 'M7 4c-1.5 0-2.5 2-2.5 5s1 5 2.5 5 2.5-2 2.5-5-1-5-2.5-5zM17 6c-1.5 0-2.5 2-2.5 5s1 5 2.5 5 2.5-2 2.5-5-1-5-2.5-5zM5 18h5M15 20h5' },
+      { t: 'Fix the screen with velcro, at eye level.', icone: 'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM11 18h2' },
+      { t: 'Wear the glasses you read with. If you don\'t use any, take them off.', icone: 'M3.5 14a3.5 3.5 0 1 0 7 0 3.5 3.5 0 1 0-7 0M13.5 14a3.5 3.5 0 1 0 7 0 3.5 3.5 0 1 0-7 0M10.5 14h3M3.5 14 5 8M20.5 14 19 8' },
+      { t: 'Set the cabin light as for reading. Avoid glare on the screen.', icone: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z' }
+    ];
+    const qv = s.qv;
+    const respondida = (q) => q.multi ? Array.isArray(qv[q.id]) : (qv[q.id] !== undefined && qv[q.id] !== null);
+    const faltam = QUEST.filter((q) => !respondida(q)).length;
+    const pagIni = s.qpag * 3, pagQs = QUEST.slice(pagIni, pagIni + 3);
+    const pagCompleta = pagQs.every(respondida);
+    const qPag = pagQs.map((q, k) => ({
+      n: String(pagIni + k + 1), t: q.t, sub: q.sub || '',
+      ops: q.ops.map((o) => {
+        const v = o[0];
+        const on = q.multi ? (Array.isArray(qv[q.id]) && (v === 0 ? qv[q.id].length === 0 : qv[q.id].indexOf(v) !== -1)) : qv[q.id] === v;
+        const tom = q.multi ? (v === 0 ? 0 : (v >= 3 ? 2 : 1)) : (v === 0 ? 0 : (q.id === 'correcao' && v === 2 ? 0 : 1));
+        const T = [{ fundo: 'var(--ok-soft)', borda: 'var(--ok-line)', cor: 'var(--ok-tx)' }, { fundo: 'var(--acc-soft)', borda: 'var(--acc-line)', cor: 'var(--acc-text)' }, { fundo: 'var(--warn-soft)', borda: 'var(--warn-line)', cor: 'var(--warn-tx)' }][tom];
+        return { t: o[1], on: on, fundo: on ? T.fundo : 'transparent', borda: on ? T.borda : 'var(--line)', cor: on ? T.cor : 'var(--tx2)',
+          pick: () => this.setState((st) => {
+            const n = Object.assign({}, st.qv);
+            if (q.multi) {
+              let a = Array.isArray(n[q.id]) ? n[q.id].slice() : [];
+              if (v === 0) a = [];
+              else if (a.indexOf(v) !== -1) a = a.filter((x) => x !== v);
+              else a = a.concat([v]).sort();
+              n[q.id] = a;
+            } else n[q.id] = v;
+            const extra = q.id === 'nave' ? { resp: v === 0 ? 'nao' : 'sim' } : {};
+            return Object.assign({ qv: n }, extra);
+          }) };
+      })
+    }));
+    const PR = prontidaoDe(qv);
+    const PRV = {
+      verde: { titulo: 'Ready', texto: 'You can do the test.', cor: 'var(--ok-tx)', dot: 'var(--ok)', glow: 'var(--ok-glow)', linha: 'var(--ok-line)' },
+      amarelo: { titulo: 'Ready with caveats', texto: 'You can do the test. These caveats are saved with the result:', cor: 'var(--ylw-tx)', dot: 'var(--ylw)', glow: 'var(--ylw-glow)', linha: 'var(--ylw-line)' },
+      vermelho: { titulo: 'Not reliable right now', texto: 'The measurement would not be reliable. Fix the condition and answer again:', cor: 'var(--bad-tx)', dot: 'var(--bad)', glow: 'var(--bad-glow)', linha: 'var(--bad-line)' }
+    }[PR.estado];
+    const pr = Object.assign({}, PRV, {
+      pronto: faltam === 0, dicas: faltam > 0 || (PR.estado === 'verde' && !PR.alerta), vermelho: faltam === 0 && PR.estado === 'vermelho',
+      ressalvas: faltam === 0 ? PR.ressalvas : [], alerta: PR.alerta,
+      dicasTxt: faltam > 0 ? 'Let\'s do the quick vision test. It takes about 5 minutes. First, get ready:' : 'Before you start, check:',
+      textoAlerta: 'New and important change in vision: tell the flight surgeon now, even if you do not do the test now.'
+    });
+    if (faltam > 0) Object.assign(pr, { glow: 'var(--acc-soft)', linha: 'var(--line2)' });
+    const altSel = Array.isArray(qv.alteracao_visual) ? qv.alteracao_visual : [];
+    const marcados = altSel.filter((v) => v >= 3).length;
+    const ligeiros = altSel.filter((v) => v < 3).length;
+
+    // ---------- 2. Acuidade ----------
+    const LINHAS = this.linhas();
+    const TAM = TAM_AC;
+    const ac = s.ac;
+    const linhaAtual = LINHAS[ac.linha];
+    const nResp = ac.resp.length;
+    const completa = nResp >= linhaAtual.length;
+    // Marca debaixo de cada letra: azul = a responder agora, verde = certa, vermelho = errada.
+    const letrasAc = linhaAtual.map((t, i) => {
+      let marca = '#E6EBF0';
+      if (i < nResp) marca = ac.resp[i] === t ? '#3FAE6A' : '#E0554B';
+      else if (i === nResp) marca = '#5B8DB3';
+      const sz = TAM[ac.linha];
+      return { t: t, size: sz, w: Math.round(sz * 0.9 + 10), marca: marca };
+    });
+    const certasLinha = ac.resp.filter((x, i) => x === linhaAtual[i]).length;
+    const acTot = ac.acertos[ac.eye][ac.pass];
+    const acerto = {
+      linha: certasLinha + ' of ' + linhaAtual.length,
+      pontos: linhaAtual.map((t, i) => {
+        if (i < nResp) { const ok = ac.resp[i] === t; return { t: ok ? '✓' : '✗', bg: ok ? 'var(--ok)' : 'var(--bad)', borda: ok ? 'var(--ok)' : 'var(--bad)' }; }
+        return { t: '', bg: 'transparent', borda: i === nResp ? 'var(--acc-text)' : 'var(--line)' };
+      }),
+      olho: 'This eye: ' + (acTot[0] + certasLinha) + ' of ' + (acTot[1] + nResp) + ' correct'
+    };
+    const teclas = this.teclas().map((t) => ({ t: t, off: completa, op: completa ? 0.4 : 1, pick: () => this.responder(t) }));
+    const linhasTxt = (x) => (x === null ? '–' : (x === 0 ? 'no lines' : 'line ' + x + ' of 5'));
+    const curto = (x) => (x === null ? '–' : x + '/5');
+    const resEye = ac.res[ac.eye];
+    const ultimoRes = ac.pass === 'com' ? resEye.com : resEye.sem;
+    const pior = ac.fase === 'fim' && ac.pass === 'sem' && resEye.sem !== null && resEye.sem < ant.ac[ac.eye];
+    const acOlhos = ['esq', 'dir'].map((e) => {
+      const r = ac.res[e];
+      let t = nomeOlho[e] + ' · to do'; let cor = 'var(--tx3)'; let bg = 'transparent'; let borda = 'var(--line2)';
+      if (r.sem !== null) { t = nomeOlho[e] + ' · ' + curto(r.sem) + (r.com !== null ? ' → ' + curto(r.com) + ' w/ spare' : ''); cor = 'var(--tx)'; }
+      if (ac.eye === e && ac.fase !== 'feito') { bg = 'var(--acc-soft)'; borda = 'var(--acc-line)'; cor = 'var(--tx)'; if (r.sem === null) t = nomeOlho[e] + ' · testing'; }
+      return { t: t, cor: cor, bg: bg, borda: borda };
+    });
+    const acResumo = ['esq', 'dir'].map((e) => {
+      const r = ac.res[e];
+      let sub = primeiroTeste ? refTxt + '.' : refTxt + ': ' + linhasTxt(ant.ac[e]) + '.';
+      if (r.com !== null) sub = 'With the spare glasses: ' + linhasTxt(r.com) + '. ' + sub;
+      else if (ac.semReserva[e]) sub = 'No spare glasses at hand. ' + sub;
+      return { olho: nomeOlho[e], valor: r.sem === null ? '–' : (r.sem === 0 ? 'No lines' : 'Line ' + r.sem + ' of 5'), sub: sub };
+    });
+    const acPassos = PASSOS_AC.map((t, i) => ({ n: i + 1, t: t }));
+
+    // ---------- 3. Grelha de Amsler ----------
+    const am = s.am;
+    const cells = [];
+    for (let r = 0; r < 12; r++) {
+      for (let c = 0; c < 12; c++) {
+        const k = r + '-' + c;
+        const on = !!am.marks[am.eye][k];
+        cells.push({ on: on, label: 'Row ' + (r + 1) + ', column ' + (c + 1), bg: on ? '#7FB0D6' : '#FFFFFF',
+          pick: () => this.setAm((a) => { const m = a.marks[a.eye]; if (m[k]) delete m[k]; else m[k] = true; a.direito[a.eye] = false; return a; }) });
+      }
+    }
+    const nMarcas = (e) => Object.keys(am.marks[e]).length;
+    const amOlhos = ['dir', 'esq'].map((e) => {
+      const atual = am.eye === e;
+      let txt = 'To do'; let cor = 'var(--tx3)';
+      if (am.feito[e]) { txt = am.direito[e] ? 'All straight' : nMarcas(e) + (nMarcas(e) === 1 ? ' square' : ' squares'); cor = am.direito[e] ? 'var(--ok-tx)' : 'var(--acc-text)'; }
+      else if (atual) { txt = 'Testing'; cor = 'var(--acc-text)'; }
+      return { olho: sigla[e], txt: txt, cor: cor, on: atual,
+        borda: atual ? 'var(--acc-line)' : 'var(--line2)', fundo: atual ? 'var(--acc-soft)' : 'transparent',
+        pick: () => this.setAm((a) => Object.assign(a, { eye: e })) };
+    });
+    const amTitulo = 'Testing: ' + nomeOlho[am.eye].toLowerCase() + ' · cover the ' + outroOlho[am.eye];
+    const amPassos = PASSOS_AM.map((t, i) => ({ n: i + 1, t: t, itens: [], mostrarItens: 'none' }));
+
+    // Comparação com o mapa anterior
+    const central = (k) => { const pr = k.split('-'); const r = Number(pr[0]); const c = Number(pr[1]); return r >= 4 && r <= 7 && c >= 4 && c <= 7; };
+    const comp = {};
+    ['dir', 'esq'].forEach((e) => {
+      const cur = Object.keys(am.marks[e]);
+      const prev = ant.am[e];
+      comp[e] = { novas: cur.filter((k) => prev.indexOf(k) < 0), iguais: cur.filter((k) => prev.indexOf(k) >= 0), soAnt: prev.filter((k) => cur.indexOf(k) < 0) };
+    });
+    const nAmsOlho = (e) => (comp[e].novas.some(central) ? 3 : (comp[e].novas.length > 0 ? 2 : 0));
+    const nAms = Math.max(nAmsOlho('dir'), nAmsOlho('esq'));
+    const mapas = ['dir', 'esq'].map((e) => {
+      const cs = [];
+      for (let r = 0; r < 12; r++) for (let c = 0; c < 12; c++) {
+        const k = r + '-' + c;
+        let bg = 'var(--grid-cell)';
+        if (comp[e].novas.indexOf(k) >= 0) bg = 'var(--warn)';
+        else if (comp[e].iguais.indexOf(k) >= 0) bg = 'var(--tx3)';
+        else if (comp[e].soAnt.indexOf(k) >= 0) bg = 'var(--grid-old)';
+        cs.push({ bg: bg });
+      }
+      const nv = comp[e].novas.length;
+      let titulo = nomeOlho[e] + ' · ' + (nv === 0 ? 'no new changes' : nv + (nv === 1 ? ' new' : ' new'));
+      if (!am.feito[e]) titulo = nomeOlho[e] + ' · to do';
+      return { titulo: titulo, cor: nv > 0 ? 'var(--warn-tx)' : 'var(--tx2)', cells: cs };
+    });
+
+    // ---------- 4. Resultado ----------
+    const piorOlho = (e) => ac.res[e].sem !== null && ac.res[e].sem < ant.ac[e];
+    const nAc = piorOlho('esq') || piorOlho('dir') ? 2 : 0;
+    const nSint = marcados > 0 ? 3 : (ligeiros > 0 ? 2 : 0);
+    const centralNova = comp.dir.novas.some(central) || comp.esq.novas.some(central);
+    const back = s.back && !s.back.erro ? s.back : null;
+    const nivel = back ? Math.max(back.nivel, nSint) : Math.max(nAc, nSint, nAms);
+    const cores = ['var(--ok)', 'var(--ylw)', 'var(--warn)', 'var(--bad)'];
+    const HER = [
+      { cor: 'Green', nivel: 'Routine', titulo: 'No new changes', texto: 'Acuity, Amsler grid and symptoms same as your last test.', c: 'var(--ok-tx)', dot: 'var(--ok)', glow: 'var(--ok-glow)', linha: 'var(--ok-line)' },
+      { cor: 'Yellow', nivel: 'Possible interference', titulo: 'Result with conditions to confirm', texto: 'Conditions may have affected the result. Repeat when you can.', c: 'var(--ylw-tx)', dot: 'var(--ylw)', glow: 'var(--ylw-glow)', linha: 'var(--ylw-line)' },
+      { cor: 'Orange', nivel: 'Clinical review advised', titulo: 'Change since last test', texto: 'There is a change since your last test. The medical team will review it.', c: 'var(--warn-tx)', dot: 'var(--warn)', glow: 'var(--warn-glow)', linha: 'var(--warn-line)' },
+      { cor: 'Red', nivel: 'Clinical priority', titulo: 'Priority change', texto: 'A new zone appeared at the centre of the Amsler grid. Tell the flight surgeon now.', c: 'var(--bad-tx)', dot: 'var(--bad)', glow: 'var(--bad-glow)', linha: 'var(--bad-line)' }
+    ];
+    const hero = Object.assign({}, HER[nivel]);
+    this._nivel = nivel;
+    if (back) {
+      if (back.motivos.length) hero.texto = back.motivos.join(' ');
+      else if (nivel === 0) hero.texto = back.primeiro ? 'First test saved as your baseline. Later tests are compared with it.' : 'Acuity, Amsler grid and symptoms same as your baseline.';
+      else if (nivel === 1) hero.texto = back.ressalvas.join(' ') + ' Repeat when you can.';
+      else if (nSint) hero.texto = 'You reported a new change in your vision. The medical team will review it.';
+      if (back.alerta_clinico) hero.texto += ' You reported a new and important change in vision: tell the flight surgeon now.';
+      // Modelo pessoal (aprende com os teus testes): avisa quando o teste de hoje foge do teu habitual.
+      if (back.modelo && back.modelo.avisos.length) hero.texto += ' Personal model: ' + back.modelo.avisos.join(' ');
+    }
+    const usouReserva = ac.res.esq.com !== null || ac.res.dir.com !== null;
+    const reservaTxt = ['esq', 'dir'].filter((e) => ac.res[e].com !== null).map((e) => sigla[e] + ' with spare: ' + curto(ac.res[e].com)).join(' · ');
+    const listaSint = altSel.map((v) => ALT_CURTO[v]);
+    const aconteceu = [
+      { teste: 'Near acuity', valor: 'LE ' + curto(ac.res.esq.sem) + ' · RE ' + curto(ac.res.dir.sem),
+        sub: 'Score: LE ' + ac.acertos.esq.sem[0] + '/' + ac.acertos.esq.sem[1] + ' · RE ' + ac.acertos.dir.sem[0] + '/' + ac.acertos.dir.sem[1] + ' · ' + (reservaTxt ? reservaTxt + ' · ' : '') + (primeiroTeste ? 'First test: becomes your baseline' : (antReal ? 'Baseline (day ' + antReal.dia + ')' : 'Last test') + ': LE ' + curto(ant.ac.esq) + ' · RE ' + curto(ant.ac.dir)),
+        dot: ac.res.esq.sem === null && ac.res.dir.sem === null ? 'var(--tx3)' : cores[nAc] },
+      { teste: 'Vision changes', valor: listaSint.length === 0 ? 'None' : listaSint.length + ' reported',
+        sub: listaSint.length === 0 ? 'Pre-exam questionnaire: no new change' : listaSint.join(', '), dot: cores[nSint] }
+    ];
+    const dR = back ? back.distancia : (window.Visao ? window.Visao.camara.resumo() : { n: 0 });
+    const distTxt = dR.n > 0 ? 'Average ' + dR.media + ' cm · ' + (100 - dR.foraPct) + '% of the time in range' : (window.Visao ? 'Not measured by the camera' : 'Correct in both tests');
+    const distDot = dR.n > 0 ? (dR.foraPct >= 40 ? 'var(--ylw)' : 'var(--ok)') : (window.Visao ? 'var(--tx3)' : 'var(--ok)');
+    const condRes = [
+      { k: 'Readiness', v: PRV.titulo + (PR.ressalvas.length ? ' · ' + PR.ressalvas.length + (PR.ressalvas.length === 1 ? ' caveat' : ' caveats') : ''), dot: PRV.dot },
+      { k: 'Spacecraft', v: qv.nave === undefined ? 'Not answered' : ['Stable', 'Slight vibration', 'Strong vibration'][qv.nave], dot: qv.nave === 0 ? 'var(--ok)' : 'var(--ylw)' },
+      { k: 'Glasses', v: (qv.correcao === 1 ? 'Without usual correction' : (qv.correcao === 2 ? 'No correction needed' : 'Usual correction')) + (usouReserva ? '; spare ones in the 2nd acuity test' : ''), dot: qv.correcao === 1 ? 'var(--ylw)' : 'var(--ok)' },
+      { k: 'Distance', v: distTxt, dot: distDot },
+      { k: 'Lighting', v: dR.luz && dR.luz.n > 0 ? ({ boa: 'Good', fraca: 'Too dark', forte: 'Too bright or glare' })[dR.luz.nivel] + ' · camera' : 'Not measured', dot: dR.luz && dR.luz.n > 0 ? (dR.luz.nivel === 'boa' ? 'var(--ok)' : 'var(--ylw)') : 'var(--tx3)' },
+    ];
+    const ACC = [
+      ['Keep the normal schedule.', 'Next quick test in 7 days.', 'OCT recommended per protocol.'],
+      ['Repeat the tests when you can.', 'The result is saved with the conditions flag.', 'If you notice any change in your vision, tell the flight surgeon.'],
+      ['The summary goes to the medical team for review.', 'Repeat the tests in 2 to 3 days, or when the doctor says.', 'If you can, also do the OCT and record the result.'],
+      ['Tell the flight surgeon now.', 'The results package is ready to send.', 'No contact? Follow the approved holding plan.']
+    ];
+    const accTxt = ACC[nivel].slice();
+    if (back && nivel !== 1) accTxt[1] = nivel === 0 ? 'Next quick test in ' + back.proximo_dias + ' days.' : (nivel === 3 ? accTxt[1] : 'Repeat the tests in ' + back.proximo_dias + ' days, or when the doctor says.');
+    if (back) accTxt[2] = nivel === 3 ? accTxt[2] : 'Saved on this device (test no. ' + back.testes + ').';
+    const accoes = accTxt.map((t, i) => ({ n: i + 1, t: t }));
+
+    // ---------- Relatório final: a conclusão e em que dados se baseou ----------
+    if (s.passo === 4 && !this._hora) this._hora = new Date();
+    if (s.passo !== 4) this._hora = null;
+    const MI = window.Visao && window.Visao.missao ? window.Visao.missao(eu.dia, euReal ? null : s.perfil) : { microgravidade: { dia: eu.dia }, oct: null };
+    const mg = MI.microgravidade, oct = MI.oct;
+    const luz = (dR && dR.luz) || { n: 0 };
+    const temLuz = luz.n > 0, luzMa = temLuz && luz.nivel !== 'boa';
+    const LUZ = { boa: 'Good', fraca: 'Too dark', forte: 'Too bright or glare' };
+    const novasTxt = (e) => { const nv = comp[e].novas; return nv.length ? nv.length + ' new' + (nv.some(central) ? ', at the centre' : '') + ' · ' + sigla[e] : null; };
+    const amNovas = ['esq', 'dir'].map(novasTxt).filter((x) => x);
+    const acMuda = ['esq', 'dir'].filter((e) => !primeiroTeste && piorOlho(e)).map((e) => sigla[e] + ' lost ' + (ant.ac[e] - ac.res[e].sem) + ' line' + (ant.ac[e] - ac.res[e].sem > 1 ? 's' : ''));
+    const relTestes = [
+      { k: 'Near acuity', v: aconteceu[0].valor, sub: primeiroTeste ? 'First test: becomes your baseline' : (acMuda.length ? acMuda.join(' · ') + ' vs baseline' : 'Same as your baseline'), dot: aconteceu[0].dot },
+      { k: 'Amsler grid', v: amNovas.length ? amNovas.join(' · ') : 'No new zones', sub: primeiroTeste ? 'First map: becomes your baseline' : 'Compared with your baseline map', dot: cores[nAms] },
+      { k: 'Vision changes', v: aconteceu[1].valor, sub: aconteceu[1].sub, dot: aconteceu[1].dot },
+      { k: 'OCT (retina)', v: oct ? (oct.delta >= 0 ? '+' : '') + oct.delta + '% · day ' + oct.dia : 'None recorded',
+        sub: oct ? 'vs first OCT · expected up to +' + oct.p90 + '% (P90)' : 'The colour comes from the quick tests', dot: oct ? ['var(--ok)', 'var(--ylw)', 'var(--bad)'][oct.level] || 'var(--ok)' : 'var(--tx3)' }
+    ];
+    const relMissao = [
+      { k: 'Microgravity', v: mg.dia === 0 ? 'Pre-flight · on Earth' : 'Day ' + mg.dia + ' in orbit', sub: mg.p50 !== undefined ? 'Expected retina change by now: +' + mg.p50 + '% (P50), up to +' + mg.p90 + '% (P90) · ' + mg.fonte : 'Time in microgravity', dot: 'var(--acc-text)' },
+      { k: 'Light exposure', v: temLuz ? LUZ[luz.nivel] : 'Not measured', sub: temLuz ? 'Brightness ' + luz.media + '% · ' + (100 - luz.foraPct) + '% of readings good · camera' : 'Needs the camera during the tests', dot: temLuz ? (luzMa ? 'var(--ylw)' : 'var(--ok)') : 'var(--tx3)' },
+      { k: 'Pre-exam questionnaire', v: PRV.titulo, sub: PR.ressalvas.length ? PR.ressalvas.join(' ') : '9 answers before the tests · no caveats', dot: PRV.dot },
+      { k: 'Spacecraft', v: qv.nave === undefined ? 'Not answered' : ['Stable', 'Slight vibration', 'Strong vibration'][qv.nave], sub: 'Your answer before the tests', dot: qv.nave === 0 ? 'var(--ok)' : 'var(--ylw)' },
+      { k: 'Viewing distance', v: dR.n > 0 ? 'Average ' + dR.media + ' cm' : 'Not measured', sub: dR.n > 0 ? (100 - dR.foraPct) + '% of the time in range · camera' : 'Hold the screen at 40 cm (acuity), 33 cm (grid)', dot: distDot }
+    ];
+    const CORN = ['Green', 'Yellow', 'Orange', 'Red'];
+    const usados = ['near acuity', 'Amsler grid', 'vision changes'].concat(oct ? ['OCT'] : []);
+    const dadosM = [mg.dia === 0 ? 'pre-flight conditions (on Earth)' : 'microgravity (day ' + mg.dia + ')'].concat(temLuz ? ['light exposure'] : [], faltam === 0 ? ['the pre-exam questionnaire'] : [], dR.n > 0 ? ['viewing distance'] : []);
+    const lista = (a) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+    const relFrase = 'IRIS concluded ' + CORN[nivel] + ' (' + hero.nivel.toLowerCase() + ') based on ' + usados.length + ' tests (' + lista(usados) + ') and mission data on ' + lista(dadosM) + '.';
+    // Porquê: testes, condições e contexto da microgravidade
+    const problemas = [];
+    if (PR.ressalvas.length) problemas.push('the pre-exam questionnaire noted: ' + PR.ressalvas.map((r) => r.replace(/\.$/, '').toLowerCase()).join('; '));
+    if (dR.n > 0 && dR.foraPct >= 40) problemas.push('the distance was out of range ' + dR.foraPct + '% of the time');
+    if (luzMa && luz.foraPct >= 40) problemas.push(luz.nivel === 'fraca' ? 'the lighting was too dark' : 'there was too much light or glare');
+    const bons = [];
+    if (temLuz && !luzMa) bons.push('good lighting');
+    if (faltam === 0 && !PR.ressalvas.length) bons.push('ready on the pre-exam questionnaire');
+    if (dR.n > 0 && dR.foraPct < 40) bons.push('distance in range');
+    const porque = [];
+    if (back && back.motivos.length) porque.push({ k: 'Tests', t: 'What changed: ' + back.motivos.join(' ') });
+    else if (!back && (amNovas.length || acMuda.length)) porque.push({ k: 'Tests', t: 'What changed: ' + acMuda.concat(amNovas.map((x) => 'Amsler ' + x)).join('; ') + '.' });
+    else porque.push({ k: 'Tests', t: primeiroTeste ? 'This is your first test, so it becomes your baseline. Later tests are compared with it.' : 'Acuity and the Amsler grid are the same as your baseline.' });
+    if (nSint) porque.push({ k: 'Vision changes', t: 'You reported a new change in your vision (' + listaSint.join(', ') + '). ' + (nSint === 3 ? 'This is a clinical alert: tell the flight surgeon now.' : 'A new change alone raises the result to orange.') });
+    if (problemas.length) porque.push({ k: 'Conditions', t: 'The measurement may have been affected: ' + lista(problemas) + '. ' + (nivel === 1 ? 'That is why the result is yellow: repeat the tests in better conditions.' : 'Repeat the tests to confirm the change.') });
+    else porque.push({ k: 'Conditions', t: bons.length ? 'The test conditions were good (' + lista(bons) + '), so the result is reliable.' : 'The conditions were not measured by the camera, so they could not be checked.' });
+    if (mg.dia === 0) porque.push({ k: 'Pre-flight', t: 'Recorded on Earth before launch, without microgravity. This is the reference for every test in flight.' });
+    else if (mg.p50 !== undefined) porque.push({ k: 'Microgravity', t: 'Day ' + mg.dia + ' in microgravity: in the reference population the retina around the optic nerve has thickened about +' + mg.p50 + '% by now (9 in 10 stay below +' + mg.p90 + '%). ' + (nivel >= 2 ? 'A change in the quick tests at this stage should be checked with OCT when available.' : 'The quick tests found no visual change today.') });
+    if (oct) porque.push({ k: 'OCT', t: 'Latest OCT (day ' + oct.dia + '): ' + (oct.delta >= 0 ? '+' : '') + oct.delta + '% vs the first OCT, ' + (oct.level === 0 ? 'within the expected range.' : 'above the expected range: ' + oct.motivo) });
+    const relMeta = eu.nome + ' · Day ' + eu.dia + ' · ' + (this._hora || new Date()).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' · ' + (euReal ? 'Real data' : 'Simulated example');
+    const REV = [
+      { t: 'No review needed', cor: 'var(--ok-tx)', soft: 'var(--ok-soft)' },
+      { t: 'Repeat the test', cor: 'var(--ylw-tx)', soft: 'var(--ylw-soft)' },
+      { t: 'Review pending', cor: 'var(--warn-tx)', soft: 'var(--warn-soft)' },
+      { t: 'Priority review', cor: 'var(--bad-tx)', soft: 'var(--bad-soft)' }
+    ];
+
+    // ---------- Passos ----------
+    const bloq1 = faltam > 0 || PR.estado === 'vermelho';
+    const bloq2 = ac.fase !== 'feito';
+    const bloq3 = !(am.feito.dir && am.feito.esq);
+    const bloqueio = [false, bloq1, bloq1 || bloq2, bloq1 || bloq2 || bloq3];
+    const titulos = ['Before you start', 'Near visual acuity', 'Amsler grid', 'Result'];
+    const labels = ['Before you start', 'Acuity', 'Amsler grid', 'Result'];
+    const nos = labels.map((lb, i) => {
+      const n = i + 1;
+      const atual = n === s.passo;
+      const feitoN = n < s.passo || (n <= s.max && n !== s.passo && n < 4);
+      const bloqueado = n > s.max || bloqueio[i];
+      return {
+        label: lb, num: n,
+        feito: feitoN && !atual, numero: !(feitoN && !atual),
+        bloqueado: bloqueado,
+        atualAria: atual ? 'step' : 'false',
+        cursor: bloqueado ? 'default' : 'pointer',
+        borda: atual ? 'var(--acc-text)' : (feitoN ? 'var(--acc)' : 'var(--line)'),
+        fundo: atual ? 'linear-gradient(var(--acc-soft), var(--acc-soft)), var(--bg)' : (feitoN ? 'var(--acc)' : 'var(--bg)'),
+        cor: atual ? 'var(--acc-text)' : (feitoN ? 'var(--acc-tx)' : 'var(--tx3)'),
+        glow: atual ? '0 0 18px var(--acc-glow)' : 'none',
+        peso: atual ? 700 : 500,
+        corLabel: atual ? 'var(--tx)' : (bloqueado ? 'var(--tx3)' : 'var(--tx2)'),
+        ir: () => { if (!bloqueado) this.irPara(n); }
+      };
+    });
+    const seguintes = ['Start · Acuity', 'Next · Amsler grid', 'See result'];
+    let rodape1 = 'About 5 minutes in total';
+    if (faltam > 0) rodape1 = 'Answer ' + faltam + (faltam === 1 ? ' question' : ' questions') + ' to start';
+    else if (PR.estado === 'vermelho') rodape1 = 'Not reliable right now: fix the condition first';
+    const rodapes = [rodape1, '', '', 'Done · day ' + eu.dia + (back ? ' · saved on this device' : '')];
+    const subtitulos = ['Checks · about 5 minutes', 'Checks · test 1 of 2 · about 1 minute per eye', 'Checks · test 2 of 2 · about 1 minute per eye', 'Checks · result'];
+    const alvoCm = s.passo === 2 ? '40' : '33';
+    const dv = s.dist;
+    let camara = { t: 'Camera on · only measures distance · nothing recorded', dot: 'var(--acc-text)' };
+    let distChip = { t: 'Distance OK · about ' + alvoCm + ' cm', dot: 'var(--ok)' };
+    if (window.Visao) {
+      if (!dv) { distChip = { t: 'Starting the camera… hold the screen at ' + alvoCm + ' cm', dot: 'var(--tx3)' }; }
+      else if (dv.estado === 'ok') { distChip = { t: 'Distance OK · ' + dv.cm + ' cm', dot: 'var(--ok)' }; }
+      else if (dv.estado === 'perto') { distChip = { t: 'Too close · ' + dv.cm + ' cm · move back to ' + alvoCm + ' cm', dot: 'var(--ylw)' }; }
+      else if (dv.estado === 'longe') { distChip = { t: 'Too far · ' + dv.cm + ' cm · move closer to ' + alvoCm + ' cm', dot: 'var(--ylw)' }; }
+      else if (dv.estado === 'sem_cara') { distChip = { t: 'I can\'t see your face · look at the screen', dot: 'var(--ylw)' }; }
+      else { distChip = { t: 'No camera · measure ' + alvoCm + ' cm with your forearm', dot: 'var(--tx3)' }; camara = { t: 'Camera unavailable · open the app with abrir_app to measure distance', dot: 'var(--tx3)' }; }
+    }
+    const condicoes = [distChip, camara];
+    // Painel da câmara (metade direita do teste): imagem em directo + distância.
+    const cam = { anim: '', cm: '', titulo: 'Starting the camera…', dica: 'hold the screen at ' + alvoCm + ' cm', cor: '#D5DAE0', borda: 'var(--line)', ponto: '#9AA3AD',
+      selo: 'Camera · only measures distance · nothing recorded', semVideo: false, aviso: '' };
+    if (!window.Visao || (dv && ['ok', 'perto', 'longe', 'sem_cara'].indexOf(dv.estado) === -1)) {
+      Object.assign(cam, { titulo: 'No camera', dica: 'measure ' + alvoCm + ' cm with your forearm', selo: 'Camera unavailable', semVideo: true,
+        aviso: 'To see the camera and measure distance, open the app with the abrir_app file and allow the camera in the browser.' });
+    } else if (dv) {
+      cam.ponto = '#E0554B';
+      if (dv.estado === 'ok') Object.assign(cam, { cm: dv.cm + ' cm', titulo: 'Distance OK', dica: '', cor: '#7BD8A0', borda: 'var(--ok)' });
+      else if (dv.estado === 'perto') Object.assign(cam, { cm: dv.cm + ' cm', titulo: 'Too close', dica: 'move back to ' + alvoCm + ' cm', cor: '#F2D36B', borda: 'var(--ylw)', anim: 'animation: dt-pisca 1.2s ease-in-out infinite; animation-delay: -' + (Date.now() % 1200) + 'ms' });
+      else if (dv.estado === 'longe') Object.assign(cam, { cm: dv.cm + ' cm', titulo: 'Too far', dica: 'move closer to ' + alvoCm + ' cm', cor: '#F2D36B', borda: 'var(--ylw)', anim: 'animation: dt-pisca 1.2s ease-in-out infinite; animation-delay: -' + (Date.now() % 1200) + 'ms' });
+      else Object.assign(cam, { titulo: 'I can\'t see your face', dica: 'look straight at the screen', cor: '#F2D36B', borda: 'var(--ylw)' });
+    }
+
+    // ---------- Ajuda ----------
+    const ajudas = [
+      { titulo: 'Before you start', meta: 'About 5 minutes in total',
+        passos: ['Answer the pre-exam questionnaire: 9 questions, 3 per screen. If the measurement would not be reliable (strong vibration, bad lighting, strong symptoms), fix the condition first.', 'Get ready: feet secured, screen on velcro at eye level, reading glasses and light as for reading.', 'A new and important change in vision is a clinical alert: tell the flight surgeon, even if you do not do the test.', 'Then start with acuity.'],
+        recs: ['Think only about the last few days.', 'There are no right or wrong answers.', 'Answers only go to the medical team.'],
+        cuidado: 'A sudden or strong change in vision does not wait for the test: tell the flight surgeon now.' },
+      { titulo: 'Near visual acuity', meta: 'About 1 minute per eye · test 1 of 2',
+        passos: acPassos.map((p) => p.t),
+        recs: ['Try first without effort, as you do every day.', 'If your reading is worse than your baseline, the app asks for a second test with the spare glasses.', 'The camera only measures distance. Nothing is recorded.', 'With the microphone on, you can say the letters, “next”, “delete” and “can\'t read”.'],
+        cuidado: 'If you feel the station move during the test, carry on: the app logs it and tells you if you need to repeat.' },
+      { titulo: 'Amsler grid', meta: 'About 1 minute per eye · test 2 of 2',
+        passos: amPassos.map((p) => p.t + (p.itens.length ? ' ' + p.itens.map((x) => x.t).join('; ') + '.' : '')),
+        recs: ['There is no right or wrong answer. Only what you see matters.', 'If you see something new, that is what matters.', 'The app compares with your last test and highlights only what is new.'],
+        cuidado: 'If you have sudden vision loss, eye pain or flashes of light, do not do the test: tell the flight surgeon now.' },
+      { titulo: 'How to read the result', meta: 'Four levels',
+        passos: ['Green: routine. Keep the normal schedule.', 'Yellow: conditions may have affected the test. Repeat when you can.', 'Orange: change since the last test. The medical team reviews it.', 'Red: clinical priority. Tell the flight surgeon now.'],
+        recs: ['The result answers three questions: what happened, under what conditions and what to do next.', 'On the Amsler grid, only new zones are highlighted.'],
+        cuidado: 'This result is not a SANS diagnosis. Limits are set by the medical team before the mission.' }
+    ];
+    const aj0 = ajudas[s.passo - 1];
+    const aj = { titulo: aj0.titulo, meta: aj0.meta, cuidado: aj0.cuidado,
+      passos: aj0.passos.map((t, i) => ({ n: i + 1, t: t })),
+      recs: aj0.recs.map((t) => ({ t: t })) };
+
+    const seguinteOff = bloqueio[s.passo] === true;
+    // ---------- Voz ----------
+    const temVoz = !!(window.Voz && window.Voz.podeFalar());
+    const micOn = s.mic.estado === 'a_ouvir' || s.mic.estado === 'a_preparar';
+    const chipOn = (on) => ({ fundo: on ? 'var(--acc-soft)' : 'transparent', borda: on ? 'var(--acc-line)' : 'var(--line)', cor: on ? 'var(--acc-text)' : 'var(--tx2)' });
+    const vz = {
+      voz: Object.assign({ on: temVoz && s.voz, t: !temVoz ? 'No voice' : (s.voz ? 'Voice on' : 'Voice off') }, chipOn(temVoz && s.voz)),
+      mic: Object.assign({ on: micOn, t: s.mic.estado === 'a_ouvir' ? 'Listening… (tap to stop)' : (s.mic.estado === 'a_preparar' ? 'Preparing…' : (s.mic.estado === 'precisa_online' || s.mic.estado === 'sem_pacote' ? 'Allow online voice' : 'Answer by voice')) }, chipOn(micOn || s.mic.estado === 'precisa_online')),
+      temMsg: !!s.mic.mensagem && s.mic.estado !== 'desligado',
+      msg: s.mic.mensagem,
+      alternarVoz: () => { if (!window.Voz) return; const v = window.Voz.alternar(); this.setState({ voz: v }); if (v) this.falar('Voice on.', false, ['voice_on']); },
+      alternarMic: () => {
+        if (!window.Voz) return;
+        if (micOn) { window.Voz.desligarMicrofone(); return; }
+        // 2.º toque, depois do aviso: aceita o reconhecimento online do navegador (ex.: Safari)
+        const online = s.mic.estado === 'precisa_online' || s.mic.estado === 'sem_pacote';
+        window.Voz.ligarMicrofone((t) => this.aoOuvir(t), (e) => this.setState({ mic: e }), online);
+      }
+    };
+    const claro = s.tema === 'claro';
+    return {
+      temaClasse: claro ? 'tema-claro' : 'tema-escuro',
+      selo: window.Visao ? window.Visao.selo() : 'Simulated data',
+      claro: claro, escuro: !claro,
+      temaLabel: claro ? 'Dark mode' : 'Light mode',
+      toggleTema: () => {
+        const n = this.state.tema === 'escuro' ? 'claro' : 'escuro';
+        this.setState({ tema: n });
+        try { window.localStorage.setItem('visao-tema', n); } catch (e) {}
+      },
+      eu: eu,
+      gate: pendente,
+      gateTexto: gateTexto,
+      amslerFace: euReal ? 'Amsler grid · vs your baseline' : 'Amsler grid · vs previous test',
+      gateTitulo: euReal ? 'Spacecraft motion' : 'Spacecraft motion detected',
+      gateQuando: euReal ? (window.Visao ? window.Visao.diaTxt(eu.dia) : 'Day ' + eu.dia) + ' · before you start' : 'Today · 10:42–10:43 UTC · 52 s',
+      gatePergunta: euReal ? 'Did you feel the station move or vibrate?' : 'Did you feel the station move or vibrate during that time?',
+      gateOps: gateOps,
+      abrirEvento: () => { try { window.localStorage.setItem('visao-abrir', 'eventos'); } catch (e) {} },
+      p1: s.passo === 1, p2: s.passo === 2, p3: s.passo === 3, p4: s.passo === 4,
+      p2Intro: s.passo === 2 && s.intro[2], p2Teste: s.passo === 2 && !s.intro[2],
+      p3Intro: s.passo === 3 && s.intro[3], p3Teste: s.passo === 3 && !s.intro[3],
+      comecarAc: () => this.comecar(2),
+      comecarAm: () => this.comecar(3),
+      vz: vz,
+      passoTitulo: titulos[s.passo - 1],
+      subtitulo: subtitulos[s.passo - 1],
+      rodape: rodapes[s.passo - 1],
+      comCondicoes: (s.passo === 2 || s.passo === 3) && !!s.intro[s.passo],
+      semCondicoes: s.passo === 1 || s.passo === 4,
+      condicoes: condicoes,
+      cam: cam,
+      octNota: euReal ? 'The colour comes only from the quick tests, compared with your baseline.' : 'OCT: optional but recommended. Measure on the device and record the result in the OCT tab.',
+      nos: nos,
+      progressoPx: Math.round((s.passo - 1) / 3 * 836),
+      abrirAjuda: () => this.setState({ ajuda: true }),
+      fecharAjuda: () => this.setState({ ajuda: false }),
+      ajuda: s.ajuda,
+      aj: aj,
+      // 1
+      ola: eu.ola,
+      preparar: preparar,
+      pr: pr, qPag: qPag,
+      qPagTxt: 'Questions ' + (pagIni + 1) + '–' + (pagIni + 3) + ' of 9',
+      qPontos: [0, 1, 2].map((k) => ({ w: k === s.qpag ? 22 : 8, cor: k === s.qpag ? 'var(--acc-text)' : (QUEST.slice(k * 3, k * 3 + 3).every(respondida) ? 'var(--acc)' : 'var(--line)') })),
+      qTemAnterior: s.qpag > 0, qTemSeguinte: s.qpag < 2,
+      qSeguinteOff: !pagCompleta, qSeguinteFundo: pagCompleta ? 'var(--acc)' : 'var(--chip)', qSeguinteCor: pagCompleta ? 'var(--acc-tx)' : 'var(--tx3)',
+      qAnterior: () => this.setState((st) => ({ qpag: Math.max(0, st.qpag - 1) })),
+      qSeguinte: () => { if (pagCompleta) this.setState((st) => ({ qpag: Math.min(2, st.qpag + 1) })); },
+      tudoNormal: () => this.setState((st) => {
+        const n = Object.assign({}, st.qv);
+        QUEST.slice(st.qpag * 3, st.qpag * 3 + 3).forEach((q) => { n[q.id] = q.multi ? [] : 0; });
+        return { qv: n, resp: n.nave === undefined ? st.resp : (n.nave === 0 ? 'nao' : 'sim') };
+      }),
+      responderDeNovo: () => this.setState({ qv: {}, qpag: 0, resp: this.state.real ? null : this.state.resp }),
+      // 2
+      acOlhos: acOlhos,
+      acOlhoTxt: nomeOlho[ac.eye] + ' · cover the ' + outroOlho[ac.eye],
+      acerto: acerto,
+      teclas: teclas,
+      apagar: () => this.apagar(),
+      acLer: ac.fase === 'ler', acFim: ac.fase === 'fim', acFeito: ac.fase === 'feito',
+      acTitulo: nomeOlho[ac.eye] + ' · cover the ' + outroOlho[ac.eye],
+      acSub: 'Line ' + (ac.linha + 1) + ' of 5' + (ac.pass === 'com' ? ' · with spare glasses' : ''),
+      letrasAc: letrasAc, linhaTxt: linhaAtual.join(''), tecladoTxt: this.teclas().join(''),
+      acSegOff: !completa,
+      acSegOp: completa ? 1 : 0.45,
+      seguinteLinha: () => this.avancarLinha(),
+      naoConsigo: () => this.naoConsigo(),
+      acFimTitulo: nomeOlho[ac.eye] + (ac.pass === 'com' ? ' with spare glasses: ' : ': ') + (ultimoRes === 0 ? 'you read no lines.' : 'you read up to line ' + ultimoRes + ' of 5.'),
+      acFimSub: primeiroTeste ? refTxt + '.' : refTxt + ': ' + linhasTxt(ant.ac[ac.eye]) + '.',
+      acPior: pior, acNaoPior: !pior,
+      comReserva: () => { this.setAc((a) => Object.assign(a, { pass: 'com', linha: 0, toques: {}, resp: [], fase: 'ler' })); this.falarAc(); },
+      semReserva: () => { this.setAc((a) => { const sr = Object.assign({}, a.semReserva); sr[a.eye] = true; return this.avancarOlho(Object.assign(a, { semReserva: sr })); }); this.falarAc(); },
+      acAvancar: () => { this.setAc((a) => this.avancarOlho(a)); this.falarAc(); },
+      acAvancarLabel: ac.eye === 'esq' ? 'Go to the right eye' : 'Finish acuity',
+      acResumo: acResumo,
+      acRepetir: () => { this.setState({ ac: this.acInicial() }); this.falarAc(); },
+      acPassos: acPassos,
+      // 3
+      cells: cells,
+      amOlhos: amOlhos,
+      amTitulo: amTitulo,
+      amPassos: amPassos,
+      tudoDireito: () => this.amTudoDireito(),
+      concluirOlho: () => this.amConcluir(),
+      concluirOff: nMarcas(am.eye) === 0,
+      concluirOp: nMarcas(am.eye) === 0 ? 0.45 : 1,
+      // 4
+      hero: hero,
+      relatorio: s.relatorio && s.passo === 4, relFrase: relFrase, relTestes: relTestes, relMissao: relMissao, relPorque: porque, relMeta: relMeta, relAccoes: accoes,
+      abrirRelatorio: () => this.setState({ relatorio: true }), fecharRelatorio: () => this.setState({ relatorio: false }),
+      aconteceu: aconteceu,
+      mapas: mapas,
+      condRes: condRes,
+      accoes: accoes,
+      revisao: REV[nivel],
+      comAlerta: nivel >= 2,
+      refazer: () => { if (window.Visao) { window.Visao.camara.parar(); window.Visao.camara.limpar(); } this.setState({ passo: 1, max: 1, qv: {}, qpag: 0, ac: this.acInicial(), am: this.amInicial(), back: null, dist: null, intro: { 2: true, 3: true }, resp: this.state.real ? null : this.state.resp }); },
+      noInicio: s.passo === 1,
+      opAnterior: s.passo === 1 ? 0.4 : 1,
+      anterior: () => { if (this.state.passo > 1) this.irPara(this.state.passo - 1); },
+      temSeguinte: s.passo < 4,
+      seguinteOff: seguinteOff,
+      opSeguinte: seguinteOff ? 0.45 : 1,
+      seguinteLabel: s.passo < 4 ? seguintes[s.passo - 1] : '',
+      seguinte: () => {
+        if (seguinteOff) return;
+        if (this.state.passo < 4) this.irPara(this.state.passo + 1);
+      }
+    };
+  }
+}
+window.Component = Component;
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+node_modules/
+.idea/
+.vscode/
+
+# Gráfico de validação: gerado pelo simulador, só para os slides
+dados/validacao.png

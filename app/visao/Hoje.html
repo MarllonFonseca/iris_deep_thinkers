@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo_icone.png">
+<title>Today · IRIS</title>
+<link href="fonte.css?v=20261115h" rel="stylesheet">
+<link href="iris.css?v=20261115h" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7FB7CF}a:hover{color:#A9D3E4}
+.tema-escuro{--bg:#0D0C0A;--glow1:rgba(207,227,243,0.15);--glow2:rgba(95,157,184,0.16);--card:rgba(255,255,255,0.06);--card2:rgba(255,255,255,0.025);--card-shadow:none;--line:rgba(255,255,255,0.12);--line2:rgba(255,255,255,0.08);--tx:#F2F4F7;--tx2:#C5CBD3;--tx3:#8E959E;--chip:rgba(255,255,255,0.06);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#CFE3F3;--acc-dot:#CFE3F3;--acc-glow:rgba(207,227,243,0.35);--acc-soft:rgba(207,227,243,0.13);--acc-line:rgba(207,227,243,0.5);--cta:#F2F4F7;--cta-tx:#0D0C0A;--cta-glow:rgba(242,244,247,0.16);--nav:rgba(22,24,28,0.82);--nav-shadow:0 16px 40px rgba(0,0,0,0.45);--ok:#7FD1A6;--ok-tx:#7FD1A6;--warn:#F0A940;--warn-tx:#F0A940;--bad:#F0766B;--bad-tx:#F0766B;--bad-soft:rgba(240,118,107,0.13);--teal:#7FB7CF;--teal-soft:rgba(127,183,207,0.12);--badge-bad-bg:#F0766B;--badge-bad-tx:#1A0D0B;--bad-btn:linear-gradient(180deg,#F5918A,#E0645A);--bad-btn-tx:#1A0D0B;--ylw:#EBD35B;--ylw-tx:#EBD35B;--ylw-soft:rgba(235,211,91,0.13);--ylw-line:rgba(235,211,91,0.42);--ok-soft:rgba(127,209,166,0.14);--overlay:rgba(5,5,6,0.66);--sheet:#15171B;--sheet-line:rgba(255,255,255,0.10);--tx-soft:#E1E5EA;--warn-line:rgba(240,169,64,0.45);--warn-soft:rgba(240,169,64,0.15);}
+.tema-claro{--bg:#FAFBFC;--glow1:rgba(207,227,243,0.9);--glow2:rgba(95,157,184,0.14);--card:rgba(255,255,255,0.96);--card2:rgba(244,248,252,0.94);--card-shadow:0 10px 30px rgba(13,12,10,0.06);--line:rgba(13,12,10,0.13);--line2:rgba(13,12,10,0.07);--tx:#0D0C0A;--tx2:#45484D;--tx3:#5F636A;--chip:rgba(13,12,10,0.04);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#2F5E80;--acc-dot:#5B8DB3;--acc-glow:rgba(120,170,210,0.35);--acc-soft:rgba(207,227,243,0.6);--acc-line:#9DC2DE;--cta:#0D0C0A;--cta-tx:#FFFFFF;--cta-glow:rgba(13,12,10,0.18);--nav:rgba(255,255,255,0.9);--nav-shadow:0 14px 34px rgba(13,12,10,0.12);--ok:#3FAE6A;--ok-tx:#1E7B34;--warn:#F0A940;--warn-tx:#A05A00;--bad:#E0645A;--bad-tx:#C4141B;--bad-soft:rgba(224,100,90,0.12);--teal:#3E7F9C;--teal-soft:rgba(127,183,207,0.18);--badge-bad-bg:#C4141B;--badge-bad-tx:#FFFFFF;--bad-btn:linear-gradient(180deg,#D83A30,#B3241B);--bad-btn-tx:#FFFFFF;--ylw:#E2C232;--ylw-tx:#7A6500;--ylw-soft:rgba(226,194,50,0.18);--ylw-line:rgba(122,101,0,0.32);--ok-soft:rgba(63,174,106,0.13);--overlay:rgba(13,12,10,0.32);--sheet:#FFFFFF;--sheet-line:rgba(13,12,10,0.08);--tx-soft:#1F2124;--warn-line:rgba(160,90,0,0.32);--warn-soft:rgba(240,169,64,0.18);}
+</style>
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;background:#050506}
+#palco{width:1194px;height:834px;flex:none;transform-origin:center center;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.45)}
+</style>
+<!-- Backend (offline): dados simulados, regras, motor, modelo, armazenamento e ligação aos ecrãs -->
+<script src="../dados.js?v=20261115h"></script>
+<script src="../../motor/regras.js?v=20261115h"></script>
+<script src="../../motor/motor.js?v=20261115h"></script>
+<script src="../../motor/modelo.js?v=20261115h"></script>
+<script src="../armazenamento.js?v=20261115h"></script>
+<script src="ligacao.js?v=20261115h"></script>
+<script src="i18n.js?v=20261115h"></script>
+<script src="runtime.js?v=20261115h"></script>
+</head>
+<body>
+<div id="palco"><div id="raiz"></div></div>
+<template id="dc-modelo">
+<div class="{{ temaClasse }}" style="position: relative; width: 1194px; height: 834px; overflow: hidden; font-family: 'Manrope', system-ui, sans-serif; color: var(--tx); -webkit-font-smoothing: antialiased; background: radial-gradient(52% 58% at 27% 38%, var(--glow1), rgba(0,0,0,0) 70%), radial-gradient(40% 45% at 92% 100%, var(--glow2), rgba(0,0,0,0) 70%), var(--bg)">
+
+<div style="position: absolute; left: 40px; right: 40px; top: 28px; display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 10px">
+<span class="dt-logo" role="img" aria-label="IRIS" title="Integrated Remote Intelligence for Spaceflight" style="width: 65px; height: 36px; color: var(--tx)"></span>
+<span style="margin-left: 6px; font-size: 12px; font-weight: 700; color: var(--tx3); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px">{{ selo }}</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{ toggleTema }}" aria-pressed="{{ claro }}" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--chip); color: var(--tx); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">
+<sc-if value="{{ escuro }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{ claro }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+{{ temaLabel }}</button>
+<a href="Perfil.html" style="display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 14px 0 4px; border-radius: 20px; background: var(--chip); border: 1px solid var(--line2); font-size: 13px; font-weight: 600; color: var(--tx); text-decoration: none">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 16px; background: linear-gradient(135deg, #E6F1FA, #9DC2DE); color: #0D0C0A; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ p.ini }}</span>{{ p.nome }}<span style="font-weight: 500; color: var(--tx3)">· Day {{ p.dia }}</span></a>
+</div>
+</div>
+
+<div aria-label="Mission days" role="group" style="position: absolute; left: 148px; top: 96px; display: flex; gap: 16px">
+<sc-for list="{{ dias }}" as="d" hint-placeholder-count="5">
+<span style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 52px; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1px solid {{ d.border }}; background: {{ d.bg }}; box-shadow: {{ d.glow }}; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: {{ d.peso }}; color: {{ d.cor }}">{{ d.n }}</span><span style="font-size: 12px; font-weight: {{ d.peso }}; color: {{ d.corLabel }}">{{ d.label }}</span></span>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 110px; top: 128px; width: 420px; height: 420px; pointer-events: none">
+<sc-if value="{{ irisOn.original }}" hint-placeholder-val="{{ true }}"><img src="assets/iris_glow.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.castanho }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_castanho.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.avela }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_avela.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.verde }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_verde.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.azul }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_azul.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.cinzento }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_cinzento.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+<sc-if value="{{ irisOn.ambar }}" hint-placeholder-val="{{ false }}"><img src="assets/iris_ambar.webp" alt="" aria-hidden="true" style="width: 420px; height: 420px"></sc-if>
+</div>
+
+<section aria-labelledby="rec-titulo" style="position: absolute; left: 60px; top: 500px; width: 520px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--tx2)"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: var(--acc-dot); box-shadow: 0 0 10px var(--acc-glow)"></span>Hi, {{ p.curto }} · today's advice</span>
+<h1 id="rec-titulo" style="margin: 0; font-size: 34px; font-weight: 400; letter-spacing: -0.6px; color: var(--tx)">{{ rec.titulo }}</h1>
+<p style="margin: 0; max-width: 440px; font-size: 15px; line-height: 1.5; color: var(--tx2)">{{ rec.texto }}</p>
+<sc-if value="{{ naoVermelho }}" hint-placeholder-val="{{ true }}">
+<span style="display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--tx2)">
+<span style="display: flex; align-items: center; gap: 6px"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>5 min</span>
+<span style="display: flex; align-items: center; gap: 6px"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 12h16M12 4v16"></path></svg>Prep and 2 tests</span>
+</span>
+<a href="{{ inicioLink }}" style="margin-top: 6px; display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 24px; border-radius: 23px; background: var(--cta); color: var(--cta-tx); font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 8px 30px var(--cta-glow)">
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" style="fill: currentColor"><path d="M7 4.5v15l13-7.5z"></path></svg>Start</a>
+</sc-if>
+<sc-if value="{{ vermelho }}" hint-placeholder-val="{{ false }}">
+<a href="Alerta.html" style="margin-top: 6px; display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 24px; border-radius: 23px; background: var(--bad-btn); color: var(--bad-btn-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 30px var(--bad-soft)">Open alert</a>
+</sc-if>
+</section>
+
+<div style="position: absolute; left: 640px; top: 104px; width: 514px; display: flex; flex-direction: column; gap: 12px">
+
+<sc-if value="{{ eventoPendente }}" hint-placeholder-val="{{ true }}">
+<a href="Perfil.html" onClick="{{ abrirEvento }}" aria-label="Notification: spacecraft motion detected. Open in profile to answer." style="display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 12px 18px 12px 14px; border-radius: 22px; background: radial-gradient(90% 140% at 0% 0%, var(--ylw-soft), rgba(0,0,0,0) 70%), linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--ylw-line); box-shadow: var(--card-shadow); text-decoration: none; color: var(--tx)">
+<span aria-hidden="true" style="position: relative; width: 44px; height: 44px; flex: none; border-radius: 22px; background: var(--ylw-soft); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: var(--ylw-tx); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h3l2-5 4 10 2-5h7"></path></svg><span style="position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; border-radius: 5px; background: var(--ylw); box-shadow: 0 0 0 2px var(--bg)"></span></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+<span style="font-size: 12px; font-weight: 700; color: var(--ylw-tx)">Notification · answer before the next test</span>
+<span style="font-size: 16px; font-weight: 600; color: var(--tx)">Spacecraft motion detected</span>
+<span style="font-size: 13px; color: var(--tx3)">Today · 10:42–10:43 UTC · tap to see the chart and answer</span>
+</span>
+<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" style="flex: none; fill: none; stroke: var(--tx3); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M9 5l7 7-7 7"></path></svg>
+</a>
+</sc-if>
+
+<section aria-labelledby="olhos-titulo" style="padding: 22px 24px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<h2 id="olhos-titulo" style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--tx2)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Your eyes</h2>
+<span style="font-size: 13px; color: var(--tx3)">{{ olhosSub }}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))">
+<a href="{{ olhosHref }}" style="display: flex; flex-direction: column; gap: 4px; padding-right: 20px; border-right: 1px solid var(--line2); text-decoration: none; color: var(--tx)">
+<span style="font-size: 13px; color: var(--tx2)">Left eye</span>
+<span style="font-size: 48px; font-weight: 300; letter-spacing: -1.5px; line-height: 1.1">{{ olhoEsq.valor }}<span style="font-size: 22px; font-weight: 400; color: var(--tx2)">{{ olhoEsq.uni }}</span></span>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: {{ olhoEsq.cor }}"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ olhoEsq.dot }}; box-shadow: 0 0 10px {{ olhoEsq.dot }}"></span>{{ olhoEsq.estado }}</span>
+</a>
+<a href="{{ olhosHref }}" style="display: flex; flex-direction: column; gap: 4px; padding-left: 22px; text-decoration: none; color: var(--tx)">
+<span style="font-size: 13px; color: var(--tx2)">Right eye</span>
+<span style="font-size: 48px; font-weight: 300; letter-spacing: -1.5px; line-height: 1.1">{{ olhoDir.valor }}<span style="font-size: 22px; font-weight: 400; color: var(--tx2)">{{ olhoDir.uni }}</span></span>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: {{ olhoDir.cor }}"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ olhoDir.dot }}; box-shadow: 0 0 10px {{ olhoDir.dot }}"></span>{{ olhoDir.estado }}</span>
+</a>
+</div>
+<span style="font-size: 13px; line-height: 1.4; color: var(--tx3)">{{ olhosNota }}</span>
+</section>
+
+<section aria-label="Summary of the last quick test" style="padding: 18px 24px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))">
+<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 22px; font-weight: 500; color: var(--tx)">{{ p.acu }}</span><span style="font-size: 13px; color: var(--tx3)">Acuity</span></span>
+<span style="display: flex; flex-direction: column; gap: 4px; padding-left: 18px; border-left: 1px solid var(--line2)"><span style="font-size: 22px; font-weight: 500; color: var(--tx)">{{ p.amsler }}</span><span style="font-size: 13px; color: var(--tx3)">Amsler grid</span></span>
+<span style="display: flex; flex-direction: column; gap: 4px; padding-left: 18px; border-left: 1px solid var(--line2)"><span style="font-size: 22px; font-weight: 600; color: var(--acc-text)">Day {{ p.prox }}</span><span style="font-size: 13px; color: var(--tx3)">Next test</span></span>
+</section>
+
+<section aria-label="Shortcuts" style="padding: 4px 20px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<a href="SANS.html" style="display: flex; align-items: center; gap: 14px; min-height: 54px; border-bottom: 1px solid var(--line2); text-decoration: none; color: var(--tx)">
+<span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 20px; background: var(--acc-soft); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: var(--acc-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1"><span style="font-size: 16px; font-weight: 500">SANS monitoring</span><span style="font-size: 13px; color: var(--tx3)">{{ p.sans }}</span></span>
+<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" style="fill: none; stroke: var(--tx3); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M9 5l7 7-7 7"></path></svg>
+</a>
+<a href="Alerta.html" style="display: flex; align-items: center; gap: 14px; min-height: 54px; border-bottom: 1px solid var(--line2); text-decoration: none; color: var(--tx)">
+<span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 20px; background: var(--bad-soft); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: var(--bad-tx); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1"><span style="font-size: 16px; font-weight: 500">Alerts</span><span style="font-size: 13px; color: var(--tx3)">{{ alertasTxt }}</span></span>
+<sc-if value="{{ vermelho }}" hint-placeholder-val="{{ false }}"><span style="min-width: 22px; height: 22px; border-radius: 11px; background: var(--badge-bad-bg); color: var(--badge-bad-tx); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; box-sizing: border-box">{{ nAlertas }}</span></sc-if>
+</a>
+<button type="button" onClick="{{ abrirEssencial }}" style="display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 0; border: 0; background: transparent; font-family: inherit; text-align: left; cursor: pointer; color: var(--tx)">
+<span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 20px; background: var(--ok-soft); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: var(--ok-tx); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1"><span style="font-size: 16px; font-weight: 500">Essentials on board</span><span style="font-size: 13px; color: var(--tx3)">Eyes and body · 8 tips and the golden rule</span></span>
+<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" style="fill: none; stroke: var(--tx3); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M9 5l7 7-7 7"></path></svg>
+</button>
+</section>
+</div>
+
+<div aria-hidden="true" style="position: absolute; left: -1500px; right: -1500px; top: 712px; bottom: -1500px; pointer-events: none; background: linear-gradient(180deg, transparent 0, var(--bg) 90px)"></div>
+<nav aria-label="App sections" style="position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 36px; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--line2); box-shadow: var(--nav-shadow)">
+<a href="Hoje.html" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 52px; box-sizing: border-box; padding: 0 22px; border-radius: 26px; background: var(--acc); border: 1px solid var(--acc-line); color: var(--acc-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--acc-glow)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Today</a>
+<a href="TesteRapido.html" aria-label="Checks" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg></a>
+<a href="SANS.html" aria-label="SANS monitoring" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+<a href="Alerta.html" aria-label="Alerts" style="position: relative; width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg><sc-if value="{{ navAlerta }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; top: 13px; right: 16px; width: 8px; height: 8px; border-radius: 4px; background: var(--bad); box-shadow: 0 0 8px var(--bad)"></span></sc-if></a>
+</nav>
+
+
+<sc-if value="{{ essencial }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: -1500px; top: -1500px; right: -1500px; bottom: -1500px; background: var(--overlay); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+<section role="dialog" aria-modal="true" aria-labelledby="ess-titulo" style="position: absolute; left: 117px; top: 56px; width: 960px; max-height: 722px; box-sizing: border-box; overflow-y: auto; padding: 24px 28px; border-radius: 30px; background: var(--sheet); border: 1px solid var(--sheet-line); box-shadow: 0 30px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 44px; height: 44px; flex: none; border-radius: 22px; background: var(--ok-soft); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: var(--ok-tx); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<h2 id="ess-titulo" style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">Essentials on board</h2>
+<span style="font-size: 13px; color: var(--tx3)">General guidance from the Deep Thinkers health team · not a diagnosis</span>
+</div>
+<button type="button" onClick="{{ fecharEssencial }}" aria-label="Close" style="width: 40px; height: 40px; flex: none; border: 1px solid var(--line); border-radius: 20px; background: transparent; color: var(--tx); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px">
+<sc-for list="{{ grupos }}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border-radius: 22px; background: var(--card2); border: 1px solid var(--line2)">
+<h3 style="margin: 0 0 6px; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--tx)"><span aria-hidden="true" style="width: 30px; height: 30px; flex: none; border-radius: 15px; background: var(--acc-soft); display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: var(--acc-text); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round"><path d="{{ g.icone }}"></path></svg></span>{{ g.titulo }}<span style="font-size: 13px; font-weight: 500; color: var(--tx3)">({{ g.n }})</span></h3>
+<sc-for list="{{ g.itens }}" as="i" hint-placeholder-count="4">
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 9px 0; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 22px; height: 22px; flex: none; border-radius: 11px; background: var(--chip); color: var(--tx2); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ i.n }}</span>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--tx-soft)"><strong style="font-weight: 700; color: var(--tx)">{{ i.b }}</strong> {{ i.t }}</p>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+<div role="note" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 18px; border-radius: 20px; background: var(--warn-soft); border: 1px solid var(--warn-line)">
+<span aria-hidden="true" style="width: 30px; height: 30px; flex: none; border-radius: 15px; background: var(--warn); color: #0D0C0A; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center">!</span>
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--warn-tx)">GOLDEN RULE</span>
+<span style="font-size: 15px; line-height: 1.5; color: var(--tx)">Any change in vision, strong headache, dizziness or unusual tiredness: <strong style="font-weight: 700">tell the flight surgeon immediately.</strong></span>
+</span>
+</div>
+</section>
+</sc-if>
+
+</div>
+</template>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tema: 'escuro', perfil: 'B', iris: 'original', resp: null, essencial: false };
+  }
+  componentDidMount() {
+    const upd = {};
+    try {
+      const t = window.localStorage.getItem('visao-tema');
+      const p = window.localStorage.getItem('visao-perfil');
+      const i = window.localStorage.getItem('visao-iris');
+      if (t === 'claro' || t === 'escuro') upd.tema = t;
+      if (p === 'A' || p === 'B' || p === 'C') upd.perfil = p;
+      if (i) upd.iris = i;
+      const r = window.localStorage.getItem('visao-evento-' + (upd.perfil || this.state.perfil));
+      if (r === 'sim' || r === 'nao' || r === 'naosei') upd.resp = r;
+    } catch (e) {}
+    this.setState(upd);
+    this.ouvir = (ev) => {
+      if (!ev) return;
+      if (ev.key === 'visao-tema' && (ev.newValue === 'claro' || ev.newValue === 'escuro')) this.setState({ tema: ev.newValue });
+      if (ev.key === 'visao-perfil' && (ev.newValue === 'A' || ev.newValue === 'B' || ev.newValue === 'C')) {
+        let r = null;
+        try { r = window.localStorage.getItem('visao-evento-' + ev.newValue); } catch (e) {}
+        this.setState({ perfil: ev.newValue, resp: r });
+      }
+      if (ev.key === 'visao-iris' && ev.newValue) this.setState({ iris: ev.newValue });
+      if (ev.key === 'visao-evento-' + this.state.perfil) this.setState({ resp: ev.newValue });
+    };
+    try { window.addEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  componentWillUnmount() {
+    try { window.removeEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  renderVals() {
+    const s = this.state;
+    const perfis = {
+      A: { nome: 'Marta Silveira', curto: 'Marta', ini: 'MS', dia: 60, esq: 6.9, dir: 5.2, nEsq: 0, nDir: 0, lim: 12.5, prox: 67, acu: '5 of 5', amsler: 'Same',
+        sans: 'Timeline of your exams', alertas: 'None active · 1 resolved' },
+      B: { nome: 'Daniel Cossa', curto: 'Daniel', ini: 'DC', dia: 90, esq: 17.0, dir: 12.1, nEsq: 1, nDir: 0, lim: 14.7, prox: 93, acu: 'LE 4 of 5', amsler: '2 zones LE',
+        sans: 'Timeline of your exams', alertas: '3 for medical review' },
+      C: { nome: 'Sofia Lindqvist', curto: 'Sofia', ini: 'SL', dia: 84, esq: 52.9, dir: 24.6, nEsq: 2, nDir: 2, lim: 14.4, prox: 85, acu: 'LE 3 of 5', amsler: 'Centre LE',
+        sans: 'Timeline of your exams', alertas: '1 priority · 2 to review' }
+    };
+    // Perfil real (equipa): tudo vem dos testes guardados no aparelho e do motor de regras.
+    const R = window.Visao ? window.Visao.resumoHoje() : null;
+    const p = R ? R.p : (perfis[s.perfil] || perfis.B);
+    const fmt = (x) => x.toFixed(1).replace('.', ',');
+    const estados = [
+      { estado: 'Green · routine', cor: 'var(--ok-tx)', dot: 'var(--ok)' },
+      { estado: 'Orange · review advised', cor: 'var(--warn-tx)', dot: 'var(--warn)' },
+      { estado: 'Red · clinical priority', cor: 'var(--bad-tx)', dot: 'var(--bad)' }
+    ];
+    const nivel = R ? R.nivel : Math.max(p.nEsq, p.nDir);
+    const recs = [
+      { titulo: 'All within your baseline', texto: 'Your eyes are stable. The next quick test is on day ' + p.prox + '.' },
+      { titulo: 'Repeat the quick tests', texto: 'Your left eye changed against your baseline. The medical team will review it; repeating the tests helps confirm.' },
+      { titulo: 'Tell the flight surgeon', texto: 'There is a priority change against your baseline. The package for Earth is ready.' }
+    ];
+    const dias = [];
+    for (let k = -2; k <= 2; k++) {
+      const hoje = k === 0;
+      const d = p.dia + k;   // antes do lançamento: L−2, L−1 (dias antes do voo)
+      dias.push({
+        n: d < 0 ? 'L' + d : (d === 0 && !hoje ? 'L' : d),
+        label: hoje ? 'Today' : (d <= 0 ? 'Pre-flight' : 'Day'),
+        bg: hoje ? 'var(--acc)' : 'transparent',
+        border: hoje ? 'var(--acc-line)' : 'var(--line)',
+        glow: hoje ? '0 0 28px var(--acc-glow)' : 'none',
+        cor: hoje ? 'var(--acc-tx)' : 'var(--tx2)',
+        corLabel: hoje ? 'var(--acc-text)' : 'var(--tx3)',
+        peso: hoje ? 700 : 500
+      });
+    }
+    const tipos = ['original', 'castanho', 'avela', 'verde', 'azul', 'cinzento', 'ambar'];
+    const irisAtual = tipos.indexOf(s.iris) >= 0 ? s.iris : 'original';
+    const irisOn = {};
+    tipos.forEach((t) => { irisOn[t] = t === irisAtual; });
+    const claro = s.tema === 'claro';
+    // O essencial a bordo: orientações gerais da equipa (olhos e corpo) e a regra de ouro.
+    const grupos = [
+      { titulo: 'Eyes', icone: 'M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12zM12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z', itens: [
+        ['Do your vision tests on the scheduled dates', '(acuity chart and Amsler grid) and record any change.'],
+        ['Tell the flight surgeon right away', 'if you notice blurred vision, trouble reading up close, spots or distorted lines.'],
+        ['Use artificial tears', 'when your eyes feel dry or irritated, and do not rub your eyes.'],
+        ['Protect your eyes', 'with visors or goggles when working with lasers, welding or bright light, and never look at the Sun without a filter.']] },
+      { titulo: 'Body', icone: 'M12 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 10h12M12 10v5M9 21l3-6 3 6', itens: [
+        ['Exercise every day,', 'about 2 hours (treadmill, cycle and resistance training). Do not skip it.'],
+        ['Drink water and eat well,', 'even without thirst or appetite, including calcium, vitamin D and protein.'],
+        ['Sleep 7 to 8 hours', 'at fixed times, with dim light before bed.'],
+        ['Follow the radiation protocol:', 'wear the dosimeter and go to the shelter if there is a solar storm alert.']] }
+    ].map((g) => ({ titulo: g.titulo, icone: g.icone, n: String(g.itens.length), itens: g.itens.map((x, k) => ({ n: String(k + 1), b: x[0], t: x[1] })) }));
+    return {
+      essencial: s.essencial, grupos: grupos,
+      abrirEssencial: () => this.setState({ essencial: true }),
+      fecharEssencial: () => this.setState({ essencial: false }),
+      temaClasse: claro ? 'tema-claro' : 'tema-escuro',
+      selo: window.Visao ? window.Visao.selo() : 'Simulated data',
+      claro: claro,
+      escuro: !claro,
+      temaLabel: claro ? 'Dark mode' : 'Light mode',
+      toggleTema: () => {
+        const n = this.state.tema === 'escuro' ? 'claro' : 'escuro';
+        this.setState({ tema: n });
+        try { window.localStorage.setItem('visao-tema', n); } catch (e) {}
+      },
+      p: R ? R.p : { nome: p.nome, curto: p.curto, ini: p.ini, dia: p.dia, prox: p.prox, acu: p.acu, amsler: p.amsler, sans: p.sans, limTxt: fmt(p.lim) },
+      olhosSub: R ? R.olhosSub : 'Last OCT · day ' + p.dia,
+      olhosHref: R ? 'SANS.html' : 'Tendencia.html',
+      olhosNota: R ? R.olhosNota : 'Retina change against your pre-flight baseline. Simulated reference for day ' + p.dia + ': up to +' + fmt(p.lim) + '%.',
+      dias: dias,
+      irisOn: irisOn,
+      rec: R ? R.rec : recs[nivel],
+      inicioLink: R && R.semRegisto ? 'Registo.html' : 'TesteRapido.html',
+      vermelho: R ? R.nAlertas > 0 : nivel === 2,
+      nAlertas: R ? R.nAlertas : 1,
+      naoVermelho: nivel !== 2,
+      olhoEsq: R ? R.olhoEsq : Object.assign({ valor: '+' + fmt(p.esq), uni: '%' }, estados[p.nEsq]),
+      olhoDir: R ? R.olhoDir : Object.assign({ valor: '+' + fmt(p.dir), uni: '%' }, estados[p.nDir]),
+      alertasTxt: R ? R.alertas : p.alertas,
+      navAlerta: nivel === 2,
+      eventoPendente: R ? false : !s.resp,
+      abrirEvento: () => { try { window.localStorage.setItem('visao-abrir', 'eventos'); } catch (e) {} }
+    };
+  }
+}
+window.Component = Component;
+</script>
+</body>
+</html>

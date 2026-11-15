@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo_icone.png">
+<title>Trend · IRIS</title>
+<link href="fonte.css?v=20261115h" rel="stylesheet">
+<link href="iris.css?v=20261115h" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7FB7CF}a:hover{color:#A9D3E4}
+.tema-escuro{--teal:#7FB7CF;--bg:#0D0C0A;--glow1:rgba(207,227,243,0.15);--glow2:rgba(95,157,184,0.15);--card:rgba(255,255,255,0.06);--card2:rgba(255,255,255,0.025);--card-shadow:none;--line:rgba(255,255,255,0.12);--line2:rgba(255,255,255,0.08);--tx:#F2F4F7;--tx2:#C5CBD3;--tx3:#8E959E;--tx-soft:#E1E5EA;--chip:rgba(255,255,255,0.06);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#CFE3F3;--acc-glow:rgba(207,227,243,0.35);--acc-soft:rgba(207,227,243,0.14);--acc-line:rgba(207,227,243,0.5);--cta:#F2F4F7;--cta-tx:#0D0C0A;--nav:rgba(22,24,28,0.82);--nav-shadow:0 16px 40px rgba(0,0,0,0.45);--ok:#7FD1A6;--ok-tx:#7FD1A6;--warn:#F0A940;--warn-tx:#F0A940;--bad:#F0766B;--bad-tx:#F0766B;--ok-glow:rgba(127,209,166,0.24);--warn-glow:rgba(240,169,64,0.26);--bad-glow:rgba(240,118,107,0.28);--zone-ok:rgba(127,209,166,0.13);--zone-warn:rgba(240,169,64,0.16);--zone-bad:rgba(240,118,107,0.10);--line-glow:rgba(242,244,247,0.16);--bad-btn:linear-gradient(180deg,#F5918A,#E0645A);--bad-btn-tx:#1A0D0B;--bad-btn-glow:rgba(240,118,107,0.4)}
+.tema-claro{--teal:#3E7F9C;--bg:#FAFBFC;--glow1:rgba(207,227,243,0.85);--glow2:rgba(95,157,184,0.12);--card:rgba(255,255,255,0.96);--card2:rgba(244,248,252,0.94);--card-shadow:0 10px 30px rgba(13,12,10,0.06);--line:rgba(13,12,10,0.13);--line2:rgba(13,12,10,0.07);--tx:#0D0C0A;--tx2:#45484D;--tx3:#5F636A;--tx-soft:#1F2124;--chip:rgba(13,12,10,0.04);--acc:#CFE3F3;--acc-tx:#0D0C0A;--acc-text:#2F5E80;--acc-glow:rgba(120,170,210,0.35);--acc-soft:rgba(207,227,243,0.7);--acc-line:#9DC2DE;--cta:#0D0C0A;--cta-tx:#FFFFFF;--nav:rgba(255,255,255,0.9);--nav-shadow:0 14px 34px rgba(13,12,10,0.12);--ok:#3FAE6A;--ok-tx:#1E7B34;--warn:#F0A940;--warn-tx:#A05A00;--bad:#E0645A;--bad-tx:#C4141B;--ok-glow:rgba(127,209,166,0.35);--warn-glow:rgba(240,169,64,0.30);--bad-glow:rgba(240,118,107,0.25);--zone-ok:rgba(127,209,166,0.24);--zone-warn:rgba(240,169,64,0.22);--zone-bad:rgba(240,118,107,0.14);--line-glow:rgba(13,12,10,0.10);--bad-btn:linear-gradient(180deg,#D83A30,#B3241B);--bad-btn-tx:#FFFFFF;--bad-btn-glow:rgba(196,20,27,0.3)}
+</style>
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;background:#050506}
+#palco{width:1194px;height:834px;flex:none;transform-origin:center center;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.45)}
+</style>
+<!-- Backend (offline): dados simulados, regras, motor, modelo, armazenamento e ligação aos ecrãs -->
+<script src="../dados.js?v=20261115h"></script>
+<script src="../../motor/regras.js?v=20261115h"></script>
+<script src="../../motor/motor.js?v=20261115h"></script>
+<script src="../../motor/modelo.js?v=20261115h"></script>
+<script src="../armazenamento.js?v=20261115h"></script>
+<script src="ligacao.js?v=20261115h"></script>
+<script src="i18n.js?v=20261115h"></script>
+<script src="runtime.js?v=20261115h"></script>
+</head>
+<body>
+<div id="palco"><div id="raiz"></div></div>
+<template id="dc-modelo">
+<div class="{{ temaClasse }}" style="position: relative; width: 1194px; height: 834px; overflow: hidden; font-family: 'Manrope', system-ui, sans-serif; color: var(--tx); -webkit-font-smoothing: antialiased; background: radial-gradient(40% 50% at 82% 38%, var(--glow1), rgba(0,0,0,0) 70%), radial-gradient(45% 50% at 10% 100%, var(--glow2), rgba(0,0,0,0) 70%), var(--bg)">
+
+<div style="position: absolute; left: 40px; right: 40px; top: 28px; display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 10px">
+<span class="dt-logo" role="img" aria-label="IRIS" title="Integrated Remote Intelligence for Spaceflight" style="width: 65px; height: 36px; color: var(--tx)"></span>
+<span style="margin-left: 6px; font-size: 12px; font-weight: 700; color: var(--tx3); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px">{{ selo }}</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{ toggleTema }}" aria-pressed="{{ claro }}" style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--chip); color: var(--tx); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">
+<sc-if value="{{ escuro }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{ claro }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+{{ temaLabel }}</button>
+<span style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; background: var(--chip); border: 1px solid var(--line2); font-size: 13px; font-weight: 500; color: var(--tx2)">
+<span aria-hidden="true" style="width: 24px; height: 24px; margin-left: -8px; border-radius: 12px; background: linear-gradient(135deg, #E6F1FA, #9DC2DE); color: #0D0C0A; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ chipIni }}</span>{{ chip }}</span>
+</div>
+</div>
+
+<header style="position: absolute; left: 40px; right: 40px; top: 88px; display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; color: var(--tx2)">{{ subtitulo }}</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 400; letter-spacing: -0.6px; color: var(--tx)">History</h1>
+</div>
+<nav aria-label="Check type" style="display: flex; gap: 4px; padding: 4px; border-radius: 24px; background: var(--chip); border: 1px solid var(--line2)">
+<a href="TesteRapido.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">Quick tests</a>
+<a href="OCT.html" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--tx2); text-decoration: none">OCT</a>
+<span aria-current="page" style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 18px; font-size: 14px; font-weight: 700; color: var(--acc-tx); background: var(--acc)">History</span>
+</nav>
+</header>
+
+<sc-if value="{{ demo }}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="grafico-titulo" style="position: absolute; left: 40px; top: 172px; width: 714px; height: 548px; box-sizing: border-box; padding: 22px; border-radius: 28px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<h2 id="grafico-titulo" style="margin: 0; font-size: 18px; font-weight: 600; color: var(--tx)">Retinal thickness · left eye</h2>
+<div role="group" aria-label="Demo scenario" style="display: flex; gap: 3px; padding: 3px; border-radius: 20px; background: var(--chip); border: 1px solid var(--line2)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="height: 30px; padding: 0 12px; border: 0; border-radius: 15px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; color: {{ t.fg }}; background: {{ t.bg }}">{{ t.label }}</button>
+</sc-for>
+</div>
+</div>
+<svg role="img" aria-label="{{ chartLabel }}" width="670" height="398" viewBox="0 0 640 380" style="display: block">
+<polygon points="{{ redPts }}" style="fill: var(--zone-bad)"></polygon>
+<polygon points="{{ amberPts }}" style="fill: var(--zone-warn)"></polygon>
+<polygon points="{{ greenPts }}" style="fill: var(--zone-ok)"></polygon>
+<g style="stroke: var(--line2); stroke-width: 1">
+<line x1="52" y1="330" x2="624" y2="330"></line>
+<line x1="52" y1="272.9" x2="624" y2="272.9"></line>
+<line x1="52" y1="215.8" x2="624" y2="215.8"></line>
+<line x1="52" y1="158.7" x2="624" y2="158.7"></line>
+<line x1="52" y1="101.6" x2="624" y2="101.6"></line>
+<line x1="52" y1="44.5" x2="624" y2="44.5"></line>
+</g>
+<g style="font-size: 12px; fill: var(--tx3); text-anchor: end">
+<text x="44" y="334">0%</text>
+<text x="44" y="276.9">+10%</text>
+<text x="44" y="219.8">+20%</text>
+<text x="44" y="162.7">+30%</text>
+<text x="44" y="105.6">+40%</text>
+<text x="44" y="48.5">+50%</text>
+</g>
+<g style="font-size: 12px; fill: var(--tx3); text-anchor: middle">
+<text x="52" y="350">0</text>
+<text x="166.4" y="350">30</text>
+<text x="280.8" y="350">60</text>
+<text x="395.2" y="350">90</text>
+<text x="509.6" y="350">120</text>
+<text x="624" y="350">150</text>
+<text x="338" y="374">Mission day</text>
+</g>
+<polyline points="{{ linePts }}" style="fill: none; stroke: var(--line-glow); stroke-width: 9; stroke-linejoin: round; stroke-linecap: round"></polyline>
+<polyline points="{{ linePts }}" style="fill: none; stroke: var(--tx); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round"></polyline>
+<path d="{{ dotsPath }}" style="fill: var(--bg); stroke: var(--tx); stroke-width: 2"></path>
+<circle cx="{{ lastX }}" cy="{{ lastY }}" r="17" style="fill: {{ statusDot }}; fill-opacity: 0.25"></circle>
+<circle cx="{{ lastX }}" cy="{{ lastY }}" r="7" style="fill: {{ statusDot }}"></circle>
+<text x="{{ labelX }}" y="{{ labelY }}" style="font-size: 15px; font-weight: 700; fill: {{ statusFg }}">{{ lastLabel }}</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px">
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 14px; height: 10px; border-radius: 3px; background: var(--ok); opacity: 0.45"></span>Simulated reference</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 14px; height: 10px; border-radius: 3px; background: var(--warn); opacity: 0.5"></span>Above the reference</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 14px; height: 10px; border-radius: 3px; background: var(--bad); opacity: 0.4"></span>Priority zone</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 16px; height: 3px; border-radius: 2px; background: var(--tx)"></span>{{ who }}</span>
+<span style="margin-left: auto; font-size: 12px; color: var(--tx3)">Demo scenario · simulated data</span>
+</div>
+</section>
+
+<div style="position: absolute; left: 774px; top: 172px; width: 380px; display: flex; flex-direction: column; gap: 12px">
+
+<section aria-live="polite" aria-label="Status" style="padding: 18px 22px; border-radius: 28px; background: radial-gradient(110% 90% at 50% 0%, {{ statusGlow }}, rgba(0,0,0,0) 70%), var(--card); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+<svg aria-hidden="true" width="240" height="136" viewBox="0 0 300 170">
+<defs>
+<linearGradient id="arco-gradiente" x1="30" y1="0" x2="270" y2="0" gradientUnits="userSpaceOnUse">
+<stop offset="0" style="stop-color: #7FB7CF"></stop>
+<stop offset="0.5" style="stop-color: #F0A940"></stop>
+<stop offset="1" style="stop-color: #F0766B"></stop>
+</linearGradient>
+</defs>
+<path d="M30 150 A120 120 0 0 1 270 150" style="fill: none; stroke: url(#arco-gradiente); stroke-width: 30; stroke-opacity: 0.14; stroke-linecap: round"></path>
+<path d="M30 150 A120 120 0 0 1 270 150" style="fill: none; stroke: url(#arco-gradiente); stroke-width: 12; stroke-linecap: round"></path>
+<line x1="{{ t90x1 }}" y1="{{ t90y1 }}" x2="{{ t90x2 }}" y2="{{ t90y2 }}" style="stroke: var(--tx); stroke-opacity: 0.7; stroke-width: 2"></line>
+<line x1="{{ t97x1 }}" y1="{{ t97y1 }}" x2="{{ t97x2 }}" y2="{{ t97y2 }}" style="stroke: var(--tx); stroke-opacity: 0.7; stroke-width: 2"></line>
+<circle cx="{{ knobX }}" cy="{{ knobY }}" r="18" style="fill: var(--tx); fill-opacity: 0.16"></circle>
+<circle cx="{{ knobX }}" cy="{{ knobY }}" r="11" style="fill: var(--tx)"></circle>
+<circle cx="{{ knobX }}" cy="{{ knobY }}" r="4" style="fill: var(--bg)"></circle>
+<text x="150" y="132" style="font-size: 40px; font-weight: 300; fill: var(--tx); text-anchor: middle; letter-spacing: -1px">{{ lastLabel }}</text>
+<text x="150" y="160" style="font-size: 13px; fill: var(--tx2); text-anchor: middle">above your baseline</text>
+</svg>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: {{ statusFg }}; background: var(--chip); border-radius: 999px; padding: 5px 12px"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{ statusDot }}; box-shadow: 0 0 10px {{ statusDot }}"></span>{{ statusName }}</span>
+<h2 style="margin: 2px 0 0; font-size: 22px; font-weight: 400; letter-spacing: -0.3px; color: var(--tx)">{{ statusTitle }}</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--tx2)">{{ statusText }}</p>
+</section>
+
+<section aria-labelledby="fazer-titulo" style="padding: 16px 22px 8px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column">
+<h2 id="fazer-titulo" style="margin: 0 0 4px; font-size: 15px; font-weight: 600; color: var(--tx)">What to do</h2>
+<sc-for list="{{ actions }}" as="a" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: center; min-height: 40px; border-bottom: {{ a.rule }}">
+<span aria-hidden="true" style="width: 22px; height: 22px; flex: none; border-radius: 11px; background: var(--acc-soft); color: var(--acc-text); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ a.n }}</span>
+<span style="font-size: 14px; color: var(--tx-soft)">{{ a.t }}</span>
+</div>
+</sc-for>
+</section>
+
+<sc-if value="{{ isRed }}" hint-placeholder-val="{{ false }}">
+<a href="Alerta.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 24px; background: var(--bad-btn); color: var(--bad-btn-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--bad-btn-glow)">Open alerts</a>
+</sc-if>
+<sc-if value="{{ notRed }}" hint-placeholder-val="{{ true }}">
+<a href="TesteRapido.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 24px; background: var(--cta); color: var(--cta-tx); font-size: 15px; font-weight: 600; text-decoration: none">Do quick tests</a>
+</sc-if>
+</div>
+
+</sc-if>
+
+<sc-if value="{{ real }}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="r-grafico-titulo" style="position: absolute; left: 40px; top: 172px; width: 714px; height: 548px; box-sizing: border-box; padding: 22px; border-radius: 28px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<h2 id="r-grafico-titulo" style="margin: 0; font-size: 18px; font-weight: 600; color: var(--tx)">Near acuity · lines read per eye</h2>
+<span style="font-size: 13px; color: var(--tx3)">{{ rh.nTxt }}</span>
+</div>
+<svg role="img" aria-label="{{ rh.label }}" width="670" height="398" viewBox="0 0 640 380" style="display: block">
+<sc-for list="{{ rh.grelha }}" as="g" hint-placeholder-count="6">
+<line x1="52" y1="{{ g.y }}" x2="624" y2="{{ g.y }}" style="stroke: var(--line2); stroke-width: 1"></line>
+<text x="44" y="{{ g.ty }}" style="font-size: 12px; fill: var(--tx3); text-anchor: end">{{ g.t }}</text>
+</sc-for>
+<sc-for list="{{ rh.eixoX }}" as="x" hint-placeholder-count="5">
+<text x="{{ x.x }}" y="350" style="font-size: 12px; fill: var(--tx3); text-anchor: middle">{{ x.t }}</text>
+</sc-for>
+<text x="338" y="374" style="font-size: 12px; fill: var(--tx3); text-anchor: middle">Mission day</text>
+<polyline points="{{ rh.linhaOD }}" style="fill: none; stroke: var(--teal); stroke-width: 2; stroke-linejoin: round"></polyline>
+<polyline points="{{ rh.linhaOE }}" style="fill: none; stroke: var(--acc-text); stroke-width: 2.5; stroke-linejoin: round"></polyline>
+<sc-for list="{{ rh.pontos }}" as="p" hint-placeholder-count="6">
+<circle cx="{{ p.x }}" cy="{{ p.y }}" r="{{ p.r }}" style="fill: {{ p.fill }}; stroke: {{ p.cor }}; stroke-width: 2.5"></circle>
+</sc-for>
+<sc-if value="{{ rh.vazio }}" hint-placeholder-val="{{ false }}">
+<text x="338" y="180" style="font-size: 15px; fill: var(--tx2); text-anchor: middle">No tests yet. Your first test is your baseline.</text>
+</sc-if>
+</svg>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px">
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 16px; height: 3px; border-radius: 2px; background: var(--acc-text)"></span>Left eye</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 16px; height: 3px; border-radius: 2px; background: var(--teal)"></span>Right eye</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--tx2)"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 5px; border: 2px solid var(--warn)"></span>Ring colour = result of that test</span>
+<span style="margin-left: auto; font-size: 12px; color: var(--tx3)">Only your own tests · stored on this device</span>
+</div>
+</section>
+
+<div style="position: absolute; left: 774px; top: 172px; width: 380px; height: 548px; display: flex; flex-direction: column; gap: 12px">
+<section aria-label="Your history" style="padding: 18px 22px; border-radius: 28px; background: radial-gradient(110% 90% at 50% 0%, {{ rh.glow }}, rgba(0,0,0,0) 70%), var(--card); border: 1px solid var(--line2); display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--tx3)">YOUR HISTORY</span>
+<span style="display: flex; align-items: center; gap: 9px; font-size: 22px; font-weight: 400; color: {{ rh.cor }}"><span aria-hidden="true" style="width: 11px; height: 11px; flex: none; border-radius: 6px; background: {{ rh.dot }}"></span>{{ rh.titulo }}</span>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--tx2)">{{ rh.texto }}</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.45; color: var(--tx3)">{{ rh.octTxt }}</p>
+</section>
+<section aria-labelledby="r-lista" style="flex: 1 1 0; min-height: 0; overflow-y: auto; padding: 14px 20px 6px; border-radius: 26px; background: linear-gradient(180deg, var(--card), var(--card2)); border: 1px solid var(--line2)">
+<h2 id="r-lista" style="margin: 0 0 4px; font-size: 15px; font-weight: 600; color: var(--tx)">Your tests</h2>
+<sc-for list="{{ rh.lista }}" as="t" hint-placeholder-count="4">
+<div style="display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line2)">
+<span aria-hidden="true" style="width: 9px; height: 9px; flex: none; margin-top: 5px; border-radius: 5px; background: {{ t.dot }}"></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 14px; font-weight: 700; color: var(--tx)">{{ t.rotulo }}</span><span style="font-size: 13px; font-weight: 700; color: {{ t.corTx }}">{{ t.res }}</span></span>
+<span style="font-size: 12.5px; color: var(--tx2)">{{ t.det }}</span>
+</span>
+</div>
+</sc-for>
+</section>
+<a href="TesteRapido.html" style="display: flex; align-items: center; justify-content: center; flex: none; height: 48px; border-radius: 24px; background: var(--cta); color: var(--cta-tx); font-size: 15px; font-weight: 700; text-decoration: none">Do quick tests</a>
+</div>
+</sc-if>
+
+<div aria-hidden="true" style="position: absolute; left: -1500px; right: -1500px; top: 712px; bottom: -1500px; pointer-events: none; background: linear-gradient(180deg, transparent 0, var(--bg) 90px)"></div>
+<nav aria-label="App sections" style="position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 36px; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--line2); box-shadow: var(--nav-shadow)">
+<a href="Hoje.html" aria-label="Today" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg></a>
+<a href="TesteRapido.html" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 52px; box-sizing: border-box; padding: 0 22px; border-radius: 26px; background: var(--acc); border: 1px solid var(--acc-line); color: var(--acc-tx); font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px var(--acc-glow)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Checks</a>
+<a href="SANS.html" aria-label="SANS monitoring" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+<a href="Alerta.html" aria-label="Alerts" style="width: 56px; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: var(--tx2); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg></a>
+</nav>
+
+</div>
+</template>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tema: 'escuro', who: 'B' };
+  }
+  componentDidMount() {
+    try {
+      const t = window.localStorage.getItem('visao-tema');
+      const p = window.localStorage.getItem('visao-perfil');
+      const upd = {};
+      if (t === 'claro' || t === 'escuro') upd.tema = t;
+      if (p === 'A' || p === 'B' || p === 'C') upd.who = p;
+      this.setState(upd);
+    } catch (e) {}
+    this.ouvir = (ev) => {
+      if (ev && ev.key === 'visao-tema' && (ev.newValue === 'claro' || ev.newValue === 'escuro')) this.setState({ tema: ev.newValue });
+    };
+    try { window.addEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  componentWillUnmount() {
+    try { window.removeEventListener('storage', this.ouvir); } catch (e) {}
+  }
+  renderVals() {
+    const s = this.state;
+    const data = {
+      A: { days: [0, 10, 30, 60], vals: [0, 1.8, 4.2, 6.9] },
+      B: { days: [0, 10, 30, 60, 90], vals: [0, 4.0, 9.5, 14.0, 17.0] },
+      C: { days: [0, 10, 30, 60, 84], vals: [0, 6.0, 18.0, 35.0, 52.9] }
+    };
+    const X = (d) => 52 + d / 150 * 572;
+    const Y = (v) => 330 - Math.min(v, 55) / 55 * 314;
+    const m = (d) => 10 * (1 - Math.exp(-d / 45));
+    const p10i = (d) => 0.4 * m(d);
+    const p90i = (d) => 1.7 * m(d);
+    const p97i = (d) => 2.4 * m(d);
+    // Backend: série do astronauta simulado (simulador.py), faixas P10/P90/P97 da população simulada
+    // (Monte Carlo, dados/faixas.json) e cor do OCT decidida pelo motor. Sem backend, ficam os valores de exemplo.
+    const TB = window.Visao ? window.Visao.tendencia(s.who) : null;
+    const p10 = TB ? TB.p10 : p10i;
+    const p90 = TB ? TB.p90 : p90i;
+    const p97 = TB ? TB.p97 : p97i;
+    const ds = [];
+    for (let d = 0; d <= 150; d += 5) ds.push(d);
+    const pt = (d, v) => X(d).toFixed(1) + ',' + Y(v).toFixed(1);
+    const up = (f) => ds.map((d) => pt(d, f(d)));
+    const down = (f) => ds.slice().reverse().map((d) => pt(d, f(d)));
+    const greenPts = up(p90).concat(down(p10)).join(' ');
+    const amberPts = up(p97).concat(down(p90)).join(' ');
+    const redPts = up(() => 55).concat(down(p97)).join(' ');
+    const a = TB || data[s.who];
+    const linePts = a.days.map((d, i) => pt(d, a.vals[i])).join(' ');
+    let dotsPath = '';
+    for (let i = 0; i < a.days.length - 1; i++) {
+      const x = X(a.days[i]);
+      const y = Y(a.vals[i]);
+      dotsPath += 'M' + (x - 4).toFixed(1) + ' ' + y.toFixed(1) + ' a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0 ';
+    }
+    const n = a.days.length - 1;
+    const day = a.days[n];
+    const v = a.vals[n];
+    let level = 0;
+    if (v > p90(day)) level = 1;
+    if (v > p97(day)) level = 2;
+    if (TB) level = TB.level;
+    const pct = (x) => x.toFixed(1).replace('.', ',') + '%';
+    const looks = [
+      { name: 'Green · routine', title: 'Within the reference', fg: 'var(--ok-tx)', dot: 'var(--ok)', glow: 'var(--ok-glow)' },
+      { name: 'Orange · review advised', title: 'Above your reference', fg: 'var(--warn-tx)', dot: 'var(--warn)', glow: 'var(--warn-glow)' },
+      { name: 'Red · clinical priority', title: 'Tell the flight surgeon', fg: 'var(--bad-tx)', dot: 'var(--bad)', glow: 'var(--bad-glow)' }
+    ];
+    const texts = [
+      'Day ' + day + ': +' + pct(v) + ' vs your baseline. Simulated reference: up to +' + pct(p90(day)) + '.',
+      'Day ' + day + ': +' + pct(v) + ' vs your baseline. Simulated reference: up to +' + pct(p90(day)) + '. The medical team reviews it.',
+      'Day ' + day + ': +' + pct(v) + ' vs your baseline. Simulated priority limit: +' + pct(p97(day)) + '.'
+    ];
+    const actionSets = [
+      ['Keep the normal schedule.', 'Next quick test in 7 days.', 'Next OCT in one month.'],
+      ['The medical team reviews the result.', 'Repeat the quick tests in 2 to 3 days.', 'Use the spare glasses if you need them.'],
+      ['Tell the flight surgeon now.', 'The package for Earth is ready.', 'No contact? Follow the holding plan.']
+    ];
+    const acts = actionSets[level];
+    const actions = acts.map((t, i) => ({ n: i + 1, t: t, rule: i < acts.length - 1 ? '1px solid var(--line2)' : '0' }));
+    const look = looks[level];
+    const lastX = X(day);
+    const lastY = Y(v);
+    const G = (val) => Math.PI * (1 - Math.min(Math.max(val, 0), 30) / 30);
+    const gx = (ang, r) => (150 + r * Math.cos(ang)).toFixed(1);
+    const gy = (ang, r) => (150 - r * Math.sin(ang)).toFixed(1);
+    const kA = G(v);
+    const a90 = G(p90(day));
+    const a97 = G(p97(day));
+    const chips = { A: 'Marta Silveira · Day 60', B: 'Daniel Cossa · Day 90', C: 'Sofia Lindqvist · Day 84' };
+    const euReal = window.Visao ? window.Visao.eu() : null;
+    // Perfil real: só o histórico do próprio astronauta; os exemplos simulados ficam no modo demonstração.
+    const H = euReal ? window.Visao.historico() : null;
+    let rh = null;
+    if (H) {
+      const T = H.testes;
+      const maxD = Math.ceil(Math.max(30, H.dia, T.length ? T[T.length - 1].dia : 0) / 30) * 30;
+      const RX = (d) => 52 + d / maxD * 572, RY = (v) => 330 - (v || 0) / 5 * 290;
+      const CN = ['var(--ok)', 'var(--ylw)', 'var(--warn)', 'var(--bad)'];
+      const CT = ['var(--ok-tx)', 'var(--ylw-tx)', 'var(--warn-tx)', 'var(--bad-tx)'];
+      const NOME = ['Green', 'Yellow', 'Orange', 'Red'];
+      const comOlhos = T.filter((t) => t.oe !== null && t.oe !== undefined);
+      const pontos = [];
+      comOlhos.forEach((t) => {
+        pontos.push({ x: RX(t.dia).toFixed(1), y: RY(t.od).toFixed(1), r: 4, cor: 'var(--teal)', fill: 'var(--bg)' });
+        pontos.push({ x: RX(t.dia).toFixed(1), y: RY(t.oe).toFixed(1), r: 6, cor: CN[t.nivel], fill: 'var(--bg)' });
+      });
+      const ult = T[T.length - 1];
+      const nOct = H.oct.length, o0 = H.oct[0], oU = H.oct[nOct - 1];
+      const pc = (a, b) => (a >= b ? '+' : '−') + Math.abs((a - b) / b * 100).toFixed(1) + '%';
+      rh = {
+        nTxt: T.length + (T.length === 1 ? ' test' : ' tests'),
+        label: 'Lines read per eye in ' + T.length + ' tests of ' + H.nome + '.',
+        grelha: [0, 1, 2, 3, 4, 5].map((k) => ({ y: RY(k).toFixed(1), ty: (RY(k) + 4).toFixed(1), t: k + '/5' })),
+        eixoX: [0, 1, 2, 3].map((k) => { const d = Math.round(maxD * k / 3); return { x: RX(d).toFixed(1), t: d === 0 ? 'Pre-flight' : String(d) }; }),
+        linhaOE: comOlhos.map((t) => RX(t.dia).toFixed(1) + ',' + RY(t.oe).toFixed(1)).join(' '),
+        linhaOD: comOlhos.map((t) => RX(t.dia).toFixed(1) + ',' + RY(t.od).toFixed(1)).join(' '),
+        pontos: pontos, vazio: T.length === 0,
+        titulo: ult ? NOME[ult.nivel] + ' · ' + ult.rotulo : 'No tests yet',
+        cor: ult ? CT[ult.nivel] : 'var(--tx2)', dot: ult ? CN[ult.nivel] : 'var(--tx3)', glow: ult ? ['var(--ok-glow)', 'var(--ylw-glow)', 'var(--warn-glow)', 'var(--bad-glow)'][ult.nivel] : 'transparent',
+        texto: !T.length ? 'Do your pre-flight registration and first test: it becomes your baseline.'
+          : 'Baseline: ' + T[0].rotulo.toLowerCase() + (T[0].dia === 0 ? ' (on Earth)' : '') + '. ' + T.length + (T.length === 1 ? ' test' : ' tests') + ' so far.',
+        octTxt: nOct ? 'OCT: ' + nOct + (nOct === 1 ? ' exam' : ' exams') + (nOct > 1 ? ' · last ' + (oU.dia === 0 ? 'pre-flight' : 'day ' + oU.dia) + ': LE ' + pc(oU.oe, o0.oe) + ' · RE ' + pc(oU.od, o0.od) + ' vs first OCT' : ' · ' + oU.oe + ' / ' + oU.od + ' µm (baseline)') : 'OCT: none recorded yet.',
+        lista: T.slice().reverse().map((t) => ({ rotulo: t.rotulo, dot: CN[t.nivel], corTx: CT[t.nivel], res: t.primeiro ? 'Baseline' : NOME[t.nivel],
+          det: t.acTxt + ' · Amsler: ' + t.amTxt.toLowerCase() + (t.prontidao !== 'verde' ? ' · readiness ' + ({ amarelo: 'with caveats', vermelho: 'not reliable' })[t.prontidao] : '') }))
+      };
+    }
+    // Privacidade: mesmo na demonstração, só o histórico da pessoa com sessão aberta.
+    const tabs = [
+      { id: 'A', label: 'A · Marta' },
+      { id: 'B', label: 'B · Daniel' },
+      { id: 'C', label: 'C · Sofia' }
+    ].filter((t) => t.id === s.who).map((t) => ({
+      label: t.label,
+      on: s.who === t.id,
+      bg: s.who === t.id ? 'var(--acc)' : 'transparent',
+      fg: s.who === t.id ? 'var(--acc-tx)' : 'var(--tx2)',
+      pick: () => this.setState({ who: t.id })
+    }));
+    const claro = s.tema === 'claro';
+    return {
+      temaClasse: claro ? 'tema-claro' : 'tema-escuro',
+      selo: window.Visao ? window.Visao.selo() : 'Simulated data',
+      claro: claro,
+      escuro: !claro,
+      temaLabel: claro ? 'Dark mode' : 'Light mode',
+      toggleTema: () => {
+        const nt = this.state.tema === 'escuro' ? 'claro' : 'escuro';
+        this.setState({ tema: nt });
+        try { window.localStorage.setItem('visao-tema', nt); } catch (e) {}
+      },
+      chipIni: euReal ? euReal.ini : ({ A: 'MS', B: 'DC', C: 'SL' })[s.who],
+      chip: euReal ? euReal.nome + ' · ' + (window.Visao.diaTxt ? window.Visao.diaTxt(euReal.dia) : 'Day ' + euReal.dia) : chips[s.who],
+      real: !!rh, demo: !rh, rh: rh || {},
+      subtitulo: rh ? 'Your own tests only · compared with your pre-flight baseline' : 'OCT · retina around the optic nerve, vs your pre-flight baseline',
+      tabs: tabs,
+      greenPts: greenPts,
+      amberPts: amberPts,
+      redPts: redPts,
+      linePts: linePts,
+      dotsPath: dotsPath,
+      lastX: lastX.toFixed(1),
+      lastY: lastY.toFixed(1),
+      labelX: (lastX + 22).toFixed(1),
+      labelY: (Math.max(lastY, 30) + 5).toFixed(1),
+      lastLabel: '+' + pct(v),
+      who: ({ A: 'Marta', B: 'Daniel', C: 'Sofia' })[s.who],
+      chartLabel: 'Astronaut ' + s.who + ': +' + pct(v) + ' vs baseline on day ' + day + '. Status ' + look.name + '.',
+      knobX: gx(kA, 120),
+      knobY: gy(kA, 120),
+      t90x1: gx(a90, 104), t90y1: gy(a90, 104), t90x2: gx(a90, 136), t90y2: gy(a90, 136),
+      t97x1: gx(a97, 104), t97y1: gy(a97, 104), t97x2: gx(a97, 136), t97y2: gy(a97, 136),
+      statusName: look.name,
+      statusTitle: look.title,
+      statusFg: look.fg,
+      statusDot: look.dot,
+      statusGlow: look.glow,
+      statusText: texts[level],
+      actions: actions,
+      isRed: level === 2,
+      notRed: level !== 2
+    };
+  }
+}
+window.Component = Component;
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+MediaPipe Face Detection (npm @mediapipe/face_detection 0.4.1646425229)
+Licença: Apache-2.0 (Google). Copiado para funcionar sem internet.

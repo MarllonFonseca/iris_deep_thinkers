@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo_icone.png">
+<title>IRIS · Deep Thinkers · prototype screens</title>
+<link href="fonte.css?v=20261115h" rel="stylesheet">
+<link href="iris.css?v=20261115h" rel="stylesheet">
+<style>
+:root{--bg:#0D0C0A;--card:rgba(255,255,255,0.06);--line:rgba(255,255,255,0.10);--tx:#F2F4F7;--tx2:#C5CBD3;--tx3:#8E959E;--acc:#CFE3F3;--acc-tx:#0D0C0A}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:'Manrope',system-ui,sans-serif;color:var(--tx);-webkit-font-smoothing:antialiased;background:radial-gradient(45% 40% at 85% 0%,rgba(207,227,243,0.12),rgba(0,0,0,0) 70%),radial-gradient(40% 40% at 0% 100%,rgba(95,157,184,0.14),rgba(0,0,0,0) 70%),var(--bg)}
+main{max-width:1240px;margin:0 auto;padding:48px 32px 64px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+h1{margin:4px 0 0;font-size:40px;font-weight:300;letter-spacing:-1px}
+.sub{font-size:15px;color:var(--tx2)}
+.acoes{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;height:46px;padding:0 22px;border-radius:23px;font:inherit;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer}
+.btn-acc{background:var(--acc);color:var(--acc-tx);border:0;box-shadow:0 6px 24px rgba(207,227,243,0.3)}
+.btn-sec{background:transparent;color:var(--tx);border:1px solid var(--line)}
+.btn-sec:hover{border-color:rgba(255,255,255,0.3)}
+.grelha{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.cartao{display:flex;flex-direction:column;gap:10px;padding:12px 12px 16px;border-radius:22px;background:var(--card);border:1px solid var(--line);text-decoration:none;color:var(--tx);transition:transform .15s ease,border-color .15s ease}
+.cartao:hover{transform:translateY(-2px);border-color:rgba(207,227,243,0.45)}
+.cartao img{width:100%;aspect-ratio:1194/834;object-fit:cover;border-radius:14px;display:block;background:#000}
+.cartao b{font-size:16px;font-weight:600;padding:0 4px}
+.cartao span{font-size:13px;line-height:1.45;color:var(--tx2);padding:0 4px}
+.nota{margin-top:28px;padding:18px 20px;border-radius:18px;background:var(--card);border:1px solid var(--line);font-size:14px;line-height:1.6;color:var(--tx2)}
+.nota b{color:var(--tx)}
+#estado{font-size:13px;color:var(--tx3);min-height:18px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div>
+<span class="sub">Deep Thinkers · NASA Space Apps 2026 · vision app prototype</span>
+<h1><span class="dt-logo" role="img" aria-label="IRIS" style="width: 72px; height: 40px; vertical-align: middle; margin-right: 10px"></span>all screens</h1>
+</div>
+<div class="acoes">
+<button class="btn btn-sec" type="button" id="repor">Reset the demo</button>
+<button class="btn btn-sec" type="button" id="preparar-voz" title="Downloads the speech-recognition language pack once, with internet. After that it works offline.">Prepare voice (once, before the mission)</button>
+<a class="btn btn-acc" href="Main.html">Start from the beginning</a>
+</div>
+</header>
+<div id="estado" role="status"></div>
+<div class="grelha">
+<a class="cartao" href="Main.html"><img src="assets/miniaturas/Main.jpg" alt=""><b>1 · Sign in</b><span>Choose the profile and sign in by face or from the list.</span></a>
+<a class="cartao" href="Hoje.html"><img src="assets/miniaturas/Hoje.jpg" alt=""><b>2 · Today</b><span>Daily advice and spacecraft-motion notification.</span></a>
+<a class="cartao" href="Perfil.html"><img src="assets/miniaturas/Perfil.jpg" alt=""><b>3 · Profile</b><span>Records, personalisation and spacecraft events with a chart.</span></a>
+<a class="cartao" href="TesteRapido.html"><img src="assets/miniaturas/TesteRapido.jpg" alt=""><b>4 · Quick tests</b><span>Before you start, near acuity, Amsler grid and result.</span></a>
+<a class="cartao" href="OCT.html"><img src="assets/miniaturas/OCT.jpg" alt=""><b>5 · OCT (optional)</b><span>Record the device values and compare with history.</span></a>
+<a class="cartao" href="Tendencia.html"><img src="assets/miniaturas/Tendencia.jpg" alt=""><b>6 · History</b><span>Retina trend against the pre-flight baseline.</span></a>
+<a class="cartao" href="SANS.html"><img src="assets/miniaturas/SANS.jpg" alt=""><b>7 · SANS monitoring</b><span>Timeline of exams and mission events.</span></a>
+<a class="cartao" href="Alerta.html"><img src="assets/miniaturas/Alerta.jpg" alt=""><b>8 · Medical alerts</b><span>Alerts on four levels, with detail and sending to the flight surgeon.</span></a>
+<a class="cartao" href="Registo.html"><img src="assets/miniaturas/Registo.jpg" alt=""><b>9 · Pre-flight registration</b><span>Day 0, on Earth: mission, eyes and baseline OCT, before the baseline tests.</span></a>
+</div>
+<div class="nota">
+<b>How to use.</b> Open this folder and double-click <b>index.html</b>, or start at <b>Main.html</b>. Works without internet. For the camera (distance and face sign-in), open the app with the file <b>abrir_app</b> in the project folder (http://localhost:8000); with a double-click everything works except the camera. Profile, theme and answers are kept in the browser: use <b>Reset the demo</b> to see the motion notification again and start over.<br>
+Marta = routine · Daniel = review advised · Sofia = clinical priority. Everything is simulated, with no link to NASA systems, and the app does not diagnose SANS.
+</div>
+</main>
+<script src="i18n.js?v=20261115h"></script>
+<script src="voz.js?v=20261115h"></script>
+<script>
+// Reconhecimento de voz no aparelho: o pacote de português descarrega-se UMA vez, com internet.
+document.getElementById('preparar-voz').addEventListener('click', function () {
+  var e = document.getElementById('estado');
+  if (!window.Voz) { e.textContent = 'Voice module missing.'; return; }
+  e.textContent = 'Preparing speech recognition…';
+  window.Voz.prepararMicrofone().then(function (r) { e.textContent = r.mensagem; });
+});
+document.getElementById('repor').addEventListener('click', function () {
+  var n = 0;
+  try {
+    Object.keys(window.localStorage).forEach(function (k) {
+      if (k.indexOf('visao-') === 0) { window.localStorage.removeItem(k); n++; }   // os testes reais (dt_registos) e os rostos (dt_rostos) não são apagados aqui
+    });
+    document.getElementById('estado').textContent = 'Demo reset.';
+  } catch (e) {
+    document.getElementById('estado').textContent = 'This browser does not allow local data: each page always starts from scratch.';
+  }
+});
+</script>
+<script>
+// Língua: traduz a página e põe o botão PT/EN no título (esta página não usa o runtime).
+(function () {
+  var original = null;
+  function aplicar() {
+    if (!window.I18N) return;
+    if (original === null) original = document.body.innerHTML;
+    else document.body.innerHTML = original;
+    window.I18N.aplicar(document.body);
+    var h = document.querySelector('h1'); if (!h || document.querySelector('.dt-lingua')) return;
+    var pt = window.I18N.lingua() === 'pt', b = document.createElement('button');
+    b.type = 'button'; b.className = 'dt-lingua'; b.textContent = pt ? 'PT | en' : 'pt | EN';
+    b.setAttribute('aria-label', pt ? 'Mudar para inglês' : 'Switch to Portuguese');
+    b.style.cssText = 'margin-left:14px;vertical-align:middle;height:32px;padding:0 12px;border-radius:16px;border:1px solid rgba(127,127,127,.4);background:transparent;color:inherit;font:inherit;font-size:13px;font-weight:700;cursor:pointer';
+    b.addEventListener('click', function () { window.I18N.mudar(pt ? 'en' : 'pt'); location.reload(); });
+    h.appendChild(b);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicar); else aplicar();
+})();
+</script>
+</body>
+</html>
